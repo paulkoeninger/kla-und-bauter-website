@@ -60,25 +60,37 @@
                 </div>
             </section>
 
-            <section class="services">
-                <h2 class="section-title">SERVICES</h2>
-                <div class="services-grid">
-                    <div class="service-item" data-route="sessions" style="cursor: pointer;">
+            <section class="services experience-section" style="position: relative;">
+                <!-- Full width vibe backgrounds -->
+                <div class="vibe-backgrounds">
+                    <video autoplay loop muted playsinline class="vibe-default-video">
+                        <source src="images/background.mp4" type="video/mp4">
+                    </video>
+                    <div class="vibe-video-overlay"></div>
+                    
+                    <div class="vibe-bg" id="bg-sessions" style="background-image: url('images/Kla & Bauter Studio-099.jpg');"></div>
+                    <div class="vibe-bg" id="bg-produktion" style="background-image: url('images/Kla & Bauter Studio-100.jpg');"></div>
+                    <div class="vibe-bg" id="bg-songcamps" style="background-image: url('images/songcamp/DSCF9925.jpg');"></div>
+                </div>
+                
+                <h2 class="section-title" style="position: relative; z-index: 2;">DEIN TEAM FÜR</h2>
+                <div class="services-grid" style="position: relative; z-index: 2;">
+                    <div class="service-item hover-trigger vibe-sessions" data-route="sessions" style="cursor: pointer;" data-vibe="bg-sessions">
                         <div class="service-header">
                             <h3>SESSIONS</h3>
-                            <div class="toggle-icon"></div>
+                            <div class="arrow-icon">⟶</div>
                         </div>
                     </div>
-                    <div class="service-item" data-route="produktion" style="cursor: pointer;">
+                    <div class="service-item hover-trigger vibe-produktion" data-route="produktion" style="cursor: pointer;" data-vibe="bg-produktion">
                         <div class="service-header">
-                            <h3>PRODUCTION</h3>
-                            <div class="toggle-icon active"></div>
+                            <h3>PRODUKTION</h3>
+                            <div class="arrow-icon">⟶</div>
                         </div>
                     </div>
-                    <div class="service-item" data-route="kontakt" style="cursor: pointer;">
+                    <div class="service-item hover-trigger vibe-songcamps" data-route="songcamps" style="cursor: pointer;" data-vibe="bg-songcamps">
                         <div class="service-header">
-                            <h3>MIXING & MASTERING</h3>
-                            <div class="toggle-icon"></div>
+                            <h3>SONGCAMPS</h3>
+                            <div class="arrow-icon">⟶</div>
                         </div>
                     </div>
                 </div>
@@ -425,13 +437,11 @@
                     <div class="footer-col">
                         <h4>HEUMARKT STUDIO</h4>
                         <p>Paul Köninger<br>Heumarkt<br>50667 Köln</p>
-                        <p><a href="mailto:paulkoeninger@icloud.com" class="footer-link">paulkoeninger@icloud.com</a></p>
                     </div>
                     
                     <div class="footer-col">
                         <h4>EHRENFELD STUDIO</h4>
                         <p>Adrian Thessenvitz<br>Fitzmauricestraße<br>50829 Köln</p>
-                        <p><a href="mailto:adrian@thessenvitz.de" class="footer-link">adrian@thessenvitz.de</a></p>
                     </div>
                     
                     <div class="footer-col">

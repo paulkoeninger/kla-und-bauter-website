@@ -1,4 +1,6 @@
 window.addEventListener('load', () => {
+    document.documentElement.classList.add('snap-active');
+
     // -----------------------------------------
     // 1. Flying Logo & Intro Animation
     // -----------------------------------------
@@ -130,6 +132,7 @@ window.addEventListener('load', () => {
             incomingSection.classList.add('active');
             window.scrollTo(0, 0);
             currentRoute = targetRoute;
+            document.documentElement.classList.toggle('snap-active', targetRoute === 'home');
             return;
         }
 
@@ -174,6 +177,7 @@ window.addEventListener('load', () => {
                     ease: "power3.out",
                     onComplete: () => {
                         currentRoute = targetRoute;
+                        document.documentElement.classList.toggle('snap-active', targetRoute === 'home');
                         isTransitioning = false;
                         gsap.set(incomingElements, { clearProps: "all" });
                     }
@@ -181,4 +185,52 @@ window.addEventListener('load', () => {
             }
         });
     }
+
+    // -----------------------------------------
+    // VIBE HOVER EFFECT LOGIC
+    // -----------------------------------------
+    const hoverTriggers = document.querySelectorAll('.hover-trigger');
+    const vibeBackgrounds = document.querySelectorAll('.vibe-bg');
+
+    hoverTriggers.forEach(trigger => {
+        trigger.addEventListener('mouseenter', () => {
+            const targetVibeId = trigger.getAttribute('data-vibe');
+            
+            // Remove active from all
+            vibeBackgrounds.forEach(bg => bg.classList.remove('active'));
+            
+            // Add active to targeted vibe
+            const activeBg = document.getElementById(targetVibeId);
+            if(activeBg) activeBg.classList.add('active');
+        });
+
+        trigger.addEventListener('mouseleave', () => {
+            const targetVibeId = trigger.getAttribute('data-vibe');
+            const activeBg = document.getElementById(targetVibeId);
+            if(activeBg) activeBg.classList.remove('active');
+        });
+    });
+
+    // -----------------------------------------
+    // HYPER-SENSITIVE SCROLL FOR HERO SECTION
+    // -----------------------------------------
+    let isJumping = false;
+    window.addEventListener('wheel', (e) => {
+        // Only run this logic on the home page
+        if(!document.documentElement.classList.contains('snap-active')) return;
+        if(isJumping) return;
+        
+        const experienceSection = document.querySelector('.experience-section');
+        const footer = document.querySelector('.site-footer');
+        if(!experienceSection || !footer) return;
+
+        // If at the very top (Hero) and user scrolls down even slightly
+        if (window.scrollY < 20 && e.deltaY > 5) {
+            e.preventDefault();
+            isJumping = true;
+            experienceSection.scrollIntoView({ behavior: 'smooth' });
+            setTimeout(() => { isJumping = false; }, 800);
+        }
+    }, { passive: false });
+
 });
