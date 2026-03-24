@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kla & Bauter - Musikproduktion</title>
     <meta name="description" content="Kla & Bauter - High-End Musikproduktion, Composition, Mixing & Mastering.">
-    <!-- Google Fonts: Inter as the Swiss Design base -->
+    <!-- Typography: Söhne (Inter) & Canela (Cormorant) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -20,7 +20,7 @@
         <div class="logo" data-route="home" style="cursor: pointer; z-index: 200; position: relative;">
             <img src="Logo/K%26B_Klabautermann_vektor.png" alt="Kla & Bauter" class="nav-logo-img">
         </div>
-        <div class="menu-toggle" style="z-index: 200; position: relative;">
+        <div class="menu-toggle">
             <span class="bar"></span>
             <span class="bar"></span>
         </div>
@@ -54,53 +54,99 @@
                     <p class="hero-subtitle">DEIN TEAM FÜR DEINE IDEEN</p>
                 </div>
                 <div class="hero-images">
-                    <div class="image-wrapper duotone">
+                    <div class="image-wrapper">
                         <img src="images/hero_home.jpg" alt="Kla & Bauter" class="portrait-img">
                     </div>
                 </div>
             </section>
 
-            <section class="services experience-section" style="position: relative;">
-                <!-- Full width vibe backgrounds -->
-                <div class="vibe-backgrounds">
-                    <video autoplay loop muted playsinline class="vibe-default-video">
-                        <source src="images/background.mp4" type="video/mp4">
-                    </video>
-                    <div class="vibe-video-overlay"></div>
+            <section class="home-entry-section" id="home-entry">
+                <div class="entry-container">
+                    <div class="entry-header-wrap">
+                        <h2 class="entry-headline">Wonach ist dir?</h2>
+                        <div class="entry-line"></div>
+                    </div>
                     
-                    <div class="vibe-bg" id="bg-sessions" style="background-image: url('images/Kla & Bauter Studio-099.jpg');"></div>
-                    <div class="vibe-bg" id="bg-produktion" style="background-image: url('images/Kla & Bauter Studio-100.jpg');"></div>
-                    <div class="vibe-bg" id="bg-songcamps" style="background-image: url('images/songcamp/DSCF9925.jpg');"></div>
+                    <div class="entry-grid">
+                        <!-- Path 1: Sessions -->
+                        <a href="#" class="entry-card entry-card-1" data-route="sessions">
+                            <div class="entry-card-inner">
+                                <div class="entry-image-wrapper">
+                                    <img src="images/session_home.webp" alt="Einfach anfangen" class="entry-img">
+                                </div>
+                                <div class="entry-content">
+                                    <h3 class="entry-title">Einen Song anfangen.</h3>
+                                    <p class="entry-desc">Komm mit einer Idee.<br>Wir machen einen Song daraus.</p>
+                                    <span class="entry-cta">Sessions <span class="arrow-icon">⟶</span></span>
+                                </div>
+                            </div>
+                        </a>
+
+                        <!-- Path 2: Produktion -->
+                        <a href="#" class="entry-card entry-card-2" data-route="produktion">
+                            <div class="entry-card-inner">
+                                <div class="entry-image-wrapper">
+                                    <img src="images/produktion_1.jpg" alt="Fertig machen" class="entry-img">
+                                </div>
+                                <div class="entry-content">
+                                    <h3 class="entry-title">Einen Song fertig machen.</h3>
+                                    <p class="entry-desc">Dein Song steht.<br>Wir produzieren ihn mit dir zu Ende.</p>
+                                    <span class="entry-cta">Produktion <span class="arrow-icon">⟶</span></span>
+                                </div>
+                            </div>
+                        </a>
+
+                        <!-- Path 3: Songcamp (Ingegrated Expansion) -->
+                        <a href="#" class="entry-card camp-path" data-route="songcamps">
+                            <div class="entry-card-inner">
+                                <div class="entry-image-wrapper">
+                                    <img src="images/songcamp/DSCF9981.jpg" alt="Unser Songcamp" class="entry-img">
+                                </div>
+                                <div class="entry-content">
+                                    <h3 class="entry-title">Auf die Suche gehen.</h3>
+                                    <p class="entry-desc">Du hast ein Gefühl.<br>Wir finden die Musik darin.</p>
+                                    <span class="entry-cta">Songcamp <span class="arrow-icon">⟶</span></span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Subtiler Dritter Weg (Thought Trigger) -->
+                    <div class="entry-thought-trigger" onclick="this.closest('.home-entry-section').classList.toggle('is-expanded')">
+                        <div class="thought-line"></div>
+                        <span class="thought-text">Ich weiß noch gar nicht genau, wonach mir ist.</span>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- HOME: SONGCAMP IMMERSIVE HOOK SECTION -->
+            <section class="home-camp-section" id="home-camp">
+                <div class="camp-bg-wrapper">
+                    <!-- Bild ist dominant und trägt die gesamte 100vh Fläche -->
+                    <img src="images/camp_home.jpg" alt="Songcamp Atmosphäre" class="camp-bg-img">
+                    <div class="camp-overlay"></div>
                 </div>
                 
-                <h2 class="section-title" style="position: relative; z-index: 2;">DEIN TEAM FÜR</h2>
-                <div class="services-grid" style="position: relative; z-index: 2;">
-                    <div class="service-item hover-trigger vibe-sessions" data-route="sessions" style="cursor: pointer;" data-vibe="bg-sessions">
-                        <div class="service-header">
-                            <h3>SESSIONS</h3>
-                            <div class="arrow-icon">⟶</div>
-                        </div>
+                <!-- Raum-Architektur, Inhalt nicht zentral, sondern dezent gesetzt -->
+                <div class="camp-content-container">
+                    <!-- Agency Design Reflection -->
+                    <div class="camp-pre-text-wrapper">
+                        <div class="camp-pre-line"></div>
+                        <span class="camp-pre-text">Für den Moment, in dem du es noch nicht genau weißt.</span>
                     </div>
-                    <div class="service-item hover-trigger vibe-produktion" data-route="produktion" style="cursor: pointer;" data-vibe="bg-produktion">
-                        <div class="service-header">
-                            <h3>PRODUKTION</h3>
-                            <div class="arrow-icon">⟶</div>
-                        </div>
-                    </div>
-                    <div class="service-item hover-trigger vibe-songcamps" data-route="songcamps" style="cursor: pointer;" data-vibe="bg-songcamps">
-                        <div class="service-header">
-                            <h3>SONGCAMPS</h3>
-                            <div class="arrow-icon">⟶</div>
-                        </div>
+                    
+                    <div class="camp-main-text">
+                        <a href="#" class="camp-cta" data-route="songcamps">Mehr zum Songcamp <span class="arrow-icon">⟶</span></a>
                     </div>
                 </div>
             </section>
         </section>
 
         <!-- PRODUKTION -->
-        <section id="produktion" class="page-section">
+        <section id="produktion" class="page-section bg-secondary">
             <div class="page-container">
-                <h1 class="page-title">DER WEG ZU DEINEM SONG</h1>
+                <h1 class="page-title">Der Weg zu deinem Song</h1>
                 
                 <p class="produktion-intro">Du hast Songs – und was jetzt? Wir arrangieren, instrumentieren und produzieren sie für dich. Mit deiner fertigen Produktion geht es in unser Recordingstudio in Köln.</p>
                 
@@ -174,13 +220,13 @@
         <!-- SESSIONS -->
         <section id="sessions" class="page-section">
             <div class="page-container">
-                <h1 class="page-title">SESSIONS</h1>
+                <h1 class="page-title">Sessions</h1>
                 <div class="page-content-grid reverse-grid">
                     <div class="image-content">
                         <img src="images/Kla & Bauter Studio-100.jpg" alt="Songwriting Session" class="content-img">
                     </div>
                     <div class="text-content">
-                        <h2>EINE SESSION — EIN SONG</h2>
+                        <h2>Eine Session — ein Song</h2>
                         <p>Gemeinsames Schreiben, deine Ideen, zusammen schleifen. In unseren Sessions im Studio arbeiten wir intensiv an deinem Track und bringen ihn direkt auf das nächste Level.</p>
                     </div>
                 </div>
@@ -188,12 +234,12 @@
         </section>
 
         <!-- SONGCAMPS -->
-        <section id="songcamps" class="page-section">
+        <section id="songcamps" class="page-section bg-secondary">
             <div class="page-container" style="max-width: 1440px; margin: 0 auto; padding-top: 150px;">
                 
                 <!-- Section 1 -->
                 <div class="songcamp-intro">
-                    <h1 class="songcamp-headline">Natur. Inspirierende Stille. Wellness.<br>Inhouse-Studio. <span class="highlight-text">Deine Musik.</span></h1>
+                    <h1 class="songcamp-headline" style="font-family: var(--font-primary); font-weight: 900; text-transform: uppercase;">NATUR. INSPIRIERENDE STILLE. WELLNESS.<br>INHOUSE-STUDIO. <span class="highlight-text" style="color: var(--accent-color);">DEINE MUSIK.</span></h1>
                     
                     <div class="page-content-grid reverse-grid" style="align-items: center; gap: 6rem;">
                         <div class="image-content">
@@ -204,28 +250,28 @@
                                 <div class="feature-item">
                                     <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"></path><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path></svg></div>
                                     <div class="feature-text">
-                                        <h3>Studios</h3>
+                                        <h3 style="font-family: var(--font-primary); font-weight: 900; text-transform: uppercase;">Studios</h3>
                                         <p>In den Studiosettings halten wir direkt alle Ideen fest und können die Produktionen vorbereiten.</p>
                                     </div>
                                 </div>
                                 <div class="feature-item">
                                     <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="22"></line><line x1="8" y1="22" x2="16" y2="22"></line></svg></div>
                                     <div class="feature-text">
-                                        <h3>Recording Equipment</h3>
+                                        <h3 style="font-family: var(--font-primary); font-weight: 900; text-transform: uppercase;">Recording Equipment</h3>
                                         <p>Den Moment einfangen und Vocals und Instrumente direkt einspielen. Mit fantastischem Sound geht es dann in die Produktion.</p>
                                     </div>
                                 </div>
                                 <div class="feature-item">
                                     <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></div>
                                     <div class="feature-text">
-                                        <h3>Vibes</h3>
+                                        <h3 style="font-family: var(--font-primary); font-weight: 900; text-transform: uppercase;">Vibes</h3>
                                         <p>Natur, Stille, eine Feuerschale, ein Grill, eine Sauna, Rehe im Garten, eine große Auswahl an Getränken, gutes Essen. Momente aus denen Musik entsteht.</p>
                                     </div>
                                 </div>
                                 <div class="feature-item">
                                     <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg></div>
                                     <div class="feature-text">
-                                        <h3>Wellness</h3>
+                                        <h3 style="font-family: var(--font-primary); font-weight: 900; text-transform: uppercase;">Wellness</h3>
                                         <p>In all unseren Häusern geht es Abends entweder in die Sauna, den Whirlpool oder den Außenpool. Gemeinsam quatschen wir bei einem Getränk über den Tag, die neuen Songs und alles andere.</p>
                                     </div>
                                 </div>
@@ -238,28 +284,28 @@
                 <div class="songcamp-houses">
                     <div class="page-content-grid" style="align-items: center; gap: 6rem;">
                         <div class="text-content">
-                            <h2 class="section-title" style="text-align: left; margin-bottom: 2rem;">Unsere Häuser (DEU)</h2>
+                            <h2 class="section-title" style="text-align: left; margin-bottom: 2rem;">UNSERE HÄUSER (DEU)</h2>
                             <p style="font-size: 1.25rem; line-height: 1.6; margin-bottom: 3rem;">Musik schreiben im Urlaub. In verschiedenen Studiohäusern in Deutschland ist Inspiration vorprogrammiert. Bestens ausgestattet, komfortabel, mit Wellnessbereichen, State of the Art Equipment und vor allem alleinstehend in der Natur.</p>
                             
                             <div class="feature-list">
                                 <div class="feature-item">
                                     <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path><path d="M8 7h8"></path><path d="M8 11h8"></path><path d="M8 15h6"></path><line x1="4" y1="10" x2="4" y2="10.01"></line><line x1="4" y1="14" x2="4" y2="14.01"></line><line x1="4" y1="18" x2="4" y2="18.01"></line></svg></div>
                                     <div class="feature-text">
-                                        <h3>Songwriting</h3>
+                                        <h3 style="font-family: var(--font-primary); font-weight: 900; text-transform: uppercase;">Songwriting</h3>
                                         <p>Wir haben fünf gemeinsame Tage, in denen wir uns ausschließlich um Songwriting, deine Musik und eine gute Zeit kümmern. Ob dich z.B. neue Approaches beim Writing interessieren oder ob wir einfach direkt an deinen neuen Tracks arbeiten, liegt ganz in deiner Hand.</p>
                                     </div>
                                 </div>
                                 <div class="feature-item">
                                     <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8"></polygon></svg></div>
                                     <div class="feature-text">
-                                        <h3>Produktion</h3>
+                                        <h3 style="font-family: var(--font-primary); font-weight: 900; text-transform: uppercase;">Produktion</h3>
                                         <p>In unserem in-house Studio können wir direkt mit der Produktion deiner neuen Songs beginnen und einen Sound dafür definieren.</p>
                                     </div>
                                 </div>
                                 <div class="feature-item">
                                     <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg></div>
                                     <div class="feature-text">
-                                        <h3>Masterclasses</h3>
+                                        <h3 style="font-family: var(--font-primary); font-weight: 900; text-transform: uppercase;">Masterclasses</h3>
                                         <p>In den fünf Tagen werden wir viel erzählen und du kannst deine Fragen rund um Themen aus dem Musikbusiness stellen. Releases, Promotion ... und alles andere.</p>
                                     </div>
                                 </div>
@@ -275,22 +321,22 @@
                 <div class="songcamp-register">
                     <div class="page-content-grid reverse-grid" style="align-items: flex-start; gap: 6rem;">
                         <div class="text-content" style="position: sticky; top: 150px;">
-                            <h2 class="section-title" style="text-align: left; margin-bottom: 2rem;">Jetzt unverbindlich anfragen</h2>
+                            <h2 class="section-title" style="text-align: left; margin-bottom: 2rem;">JETZT UNVERBINDLICH ANFRAGEN</h2>
                             <p style="font-size: 1.25rem; line-height: 1.6; margin-bottom: 2rem;">Sichere dir jetzt deinen Platz im Kla & Bauter Songcamp und schreibe uns eine Mail an <strong>paulkoeninger@icloud.com</strong></p>
                             <p style="font-size: 1.25rem; line-height: 1.6; margin-bottom: 3rem;">Gerne vereinbaren wir vorher noch einen kurzen Call, in dem wir uns kennenlernen können und dir eventuelle Fragen beantworten können. Ganz unverbindlich.</p>
                             <a href="mailto:paulkoeninger@icloud.com" class="cta-button" style="display: inline-block;">Mail schreiben</a>
                         </div>
                         <div class="text-content info-items">
                             <div class="info-item">
-                                <h3>Kosten</h3>
+                                <h3 style="font-family: var(--font-primary); font-weight: 900; text-transform: uppercase;">Kosten</h3>
                                 <p>Die Teilnahme an unserem fünftägigen Songcamp kostet 1200 € inklusive Übernachtung in unserem Studiohaus und zzgl. Verpflegung. Anreise ist einen Tag früher, weshalb wir fünf volle Arbeitstage haben.</p>
                             </div>
                             <div class="info-item">
-                                <h3>Teilnahme</h3>
+                                <h3 style="font-family: var(--font-primary); font-weight: 900; text-transform: uppercase;">Teilnahme</h3>
                                 <p>Nach deiner Mail schicken wir dir alle Infos rund ums Camp oder vereinbaren einen Videocall. Dann hast du eine Woche Zeit, dich zu entscheiden, ob du dabei sein möchtest.</p>
                             </div>
                             <div class="info-item">
-                                <h3>Royalties</h3>
+                                <h3 style="font-family: var(--font-primary); font-weight: 900; text-transform: uppercase;">Royalties</h3>
                                 <p>Die Rechte an allen Songs, die im Songcamp entstehen, teilen wir stets fair auf alle Beteiligten auf, sofern nicht explizit eine andere Vereinbarung getroffen wird.</p>
                             </div>
                         </div>
@@ -305,7 +351,7 @@
         </section>
 
         <!-- RELEASES -->
-        <section id="releases" class="page-section">
+        <section id="releases" class="page-section bg-secondary">
             <div class="page-container">
                 <h1 class="page-title">RELEASES</h1>
                 <div class="video-grid">

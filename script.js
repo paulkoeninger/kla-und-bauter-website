@@ -53,23 +53,27 @@ window.addEventListener('load', () => {
     .from('#home .hero-subtitle', { width: 0, opacity: 0, duration: 1, ease: "power3.inOut" }, "-=0.8")
     .from('#home .image-wrapper', { scale: 0.85, opacity: 0, duration: 2, ease: "expo.out" }, "-=1.2");
 
-    // Menu Hover Effect
-    const menuToggle = document.querySelector('.menu-toggle');
-    const bars = document.querySelectorAll('.bar');
-    
-    menuToggle.addEventListener('mouseenter', () => {
-        gsap.to(bars[0], { x: 8, duration: 0.3, ease: 'power2.out' });
-        gsap.to(bars[1], { x: -8, duration: 0.3, ease: 'power2.out' });
-    });
-    menuToggle.addEventListener('mouseleave', () => {
-        gsap.to(bars, { x: 0, duration: 0.3, ease: 'power2.out' });
-    });
-
     // -----------------------------------------
     // 2. Fullscreen Menu Logic (Instant)
     // -----------------------------------------
     const menuOverlay = document.getElementById('fullscreen-menu');
     let isMenuOpen = false;
+
+    // Menu Hover Effect
+    const menuToggle = document.querySelector('.menu-toggle');
+    const bars = document.querySelectorAll('.bar');
+    
+    menuToggle.addEventListener('mouseenter', () => {
+        if (!isMenuOpen) {
+            gsap.to(bars[0], { x: 8, duration: 0.3, ease: 'power2.out' });
+            gsap.to(bars[1], { x: -8, duration: 0.3, ease: 'power2.out' });
+        }
+    });
+    menuToggle.addEventListener('mouseleave', () => {
+        if (!isMenuOpen) {
+            gsap.to(bars, { x: 0, duration: 0.3, ease: 'power2.out' });
+        }
+    });
 
     // Remove old GSAP styles from menu texts if they accidentally received any
     const menuLinksItems = document.querySelectorAll('.menu-links li a');
@@ -127,12 +131,24 @@ window.addEventListener('load', () => {
 
         const outgoingSection = document.getElementById(currentRoute);
 
+        // Preemptively disable snap to prevent browser layout engine fighting during route transition
+        document.documentElement.classList.remove('snap-active');
+
+        // Centralized heavy-duty scroll reset to beat mobile rendering lag
+        const forceScrollToTop = () => {
+            window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+            // Defer scroll to next render frames to guarantee layout height has updated
+            requestAnimationFrame(() => window.scrollTo(0, 0));
+            setTimeout(() => window.scrollTo(0, 0), 10);
+            setTimeout(() => window.scrollTo(0, 0), 50);
+        };
+
         if (instant) {
             outgoingSection.classList.remove('active');
             incomingSection.classList.add('active');
-            window.scrollTo(0, 0);
+            forceScrollToTop();
             currentRoute = targetRoute;
-            document.documentElement.classList.toggle('snap-active', targetRoute === 'home');
+            if (targetRoute === 'home') document.documentElement.classList.add('snap-active');
             return;
         }
 
@@ -145,30 +161,31 @@ window.addEventListener('load', () => {
         
         // SLIDE OUT: Elements move to the left
         gsap.to(outgoingElements, {
-            x: -window.innerWidth * 0.5, // Slide out left
+            x: -window.innerWidth * 0.5, 
             opacity: 0,
             duration: 0.4,
-            stagger: { amount: 0.15, from: "start" }, // Staggered to feel organic
+            stagger: { amount: 0.15, from: "start" },
             ease: "power2.in",
             onComplete: () => {
+                // DOM Layout Swap
                 outgoingSection.classList.remove('active');
                 incomingSection.classList.add('active');
                 
+                // Immediately force scroll to top before next paint
+                forceScrollToTop();
+                
                 // Reset outgoing styling
                 gsap.set(outgoingElements, { clearProps: "all" });
-                window.scrollTo(0, 0);
 
                 // SLIDE IN logic
                 let incomingElements = incomingSection.querySelectorAll(slideSelectors);
                 if(incomingElements.length === 0) incomingElements = incomingSection.children;
                 
-                // Start from the right
                 gsap.set(incomingElements, {
                     x: window.innerWidth * 0.5,
                     opacity: 0
                 });
                 
-                // Sweep into position
                 gsap.to(incomingElements, {
                     x: 0,
                     opacity: 1,
@@ -177,7 +194,7 @@ window.addEventListener('load', () => {
                     ease: "power3.out",
                     onComplete: () => {
                         currentRoute = targetRoute;
-                        document.documentElement.classList.toggle('snap-active', targetRoute === 'home');
+                        if (targetRoute === 'home') document.documentElement.classList.add('snap-active');
                         isTransitioning = false;
                         gsap.set(incomingElements, { clearProps: "all" });
                     }
@@ -186,51 +203,63 @@ window.addEventListener('load', () => {
         });
     }
 
-    // -----------------------------------------
-    // VIBE HOVER EFFECT LOGIC
-    // -----------------------------------------
-    const hoverTriggers = document.querySelectorAll('.hover-trigger');
-    const vibeBackgrounds = document.querySelectorAll('.vibe-bg');
+    // GSAP Vibe Logic removed to streamline UI
 
-    hoverTriggers.forEach(trigger => {
-        trigger.addEventListener('mouseenter', () => {
-            const targetVibeId = trigger.getAttribute('data-vibe');
+    // Intersection Observer for elegant Reveal Animations
+    const observerOptions = {
+        root: null,
+        rootMargin: '-50px 0px',
+        threshold: 0.15 /* Triggers when 15% of the section is visible */
+    };
+
+    const scrollObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+            } else {
+                /* Remove class so the animation gracefully replays when snapping back */
+                entry.target.classList.remove('is-visible');
+            }
+        });
+    }, observerOptions);
+
+    // Apply observer to specific scroll-reveal components
+    const animatedSections = document.querySelectorAll('.home-entry-section, .home-camp-section');
+    animatedSections.forEach(sec => scrollObserver.observe(sec));
+
+    // Extremely sluggish cinematic GSAP Mouse Parallax
+    const campSection = document.querySelector('.home-camp-section');
+    const campImg = document.querySelector('.camp-bg-img');
+
+    if (campSection && campImg) {
+        // Set base scale larger than window to hide any map bleed when panning
+        gsap.set(campImg, { scale: 1.06 });
+
+        campSection.addEventListener('mousemove', (e) => {
+            const rect = campSection.getBoundingClientRect();
+            // X and Y cursor offset from the literal center of the section frame
+            const xPos = (e.clientX - rect.left) / rect.width - 0.5;
+            const yPos = (e.clientY - rect.top) / rect.height - 0.5;
             
-            // Remove active from all
-            vibeBackgrounds.forEach(bg => bg.classList.remove('active'));
-            
-            // Add active to targeted vibe
-            const activeBg = document.getElementById(targetVibeId);
-            if(activeBg) activeBg.classList.add('active');
+            gsap.to(campImg, {
+                x: xPos * -50, // Inverse mouse tracking up to 50 pixels
+                y: yPos * -50,
+                duration: 3, // Highly sluggish responsive time creates weight mass
+                ease: "power2.out",
+                overwrite: "auto"
+            });
         });
 
-        trigger.addEventListener('mouseleave', () => {
-            const targetVibeId = trigger.getAttribute('data-vibe');
-            const activeBg = document.getElementById(targetVibeId);
-            if(activeBg) activeBg.classList.remove('active');
+        // Gently re-center when leaving
+        campSection.addEventListener('mouseleave', () => {
+            gsap.to(campImg, {
+                x: 0,
+                y: 0,
+                duration: 4,
+                ease: "power2.out",
+                overwrite: "auto"
+            });
         });
-    });
-
-    // -----------------------------------------
-    // HYPER-SENSITIVE SCROLL FOR HERO SECTION
-    // -----------------------------------------
-    let isJumping = false;
-    window.addEventListener('wheel', (e) => {
-        // Only run this logic on the home page
-        if(!document.documentElement.classList.contains('snap-active')) return;
-        if(isJumping) return;
-        
-        const experienceSection = document.querySelector('.experience-section');
-        const footer = document.querySelector('.site-footer');
-        if(!experienceSection || !footer) return;
-
-        // If at the very top (Hero) and user scrolls down even slightly
-        if (window.scrollY < 20 && e.deltaY > 5) {
-            e.preventDefault();
-            isJumping = true;
-            experienceSection.scrollIntoView({ behavior: 'smooth' });
-            setTimeout(() => { isJumping = false; }, 800);
-        }
-    }, { passive: false });
+    }
 
 });
