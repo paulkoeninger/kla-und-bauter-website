@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,14 +9,17 @@
     <!-- Typography: Söhne (Inter) & Canela (Cormorant) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <div class="loader">
         <img src="Logo/K%26B_Klabautermann_vektor.png" alt="Loading" class="loader-logo">
     </div>
-    
+
     <header class="navbar">
         <div class="logo" data-route="home" style="cursor: pointer; z-index: 200; position: relative;">
             <img src="Logo/K%26B_Klabautermann_vektor.png" alt="Kla & Bauter" class="nav-logo-img">
@@ -66,7 +70,7 @@
                         <h2 class="entry-headline">Wonach ist dir?</h2>
                         <div class="entry-line"></div>
                     </div>
-                    
+
                     <div class="entry-grid">
                         <!-- Path 1: Sessions -->
                         <a href="#" class="entry-card entry-card-1" data-route="sessions">
@@ -112,7 +116,8 @@
                     </div>
 
                     <!-- Subtiler Dritter Weg (Thought Trigger) -->
-                    <div class="entry-thought-trigger" onclick="this.closest('.home-entry-section').classList.toggle('is-expanded')">
+                    <div class="entry-thought-trigger"
+                        onclick="this.closest('.home-entry-section').classList.toggle('is-expanded')">
                         <div class="thought-line"></div>
                         <span class="thought-text">Ich weiß noch gar nicht genau, wonach mir ist.</span>
                     </div>
@@ -127,7 +132,7 @@
                     <img src="images/camp_home.jpg" alt="Songcamp Atmosphäre" class="camp-bg-img">
                     <div class="camp-overlay"></div>
                 </div>
-                
+
                 <!-- Raum-Architektur, Inhalt nicht zentral, sondern dezent gesetzt -->
                 <div class="camp-content-container">
                     <!-- Agency Design Reflection -->
@@ -135,9 +140,10 @@
                         <div class="camp-pre-line"></div>
                         <span class="camp-pre-text">Für den Moment, in dem du es noch nicht genau weißt.</span>
                     </div>
-                    
+
                     <div class="camp-main-text">
-                        <a href="#" class="camp-cta" data-route="songcamps">Mehr zum Songcamp <span class="arrow-icon">⟶</span></a>
+                        <a href="#" class="camp-cta" data-route="songcamps">Mehr zum Songcamp <span
+                                class="arrow-icon">⟶</span></a>
                     </div>
                 </div>
             </section>
@@ -147,70 +153,109 @@
         <section id="produktion" class="page-section bg-secondary">
             <div class="page-container">
                 <h1 class="page-title">Der Weg zu deinem Song</h1>
-                
-                <p class="produktion-intro">Du hast Songs – und was jetzt? Wir arrangieren, instrumentieren und produzieren sie für dich. Mit deiner fertigen Produktion geht es in unser Recordingstudio in Köln.</p>
-                
+
+                <p class="produktion-intro">Du hast Songs – und was jetzt? Wir arrangieren, instrumentieren und
+                    produzieren sie für dich. Mit deiner fertigen Produktion geht es in unser Recordingstudio in Köln.
+                </p>
+
                 <div class="process-overview">
-                    <div class="process-step" onclick="document.getElementById('step-songwriting').scrollIntoView({behavior: 'smooth'})">
+                    <div class="process-step"
+                        onclick="document.getElementById('step-songwriting').scrollIntoView({behavior: 'smooth'})">
                         <div class="step-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path><path d="M8 7h8"></path><path d="M8 11h8"></path><path d="M8 15h6"></path></svg>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="1.5"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                                <path d="M8 7h8"></path>
+                                <path d="M8 11h8"></path>
+                                <path d="M8 15h6"></path>
+                            </svg>
                         </div>
                         <h3>Songwriting</h3>
                         <p class="step-subtext">Feinschliff an deinen Ideen</p>
                     </div>
-                    <div class="process-step" onclick="document.getElementById('step-produktion-detail').scrollIntoView({behavior: 'smooth'})">
+                    <div class="process-step"
+                        onclick="document.getElementById('step-produktion-detail').scrollIntoView({behavior: 'smooth'})">
                         <div class="step-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"></path><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path></svg>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="1.5"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                                <path
+                                    d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z">
+                                </path>
+                            </svg>
                         </div>
                         <h3>Produktion</h3>
                         <p class="step-subtext">Dein einzigartiges Arrangement</p>
                     </div>
-                    <div class="process-step" onclick="document.getElementById('step-recording-detail').scrollIntoView({behavior: 'smooth'})">
+                    <div class="process-step"
+                        onclick="document.getElementById('step-recording-detail').scrollIntoView({behavior: 'smooth'})">
                         <div class="step-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="22"></line></svg>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="1.5"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path>
+                                <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                                <line x1="12" y1="19" x2="12" y2="22"></line>
+                            </svg>
                         </div>
                         <h3>Recording</h3>
                         <p class="step-subtext">Professionelles Studio in Köln</p>
                     </div>
-                    <div class="process-step" onclick="document.getElementById('step-mix-detail').scrollIntoView({behavior: 'smooth'})">
+                    <div class="process-step"
+                        onclick="document.getElementById('step-mix-detail').scrollIntoView({behavior: 'smooth'})">
                         <div class="step-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x="9" y="3" x2="9" y2="21"></line><line x="15" y="3" x2="15" y2="21"></line><line x="6" y="10" x2="12" y2="10"></line><line x="12" y="14" x2="18" y2="14"></line></svg>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="1.5"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x="9" y="3" x2="9" y2="21"></line>
+                                <line x="15" y="3" x2="15" y2="21"></line>
+                                <line x="6" y="10" x2="12" y2="10"></line>
+                                <line x="12" y="14" x2="18" y2="14"></line>
+                            </svg>
                         </div>
                         <h3>Mix & Mastering</h3>
                         <p class="step-subtext">Der letzte Schliff für Release</p>
                     </div>
                 </div>
-                
+
                 <div class="process-details">
                     <div id="step-songwriting" class="detail-section">
                         <div class="detail-number">01</div>
                         <div class="detail-text">
                             <h2>Songwriting</h2>
-                            <p>Du bist Fan von deinen Ideen, weißt aber manchmal nicht weiter? Wir machen gemeinsam mit dir den Feinschliff an deinen Songs oder schreiben sie maßgeschneidert auf deine Ideen.</p>
+                            <p>Du bist Fan von deinen Ideen, weißt aber manchmal nicht weiter? Wir machen gemeinsam mit
+                                dir den Feinschliff an deinen Songs oder schreiben sie maßgeschneidert auf deine Ideen.
+                            </p>
                         </div>
                     </div>
-                    
+
                     <div id="step-produktion-detail" class="detail-section">
                         <div class="detail-number">02</div>
                         <div class="detail-text">
                             <h2>Produktion</h2>
-                            <p>In der Produktion entsteht ein einzigartig instrumentiertes Arrangement. Hier definieren wir deinen Signature Sound. Lass' dich im Prozess von spannenden Harmonien, catchy Melodien und neuen Sounds überraschen.</p>
+                            <p>In der Produktion entsteht ein einzigartig instrumentiertes Arrangement. Hier definieren
+                                wir deinen Signature Sound. Lass' dich im Prozess von spannenden Harmonien, catchy
+                                Melodien und neuen Sounds überraschen.</p>
                         </div>
                     </div>
-                    
+
                     <div id="step-recording-detail" class="detail-section">
                         <div class="detail-number">03</div>
                         <div class="detail-text">
                             <h2>Recording</h2>
-                            <p>In unserem Recording Studio nehmen wir in einer Session die Vocals für deinen Song auf. Auch hier feilen wir an deinem Sound und gehen gemeinsam auf die Suche nach außergewöhnlichen Adlibs und Chorstimmen.</p>
+                            <p>In unserem Recording Studio nehmen wir in einer Session die Vocals für deinen Song auf.
+                                Auch hier feilen wir an deinem Sound und gehen gemeinsam auf die Suche nach
+                                außergewöhnlichen Adlibs und Chorstimmen.</p>
                         </div>
                     </div>
-                    
+
                     <div id="step-mix-detail" class="detail-section">
                         <div class="detail-number">04</div>
                         <div class="detail-text">
                             <h2>Mix & Mastering</h2>
-                            <p>Den letzten Schliff und den richtigen Sound verleiht Paul deinem Song. Er mixt und mastert deinen Song und macht ihn ready für den Release. Auch hier passiert alles in enger Absprache mit dir.</p>
+                            <p>Den letzten Schliff und den richtigen Sound verleiht Paul deinem Song. Er mixt und
+                                mastert deinen Song und macht ihn ready für den Release. Auch hier passiert alles in
+                                enger Absprache mit dir.</p>
                         </div>
                     </div>
                 </div>
@@ -227,7 +272,8 @@
                     </div>
                     <div class="text-content">
                         <h2>Eine Session — ein Song</h2>
-                        <p>Gemeinsames Schreiben, deine Ideen, zusammen schleifen. In unseren Sessions im Studio arbeiten wir intensiv an deinem Track und bringen ihn direkt auf das nächste Level.</p>
+                        <p>Gemeinsames Schreiben, deine Ideen, zusammen schleifen. In unseren Sessions im Studio
+                            arbeiten wir intensiv an deinem Track und bringen ihn direkt auf das nächste Level.</p>
                     </div>
                 </div>
             </div>
@@ -236,43 +282,87 @@
         <!-- SONGCAMPS -->
         <section id="songcamps" class="page-section bg-secondary">
             <div class="page-container" style="max-width: 1440px; margin: 0 auto; padding-top: 150px;">
-                
+
                 <!-- Section 1 -->
                 <div class="songcamp-intro">
-                    <h1 class="songcamp-headline" style="font-family: var(--font-primary); font-weight: 900; text-transform: uppercase;">NATUR. INSPIRIERENDE STILLE. WELLNESS.<br>INHOUSE-STUDIO. <span class="highlight-text" style="color: var(--accent-color);">DEINE MUSIK.</span></h1>
-                    
+                    <h1 class="songcamp-headline"
+                        style="font-family: var(--font-primary); font-weight: 900; text-transform: uppercase;">NATUR.
+                        INSPIRIERENDE STILLE. WELLNESS.<br>INHOUSE-STUDIO. <span class="highlight-text"
+                            style="color: var(--accent-color);">DEINE MUSIK.</span></h1>
+
                     <div class="page-content-grid reverse-grid" style="align-items: center; gap: 6rem;">
                         <div class="image-content">
-                            <img src="images/songcamp/DSCF0001.jpg" alt="Songcamp Vibes" class="content-img" style="aspect-ratio: 4/3;">
+                            <img src="images/songcamp/DSCF0001.jpg" alt="Songcamp Vibes" class="content-img"
+                                style="aspect-ratio: 4/3;">
                         </div>
                         <div class="text-content">
                             <div class="feature-list">
                                 <div class="feature-item">
-                                    <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"></path><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path></svg></div>
+                                    <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                                            <path
+                                                d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z">
+                                            </path>
+                                        </svg></div>
                                     <div class="feature-text">
-                                        <h3 style="font-family: var(--font-primary); font-weight: 900; text-transform: uppercase;">Studios</h3>
-                                        <p>In den Studiosettings halten wir direkt alle Ideen fest und können die Produktionen vorbereiten.</p>
+                                        <h3
+                                            style="font-family: var(--font-primary); font-weight: 900; text-transform: uppercase;">
+                                            Studios</h3>
+                                        <p>In den Studiosettings halten wir direkt alle Ideen fest und können die
+                                            Produktionen vorbereiten.</p>
                                     </div>
                                 </div>
                                 <div class="feature-item">
-                                    <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="22"></line><line x1="8" y1="22" x2="16" y2="22"></line></svg></div>
+                                    <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path>
+                                            <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                                            <line x1="12" y1="19" x2="12" y2="22"></line>
+                                            <line x1="8" y1="22" x2="16" y2="22"></line>
+                                        </svg></div>
                                     <div class="feature-text">
-                                        <h3 style="font-family: var(--font-primary); font-weight: 900; text-transform: uppercase;">Recording Equipment</h3>
-                                        <p>Den Moment einfangen und Vocals und Instrumente direkt einspielen. Mit fantastischem Sound geht es dann in die Produktion.</p>
+                                        <h3
+                                            style="font-family: var(--font-primary); font-weight: 900; text-transform: uppercase;">
+                                            Recording Equipment</h3>
+                                        <p>Den Moment einfangen und Vocals und Instrumente direkt einspielen. Mit
+                                            fantastischem Sound geht es dann in die Produktion.</p>
                                     </div>
                                 </div>
                                 <div class="feature-item">
-                                    <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></div>
+                                    <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="5"></circle>
+                                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                                        </svg></div>
                                     <div class="feature-text">
-                                        <h3 style="font-family: var(--font-primary); font-weight: 900; text-transform: uppercase;">Vibes</h3>
-                                        <p>Natur, Stille, eine Feuerschale, ein Grill, eine Sauna, Rehe im Garten, eine große Auswahl an Getränken, gutes Essen. Momente aus denen Musik entsteht.</p>
+                                        <h3
+                                            style="font-family: var(--font-primary); font-weight: 900; text-transform: uppercase;">
+                                            Vibes</h3>
+                                        <p>Natur, Stille, eine Feuerschale, ein Grill, eine Sauna, Rehe im Garten, eine
+                                            große Auswahl an Getränken, gutes Essen. Momente aus denen Musik entsteht.
+                                        </p>
                                     </div>
                                 </div>
                                 <div class="feature-item">
-                                    <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg></div>
+                                    <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                        </svg></div>
                                     <div class="feature-text">
-                                        <h3 style="font-family: var(--font-primary); font-weight: 900; text-transform: uppercase;">Wellness</h3>
-                                        <p>In all unseren Häusern geht es Abends entweder in die Sauna, den Whirlpool oder den Außenpool. Gemeinsam quatschen wir bei einem Getränk über den Tag, die neuen Songs und alles andere.</p>
+                                        <h3
+                                            style="font-family: var(--font-primary); font-weight: 900; text-transform: uppercase;">
+                                            Wellness</h3>
+                                        <p>In all unseren Häusern geht es Abends entweder in die Sauna, den Whirlpool
+                                            oder den Außenpool. Gemeinsam quatschen wir bei einem Getränk über den Tag,
+                                            die neuen Songs und alles andere.</p>
                                     </div>
                                 </div>
                             </div>
@@ -284,35 +374,72 @@
                 <div class="songcamp-houses">
                     <div class="page-content-grid" style="align-items: center; gap: 6rem;">
                         <div class="text-content">
-                            <h2 class="section-title" style="text-align: left; margin-bottom: 2rem;">UNSERE HÄUSER (DEU)</h2>
-                            <p style="font-size: 1.25rem; line-height: 1.6; margin-bottom: 3rem;">Musik schreiben im Urlaub. In verschiedenen Studiohäusern in Deutschland ist Inspiration vorprogrammiert. Bestens ausgestattet, komfortabel, mit Wellnessbereichen, State of the Art Equipment und vor allem alleinstehend in der Natur.</p>
-                            
+                            <h2 class="section-title" style="text-align: left; margin-bottom: 2rem;">UNSERE HÄUSER (DEU)
+                            </h2>
+                            <p style="font-size: 1.25rem; line-height: 1.6; margin-bottom: 3rem;">Musik schreiben im
+                                Urlaub. In verschiedenen Studiohäusern in Deutschland ist Inspiration vorprogrammiert.
+                                Bestens ausgestattet, komfortabel, mit Wellnessbereichen, State of the Art Equipment und
+                                vor allem alleinstehend in der Natur.</p>
+
                             <div class="feature-list">
                                 <div class="feature-item">
-                                    <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path><path d="M8 7h8"></path><path d="M8 11h8"></path><path d="M8 15h6"></path><line x1="4" y1="10" x2="4" y2="10.01"></line><line x1="4" y1="14" x2="4" y2="14.01"></line><line x1="4" y1="18" x2="4" y2="18.01"></line></svg></div>
+                                    <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z">
+                                            </path>
+                                            <path d="M8 7h8"></path>
+                                            <path d="M8 11h8"></path>
+                                            <path d="M8 15h6"></path>
+                                            <line x1="4" y1="10" x2="4" y2="10.01"></line>
+                                            <line x1="4" y1="14" x2="4" y2="14.01"></line>
+                                            <line x1="4" y1="18" x2="4" y2="18.01"></line>
+                                        </svg></div>
                                     <div class="feature-text">
-                                        <h3 style="font-family: var(--font-primary); font-weight: 900; text-transform: uppercase;">Songwriting</h3>
-                                        <p>Wir haben fünf gemeinsame Tage, in denen wir uns ausschließlich um Songwriting, deine Musik und eine gute Zeit kümmern. Ob dich z.B. neue Approaches beim Writing interessieren oder ob wir einfach direkt an deinen neuen Tracks arbeiten, liegt ganz in deiner Hand.</p>
+                                        <h3
+                                            style="font-family: var(--font-primary); font-weight: 900; text-transform: uppercase;">
+                                            Songwriting</h3>
+                                        <p>Wir haben fünf gemeinsame Tage, in denen wir uns ausschließlich um
+                                            Songwriting, deine Musik und eine gute Zeit kümmern. Ob dich z.B. neue
+                                            Approaches beim Writing interessieren oder ob wir einfach direkt an deinen
+                                            neuen Tracks arbeiten, liegt ganz in deiner Hand.</p>
                                     </div>
                                 </div>
                                 <div class="feature-item">
-                                    <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8"></polygon></svg></div>
+                                    <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <polygon points="10 8 16 12 10 16 10 8"></polygon>
+                                        </svg></div>
                                     <div class="feature-text">
-                                        <h3 style="font-family: var(--font-primary); font-weight: 900; text-transform: uppercase;">Produktion</h3>
-                                        <p>In unserem in-house Studio können wir direkt mit der Produktion deiner neuen Songs beginnen und einen Sound dafür definieren.</p>
+                                        <h3
+                                            style="font-family: var(--font-primary); font-weight: 900; text-transform: uppercase;">
+                                            Produktion</h3>
+                                        <p>In unserem in-house Studio können wir direkt mit der Produktion deiner neuen
+                                            Songs beginnen und einen Sound dafür definieren.</p>
                                     </div>
                                 </div>
                                 <div class="feature-item">
-                                    <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg></div>
+                                    <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76">
+                                            </polygon>
+                                        </svg></div>
                                     <div class="feature-text">
-                                        <h3 style="font-family: var(--font-primary); font-weight: 900; text-transform: uppercase;">Masterclasses</h3>
-                                        <p>In den fünf Tagen werden wir viel erzählen und du kannst deine Fragen rund um Themen aus dem Musikbusiness stellen. Releases, Promotion ... und alles andere.</p>
+                                        <h3
+                                            style="font-family: var(--font-primary); font-weight: 900; text-transform: uppercase;">
+                                            Masterclasses</h3>
+                                        <p>In den fünf Tagen werden wir viel erzählen und du kannst deine Fragen rund um
+                                            Themen aus dem Musikbusiness stellen. Releases, Promotion ... und alles
+                                            andere.</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="image-content">
-                            <img src="images/songcamp/DSCF0008.jpg" alt="Songcamp Haus" class="content-img" style="aspect-ratio: 4/5;">
+                            <img src="images/songcamp/DSCF0008.jpg" alt="Songcamp Haus" class="content-img"
+                                style="aspect-ratio: 4/5;">
                         </div>
                     </div>
                 </div>
@@ -321,30 +448,48 @@
                 <div class="songcamp-register">
                     <div class="page-content-grid reverse-grid" style="align-items: flex-start; gap: 6rem;">
                         <div class="text-content" style="position: sticky; top: 150px;">
-                            <h2 class="section-title" style="text-align: left; margin-bottom: 2rem;">JETZT UNVERBINDLICH ANFRAGEN</h2>
-                            <p style="font-size: 1.25rem; line-height: 1.6; margin-bottom: 2rem;">Sichere dir jetzt deinen Platz im Kla & Bauter Songcamp und schreibe uns eine Mail an <strong>paulkoeninger@icloud.com</strong></p>
-                            <p style="font-size: 1.25rem; line-height: 1.6; margin-bottom: 3rem;">Gerne vereinbaren wir vorher noch einen kurzen Call, in dem wir uns kennenlernen können und dir eventuelle Fragen beantworten können. Ganz unverbindlich.</p>
-                            <a href="mailto:paulkoeninger@icloud.com" class="cta-button" style="display: inline-block;">Mail schreiben</a>
+                            <h2 class="section-title" style="text-align: left; margin-bottom: 2rem;">JETZT UNVERBINDLICH
+                                ANFRAGEN</h2>
+                            <p style="font-size: 1.25rem; line-height: 1.6; margin-bottom: 2rem;">Sichere dir jetzt
+                                deinen Platz im Kla & Bauter Songcamp und schreibe uns eine Mail an
+                                <strong>paulkoeninger@icloud.com</strong></p>
+                            <p style="font-size: 1.25rem; line-height: 1.6; margin-bottom: 3rem;">Gerne vereinbaren wir
+                                vorher noch einen kurzen Call, in dem wir uns kennenlernen können und dir eventuelle
+                                Fragen beantworten können. Ganz unverbindlich.</p>
+                            <a href="mailto:paulkoeninger@icloud.com" class="cta-button"
+                                style="display: inline-block;">Mail schreiben</a>
                         </div>
                         <div class="text-content info-items">
                             <div class="info-item">
-                                <h3 style="font-family: var(--font-primary); font-weight: 900; text-transform: uppercase;">Kosten</h3>
-                                <p>Die Teilnahme an unserem fünftägigen Songcamp kostet 1200 € inklusive Übernachtung in unserem Studiohaus und zzgl. Verpflegung. Anreise ist einen Tag früher, weshalb wir fünf volle Arbeitstage haben.</p>
+                                <h3
+                                    style="font-family: var(--font-primary); font-weight: 900; text-transform: uppercase;">
+                                    Kosten</h3>
+                                <p>Die Teilnahme an unserem fünftägigen Songcamp kostet 1200 € inklusive Übernachtung in
+                                    unserem Studiohaus und zzgl. Verpflegung. Anreise ist einen Tag früher, weshalb wir
+                                    fünf volle Arbeitstage haben.</p>
                             </div>
                             <div class="info-item">
-                                <h3 style="font-family: var(--font-primary); font-weight: 900; text-transform: uppercase;">Teilnahme</h3>
-                                <p>Nach deiner Mail schicken wir dir alle Infos rund ums Camp oder vereinbaren einen Videocall. Dann hast du eine Woche Zeit, dich zu entscheiden, ob du dabei sein möchtest.</p>
+                                <h3
+                                    style="font-family: var(--font-primary); font-weight: 900; text-transform: uppercase;">
+                                    Teilnahme</h3>
+                                <p>Nach deiner Mail schicken wir dir alle Infos rund ums Camp oder vereinbaren einen
+                                    Videocall. Dann hast du eine Woche Zeit, dich zu entscheiden, ob du dabei sein
+                                    möchtest.</p>
                             </div>
                             <div class="info-item">
-                                <h3 style="font-family: var(--font-primary); font-weight: 900; text-transform: uppercase;">Royalties</h3>
-                                <p>Die Rechte an allen Songs, die im Songcamp entstehen, teilen wir stets fair auf alle Beteiligten auf, sofern nicht explizit eine andere Vereinbarung getroffen wird.</p>
+                                <h3
+                                    style="font-family: var(--font-primary); font-weight: 900; text-transform: uppercase;">
+                                    Royalties</h3>
+                                <p>Die Rechte an allen Songs, die im Songcamp entstehen, teilen wir stets fair auf alle
+                                    Beteiligten auf, sofern nicht explizit eine andere Vereinbarung getroffen wird.</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="songcamp-banner" style="margin-top: 10rem;">
-                    <img src="images/songcamp/DSCF9981.jpg" alt="Songcamp Vibes" style="width: 100%; height: 50vh; object-fit: cover; border-radius: 8px;">
+                    <img src="images/songcamp/DSCF9981.jpg" alt="Songcamp Vibes"
+                        style="width: 100%; height: 50vh; object-fit: cover; border-radius: 8px;">
                 </div>
 
             </div>
@@ -356,22 +501,40 @@
                 <h1 class="page-title">RELEASES</h1>
                 <div class="video-grid">
                     <div class="video-wrapper">
-                        <iframe width="560" height="315" src="https://www.youtube.com/embed/5qI7hHvBGhM?si=x" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                        <iframe width="560" height="315" src="https://www.youtube.com/embed/5qI7hHvBGhM?si=x"
+                            title="YouTube video player" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     </div>
                     <div class="video-wrapper">
-                        <iframe width="560" height="315" src="https://www.youtube.com/embed/HQhMjGx4JNk?si=x" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                        <iframe width="560" height="315" src="https://www.youtube.com/embed/HQhMjGx4JNk?si=x"
+                            title="YouTube video player" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     </div>
                     <div class="video-wrapper">
-                        <iframe width="560" height="315" src="https://www.youtube.com/embed/S4l3RaovJr8?si=x" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                        <iframe width="560" height="315" src="https://www.youtube.com/embed/S4l3RaovJr8?si=x"
+                            title="YouTube video player" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     </div>
                     <div class="video-wrapper">
-                        <iframe width="560" height="315" src="https://www.youtube.com/embed/VXOF1MhXdYQ?si=x" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                        <iframe width="560" height="315" src="https://www.youtube.com/embed/VXOF1MhXdYQ?si=x"
+                            title="YouTube video player" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     </div>
                     <div class="video-wrapper">
-                        <iframe width="560" height="315" src="https://www.youtube.com/embed/k_Rx3S5UqwI?si=x" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                        <iframe width="560" height="315" src="https://www.youtube.com/embed/k_Rx3S5UqwI?si=x"
+                            title="YouTube video player" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     </div>
                     <div class="video-wrapper">
-                        <iframe width="560" height="315" src="https://www.youtube.com/embed/DMiz2lD9yoA?si=x" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                        <iframe width="560" height="315" src="https://www.youtube.com/embed/DMiz2lD9yoA?si=x"
+                            title="YouTube video player" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     </div>
                 </div>
             </div>
@@ -381,34 +544,54 @@
         <section id="team" class="page-section">
             <div class="page-container">
                 <h1 class="page-title">TEAM</h1>
-                
+
                 <div class="page-content-grid reverse-grid" style="margin-bottom: 8rem; align-items: center;">
                     <div class="text-content">
                         <h2>Adrian Thessenvitz</h2>
-                        <h4 style="margin-bottom: 2rem; color: var(--accent-color); font-weight: 900; letter-spacing: 0.05em;">SONGWRITING & PRODUKTION</h4>
-                        <p>Im Jahr 1996 wurde Adrian Thessenvitz in München geboren. Mit dem sechsten Lebensjahr bekam er Unterricht in klassischer Gitarre. 2011 zog er mit seiner Familie nach Leipzig. Seine späteren Konzerttourneen mit dem JJO Sachsen führte ihn u.A. durch Israel. Zur Vorbereitung auf das Gitarrenstudium in Köln nahm er zusätzlich Unterricht bei Professor Peter Weihe, Professor Christian Röver, Volker Schwarze, Professor Werner Neumann und Martin Miller (Ibanez Signature Artist). Im Herbst 2019 beendete Adrian sein Studium der Jazzgitarre in Köln mit Magna Cum Laude.</p>
+                        <h4
+                            style="margin-bottom: 2rem; color: var(--accent-color); font-weight: 900; letter-spacing: 0.05em;">
+                            SONGWRITING & PRODUKTION</h4>
+                        <p>Im Jahr 1996 wurde Adrian Thessenvitz in München geboren. Mit dem sechsten Lebensjahr bekam
+                            er Unterricht in klassischer Gitarre. 2011 zog er mit seiner Familie nach Leipzig. Seine
+                            späteren Konzerttourneen mit dem JJO Sachsen führte ihn u.A. durch Israel. Zur Vorbereitung
+                            auf das Gitarrenstudium in Köln nahm er zusätzlich Unterricht bei Professor Peter Weihe,
+                            Professor Christian Röver, Volker Schwarze, Professor Werner Neumann und Martin Miller
+                            (Ibanez Signature Artist). Im Herbst 2019 beendete Adrian sein Studium der Jazzgitarre in
+                            Köln mit Magna Cum Laude.</p>
                         <br>
-                        <p>Seit 2019 ist Adrian Teil der international erfolgreichen Band Ad Infinitum mit millionenfach gestreamten Songs und Videos auf Spotify und YouTube.</p>
+                        <p>Seit 2019 ist Adrian Teil der international erfolgreichen Band Ad Infinitum mit millionenfach
+                            gestreamten Songs und Videos auf Spotify und YouTube.</p>
                     </div>
                     <div class="image-content">
-                        <img src="images/Kla & Bauter Studio-088.jpg" alt="Adrian Thessenvitz" class="content-img" style="aspect-ratio: 4/5;">
+                        <img src="images/Kla & Bauter Studio-088.jpg" alt="Adrian Thessenvitz" class="content-img"
+                            style="aspect-ratio: 4/5;">
                     </div>
                 </div>
 
                 <div class="page-content-grid" style="align-items: center;">
                     <div class="image-content">
-                        <img src="images/Kla & Bauter Studio-080.jpg" alt="Paul Köninger" class="content-img" style="aspect-ratio: 4/5;">
+                        <img src="images/Kla & Bauter Studio-080.jpg" alt="Paul Köninger" class="content-img"
+                            style="aspect-ratio: 4/5;">
                     </div>
                     <div class="text-content">
                         <h2>Paul Köninger</h2>
-                        <h4 style="margin-bottom: 2rem; color: var(--accent-color); font-weight: 900; letter-spacing: 0.05em;">SONGWRITING & MIXING</h4>
-                        <p>Im Jahr 1997 wurde Paul Köninger in Heidelberg geboren. Sehr früh von seinem Vater Matthias an die Tasten geführt hatte Paul bislang viele Jahre Zeit, sich musikalisch zu entwickeln und im Musikgeschäft zu orientieren.</p>
+                        <h4
+                            style="margin-bottom: 2rem; color: var(--accent-color); font-weight: 900; letter-spacing: 0.05em;">
+                            SONGWRITING & MIXING</h4>
+                        <p>Im Jahr 1997 wurde Paul Köninger in Heidelberg geboren. Sehr früh von seinem Vater Matthias
+                            an die Tasten geführt hatte Paul bislang viele Jahre Zeit, sich musikalisch zu entwickeln
+                            und im Musikgeschäft zu orientieren.</p>
                         <br>
-                        <p>Als Solokünstler wirkte Paul in den Jahren 2016 und 2017 bei einigen Einspielungen mit. Unter anderem sang er diverse Titelsongs für internationale Kino- und TV Produktionen wie beispielsweise den Song „Say Hey“ im Film „Luis & the Aliens“.</p>
+                        <p>Als Solokünstler wirkte Paul in den Jahren 2016 und 2017 bei einigen Einspielungen mit. Unter
+                            anderem sang er diverse Titelsongs für internationale Kino- und TV Produktionen wie
+                            beispielsweise den Song „Say Hey“ im Film „Luis & the Aliens“.</p>
                         <br>
-                        <p>Mit Start des Studiums an der Kölner Musikhochschule 2016 begann auch die Zusammenarbeit von Paul und Adrian in zahlreichen Live- und Studioproduktionen. 2022 schloss Paul das Studium in Jazz/Pop Gesang erfolgreich ab.</p>
+                        <p>Mit Start des Studiums an der Kölner Musikhochschule 2016 begann auch die Zusammenarbeit von
+                            Paul und Adrian in zahlreichen Live- und Studioproduktionen. 2022 schloss Paul das Studium
+                            in Jazz/Pop Gesang erfolgreich ab.</p>
                         <br>
-                        <p>Aktuell ist Paul mit seinem neuen Projekt KETZBERG auf dem Vormarsch in die deutsche Popmusik-Welt und ein gefragter Songwriter.</p>
+                        <p>Aktuell ist Paul mit seinem neuen Projekt KETZBERG auf dem Vormarsch in die deutsche
+                            Popmusik-Welt und ein gefragter Songwriter.</p>
                     </div>
                 </div>
             </div>
@@ -422,7 +605,8 @@
                     <div class="contact-info">
                         <h2>LASS UNS SPRECHEN</h2>
                         <p>Kla & Bauter Musikproduktion<br>München — Berlin</p>
-                        <p style="margin-top: 2rem;"><a href="mailto:hello@kla-bauter.de" class="email-link">hello@kla-bauter.de</a></p>
+                        <p style="margin-top: 2rem;"><a href="mailto:hello@kla-bauter.de"
+                                class="email-link">hello@kla-bauter.de</a></p>
                     </div>
                     <form class="contact-form">
                         <input type="text" placeholder="NAME">
@@ -445,8 +629,11 @@
                     <br>
                     <p>Umsatzsteuer-Identifikationsnummer: DE325676110</p>
                     <br>
-                    <p>Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit, die Sie hier finden: <a href="https://ec.europa.eu/consumers/odr/" target="_blank">https://ec.europa.eu/consumers/odr/</a></p>
-                    <p>Zur Teilnahme an einem Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle sind wir nicht verpflichtet und nicht bereit.</p>
+                    <p>Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit, die Sie
+                        hier finden: <a href="https://ec.europa.eu/consumers/odr/"
+                            target="_blank">https://ec.europa.eu/consumers/odr/</a></p>
+                    <p>Zur Teilnahme an einem Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle sind wir
+                        nicht verpflichtet und nicht bereit.</p>
                 </div>
             </div>
         </section>
@@ -456,40 +643,63 @@
             <div class="page-container legal">
                 <h1 class="page-title">DATENSCHUTZ</h1>
                 <div class="legal-text">
-                    <p><strong>Datenschutzbestimmungen der Website klaundbauter-musikproduktion.com, welche betrieben wird von Paul Köninger, Heumarkt 42-44, 50667 Köln</strong></p>
+                    <p><strong>Datenschutzbestimmungen der Website klaundbauter-musikproduktion.com, welche betrieben
+                            wird von Paul Köninger, Heumarkt 42-44, 50667 Köln</strong></p>
                     <br>
                     <h3>Verantwortliche i.S.d. DSGVO, Datenschutz allgemein</h3>
-                    <p>Der Verantwortliche i.S.d. Datenschutzgrundverordnung (DSGVO) und für die Einhaltung sonstiger datenschutzrechtlicher Bestimmungen ist:</p>
-                    <p>Paul Köninger, Heumarkt 42-44, 50667 Köln<br>+49 (0) 173 69 84 873<br>paulkoeninger@icloud.com</p>
+                    <p>Der Verantwortliche i.S.d. Datenschutzgrundverordnung (DSGVO) und für die Einhaltung sonstiger
+                        datenschutzrechtlicher Bestimmungen ist:</p>
+                    <p>Paul Köninger, Heumarkt 42-44, 50667 Köln<br>+49 (0) 173 69 84 873<br>paulkoeninger@icloud.com
+                    </p>
                     <br>
-                    <p>Verantwortlicher i.S.d. § 55 Abs. 2 RStV: Paul Köninger, Heumarkt 42-44, 50667 Köln, +49 (0) 173 69 84 873, paulkoeninger@icloud.com</p>
+                    <p>Verantwortlicher i.S.d. § 55 Abs. 2 RStV: Paul Köninger, Heumarkt 42-44, 50667 Köln, +49 (0) 173
+                        69 84 873, paulkoeninger@icloud.com</p>
                     <br>
-                    <p>Wir nehmen den Schutz personenbezogener Daten sehr ernst. Wir beachten beim Betrieb unserer Website die gesetzlichen Datenschutzbestimmungen. Wir möchten, dass Ihr wisst, wann wir welche Daten erheben, verarbeiten und nutzen und welche Rechte Euch im Hinblick auf die Verwendung von Euren Daten zustehen.</p>
+                    <p>Wir nehmen den Schutz personenbezogener Daten sehr ernst. Wir beachten beim Betrieb unserer
+                        Website die gesetzlichen Datenschutzbestimmungen. Wir möchten, dass Ihr wisst, wann wir welche
+                        Daten erheben, verarbeiten und nutzen und welche Rechte Euch im Hinblick auf die Verwendung von
+                        Euren Daten zustehen.</p>
                     <br>
-                    <p>Personenbezogene Daten sind Informationen, die dazu genutzt werden können, Eure Identität zu erfahren. Darunter fallen Informationen wie Euer Name, Adresse, Postanschrift, Telefonnummer, IP- Adresse und E-Mail-Adresse. Informationen, die nicht mit Eurer Identität in Verbindung gebracht werden (wie zum Beispiel die Anzahl der Nutzerinnen und Nutzer der Website), fallen nicht darunter. Ihr könnt unsere Website grundsätzlich ohne Offenlegung Eurer Identität, also ohne Eingabe der personenbezogenen Daten, nutzen. Diese Informationen (bspw. Datum und Uhrzeit des Zugriffs, URL (die Euch zu uns geführt hat und ggf. die Ihr über unsere Website aufruft), Browser, Betriebssystem, Internet- Service- Provider, IP- Adresse) werden in einem Logfile abgespeichert. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO. Ausnahmen gelten für die entsprechend gekennzeichneten Bereiche, wie die Bestellmöglichkeit unseres Newsletters. Die Speicherung von Logfiles findet statt, um die Funktionsfähigkeit, Optimierung und Sicherheit unserer Website sicherzustellen. Diese Informationen werden automatisch erhoben, es gibt keine Widerspruchsmöglichkeit. Nach Angaben unseres Hostinganbieters werden Logfiles in der Regel nach sieben Tagen gelöscht, mit Ausnahme der Access- Logfiles, diese werden 60 Tage vorgehalten und dann gelöscht oder verfremdet, so dass eine Zuordnung nicht mehr möglich ist.</p>
+                    <p>Personenbezogene Daten sind Informationen, die dazu genutzt werden können, Eure Identität zu
+                        erfahren. Darunter fallen Informationen wie Euer Name, Adresse, Postanschrift, Telefonnummer,
+                        IP- Adresse und E-Mail-Adresse. Informationen, die nicht mit Eurer Identität in Verbindung
+                        gebracht werden (wie zum Beispiel die Anzahl der Nutzerinnen und Nutzer der Website), fallen
+                        nicht darunter. Ihr könnt unsere Website grundsätzlich ohne Offenlegung Eurer Identität, also
+                        ohne Eingabe der personenbezogenen Daten, nutzen. Diese Informationen (bspw. Datum und Uhrzeit
+                        des Zugriffs, URL (die Euch zu uns geführt hat und ggf. die Ihr über unsere Website aufruft),
+                        Browser, Betriebssystem, Internet- Service- Provider, IP- Adresse) werden in einem Logfile
+                        abgespeichert. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO. Ausnahmen gelten für die
+                        entsprechend gekennzeichneten Bereiche, wie die Bestellmöglichkeit unseres Newsletters. Die
+                        Speicherung von Logfiles findet statt, um die Funktionsfähigkeit, Optimierung und Sicherheit
+                        unserer Website sicherzustellen. Diese Informationen werden automatisch erhoben, es gibt keine
+                        Widerspruchsmöglichkeit. Nach Angaben unseres Hostinganbieters werden Logfiles in der Regel nach
+                        sieben Tagen gelöscht, mit Ausnahme der Access- Logfiles, diese werden 60 Tage vorgehalten und
+                        dann gelöscht oder verfremdet, so dass eine Zuordnung nicht mehr möglich ist.</p>
                 </div>
             </div>
         </section>
-        
+
         <!-- SITE FOOTER -->
         <footer class="site-footer">
             <div class="footer-container">
                 <div class="footer-cta">
-                    <h2>Du willst mit deiner Musik weiterkommen? <span class="highlight-text">Let's work together!</span></h2>
-                    <p>Schreibe uns ganz einfach eine Mail mit ein paar Worten zu dir und deinem Projekt. Wir vereinbaren einen unverbindlichen Call, in dem wir über deine und unsere Ideen sprechen.</p>
+                    <h2>Du willst mit deiner Musik weiterkommen? <span class="highlight-text">Let's work
+                            together!</span></h2>
+                    <p>Schreibe uns ganz einfach eine Mail mit ein paar Worten zu dir und deinem Projekt. Wir
+                        vereinbaren einen unverbindlichen Call, in dem wir über deine und unsere Ideen sprechen.</p>
                 </div>
-                
+
                 <div class="footer-grid">
                     <div class="footer-col">
                         <h4>HEUMARKT STUDIO</h4>
                         <p>Paul Köninger<br>Heumarkt<br>50667 Köln</p>
                     </div>
-                    
+
                     <div class="footer-col">
                         <h4>EHRENFELD STUDIO</h4>
                         <p>Adrian Thessenvitz<br>Fitzmauricestraße<br>50829 Köln</p>
                     </div>
-                    
+
                     <div class="footer-col">
                         <h4>NAVIGATION</h4>
                         <ul class="footer-nav">
@@ -502,7 +712,7 @@
                         </ul>
                     </div>
                 </div>
-                
+
                 <div class="footer-bottom">
                     <p>&copy; 2026 Kla & Bauter Musikproduktion. All rights reserved.</p>
                     <div class="footer-legal-links">
@@ -513,8 +723,9 @@
             </div>
         </footer>
     </main>
-    
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="script.js"></script>
 </body>
+
 </html>
