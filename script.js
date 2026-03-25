@@ -104,7 +104,7 @@ window.addEventListener('load', () => {
     // -----------------------------------------
     // 3. SPA Routing & Slide Transitions
     // -----------------------------------------
-    const slideSelectors = '.hero-title, .hero-subtitle, .image-wrapper, .section-title, .service-item, .page-title, .text-content, .image-content, .video-wrapper, .contact-info, .contact-form, .legal-text, .produktion-intro, .process-step, .detail-section, .songcamp-headline, .feature-list, .info-items, .songcamp-banner';
+    const slideSelectors = '.hero-title, .hero-subtitle, .image-wrapper, .section-title, .service-item, .page-title, .text-content, .image-content, .video-wrapper, .contact-info, .contact-form, .legal-text, .produktion-intro, .process-step, .detail-section, .songcamp-headline, .feature-list, .info-items, .songcamp-banner, .snap-block-inner';
     
     document.body.addEventListener('click', (e) => {
         const link = e.target.closest('[data-route]');
@@ -148,7 +148,7 @@ window.addEventListener('load', () => {
             incomingSection.classList.add('active');
             forceScrollToTop();
             currentRoute = targetRoute;
-            if (targetRoute === 'home') document.documentElement.classList.add('snap-active');
+            if (['home', 'produktion'].includes(targetRoute)) document.documentElement.classList.add('snap-active');
             return;
         }
 
@@ -194,7 +194,7 @@ window.addEventListener('load', () => {
                     ease: "power3.out",
                     onComplete: () => {
                         currentRoute = targetRoute;
-                        if (targetRoute === 'home') document.documentElement.classList.add('snap-active');
+                        if (['home', 'produktion'].includes(targetRoute)) document.documentElement.classList.add('snap-active');
                         isTransitioning = false;
                         gsap.set(incomingElements, { clearProps: "all" });
                     }
@@ -223,8 +223,8 @@ window.addEventListener('load', () => {
         });
     }, observerOptions);
 
-    // Apply observer to specific scroll-reveal components
-    const animatedSections = document.querySelectorAll('.home-entry-section, .home-camp-section');
+    // Apply observer to specific scroll-reveal components globally
+    const animatedSections = document.querySelectorAll('.home-entry-section, .home-camp-section, .scroll-anim');
     animatedSections.forEach(sec => scrollObserver.observe(sec));
 
     // Extremely sluggish cinematic GSAP Mouse Parallax

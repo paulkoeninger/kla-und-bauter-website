@@ -1126,7 +1126,7 @@ html:has(#fullscreen-menu.open) .logo {
 /* Footer Styles */
 .site-footer {
     background-color: var(--bg-primary);
-    padding: 8rem 4rem 4rem 4rem;
+    padding: 8rem 4rem 1.5rem 4rem; /* Drastically reduced bottom void */
     position: relative;
     z-index: 10;
     scroll-snap-align: start;
@@ -1202,8 +1202,8 @@ html:has(#fullscreen-menu.open) .logo {
     justify-content: space-between;
     align-items: center;
     border-top: 1px solid var(--bg-secondary);
-    padding-top: 2rem;
-    padding-bottom: 1rem;
+    padding-top: 1.5rem;
+    padding-bottom: 0; /* Removed internal bottom buffer */
     font-size: 0.85rem;
     opacity: 0.5;
 }
@@ -1235,5 +1235,235 @@ html:has(#fullscreen-menu.open) .logo {
     .footer-col:last-child { grid-column: 1 / -1; margin-top: 1.5rem; } /* Pushes Navigation neatly into its own full-width row below the addresses */
     .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
 }
+/* ======================================================================
+   EDITORIAL SYSTEM (SUBPAGES)
+   ====================================================================== */
+.editorial-container {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 10rem 4rem 10rem 4rem; /* High breathing margins */
+}
+.editorial-header {
+    max-width: 800px;
+    margin-bottom: 8rem;
+}
+.editorial-title {
+    font-family: var(--font-secondary);
+    font-size: clamp(3rem, 5vw, 4.5rem);
+    font-weight: 300;
+    line-height: var(--lh-tight);
+    color: var(--text-primary);
+    margin-bottom: 2.5rem;
+    letter-spacing: -0.02em;
+}
+.editorial-lead {
+    font-family: var(--font-primary);
+    font-size: 1.25rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    max-width: 600px;
+}
+/* Editorial Flowing Sequential List */
+.editorial-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+    max-width: 900px;
+}
+.editorial-item {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 2rem;
+    align-items: baseline;
+    border-top: 1px solid rgba(0,0,0,0.1);
+    padding-top: 2rem;
+}
+.bg-secondary .editorial-item {
+    border-top: 1px solid rgba(0,0,0,0.06);
+}
+.editorial-num {
+    font-family: var(--font-primary);
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+.editorial-sub {
+    font-family: var(--font-primary);
+    font-size: 1.1rem;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+.editorial-desc {
+    font-family: var(--font-primary);
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    max-width: 60ch; /* Restricts line-length per requirements */
+}
+/* Editorial Split (Quiet Image/Text layout) */
+.editorial-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+    margin-top: 8rem;
+}
+.editorial-split.reverse .editorial-split-text {
+    order: 2;
+}
+.editorial-split.reverse .editorial-split-img {
+    order: 1;
+}
+.editorial-img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    aspect-ratio: 4/5;
+    /* Soft analog grading to match the editorial "vibe" */
+    filter: brightness(0.95) contrast(0.9) saturate(0.85) sepia(0.05);
+}
+.editorial-link {
+    font-family: var(--font-primary);
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding-bottom: 0.25rem;
+    border-bottom: 1px solid rgba(0,0,0,0.2);
+    transition: color 0.4s ease, border-color 0.4s ease;
+    margin-top: 2rem;
+}
+.editorial-link:hover {
+    color: var(--accent-color);
+    border-color: var(--accent-color);
+}
+/* Full Bleed Cinematic Insert */
+.editorial-full-img {
+    margin-top: 12rem;
+    width: 100%;
+}
+.cinematic-img {
+    width: 100%;
+    height: 60vh;
+    object-fit: cover;
+    filter: brightness(0.9) contrast(0.95) saturate(0.85) sepia(0.05);
+}
 
- 
+/* Observer Animations Native Classes */
+.scroll-anim {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1.5s ease-out, transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.is-visible .scroll-anim,
+.is-visible.scroll-anim {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Mobile Breakdowns */
+@media (max-width: 992px) {
+    .editorial-container {
+        padding: 6rem 2rem;
+    }
+    .editorial-split {
+        grid-template-columns: 1fr;
+        gap: 4rem;
+    }
+    .editorial-split.reverse .editorial-split-text,
+    .editorial-split.reverse .editorial-split-img {
+        order: unset; /* Drop the reversal on mobile */
+    }
+    .editorial-item {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    .editorial-title {
+        font-size: 2.8rem;
+    }
+    .cinematic-img {
+        height: 40vh;
+    }
+}
+
+/* Viewport Locking / Snap Blocks */
+.snap-block {
+    min-height: 100vh;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    scroll-snap-align: start;
+    scroll-snap-stop: normal;
+    padding: 0 4rem;
+    box-sizing: border-box;
+    position: relative;
+}
+.snap-block.no-pad {
+    padding: 0;
+}
+.snap-block-inner {
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+}
+.snap-block-inner.full-bleed {
+    max-width: none;
+    height: 100vh;
+}
+.snap-block-inner.full-bleed .cinematic-img {
+    height: 100vh;
+}
+
+/* Production Snap Imaging */
+.prod-hero-img {
+    aspect-ratio: 3/4;
+    height: 75vh;
+    width: auto;
+    max-width: 100%;
+    margin: 0 auto;
+    display: block;
+}
+.prod-img {
+    aspect-ratio: 4/5;
+    height: 70vh;
+    width: auto;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+@media (max-width: 992px) {
+    .snap-block {
+        padding: 0 1.5rem;
+    }
+    .snap-block-inner.editorial-split {
+        gap: 2rem;
+        align-items: center !important;
+    }
+    .prod-hero-img, .prod-img {
+        height: auto;
+        width: 100%;
+        max-height: 45vh;
+        object-fit: contain;
+    }
+    .editorial-quote .editorial-title {
+        font-size: 2rem; /* scale down positioning block */
+    }
+}
+@media (max-width: 480px) {
+    .prod-hero-img, .prod-img {
+        max-height: 35vh; /* heavily constrain image on small screens to fit text inside 100vh */
+    }
+    .snap-block {
+        padding: 0 1rem;
+    }
+    .editorial-quote .editorial-title {
+        font-size: 1.7rem;
+    }
+}
