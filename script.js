@@ -82,20 +82,16 @@ window.addEventListener('load', () => {
 
     function toggleMenu() {
         isMenuOpen = !isMenuOpen;
+        menuToggle.classList.toggle('open', isMenuOpen);
+        
         if (isMenuOpen) {
             menuOverlay.classList.add('open');
             menuOverlay.style.opacity = 1;
-            
-            // Transform hamburger to 'X' (keep animation)
-            gsap.to(bars[0], { rotation: 45, y: 5.5, x: 0, duration: 0.3 });
-            gsap.to(bars[1], { rotation: -45, y: -5.5, x: 0, duration: 0.3 });
         } else {
             menuOverlay.classList.remove('open');
             menuOverlay.style.opacity = 0;
-            
-            // Transform hamburger back
-            gsap.to(bars[0], { rotation: 0, y: 0, x: 0, duration: 0.3 });
-            gsap.to(bars[1], { rotation: 0, y: 0, x: 0, duration: 0.3 });
+            // Clean up any stray GSAP transforms from the hover effect
+            gsap.set(bars, { clearProps: "x" });
         }
     }
 
@@ -148,7 +144,7 @@ window.addEventListener('load', () => {
             incomingSection.classList.add('active');
             forceScrollToTop();
             currentRoute = targetRoute;
-            if (['home', 'produktion'].includes(targetRoute)) document.documentElement.classList.add('snap-active');
+            if (['home', 'produktion', 'songcamps'].includes(targetRoute)) document.documentElement.classList.add('snap-active');
             return;
         }
 
@@ -194,7 +190,7 @@ window.addEventListener('load', () => {
                     ease: "power3.out",
                     onComplete: () => {
                         currentRoute = targetRoute;
-                        if (['home', 'produktion'].includes(targetRoute)) document.documentElement.classList.add('snap-active');
+                        if (['home', 'produktion', 'songcamps'].includes(targetRoute)) document.documentElement.classList.add('snap-active');
                         isTransitioning = false;
                         gsap.set(incomingElements, { clearProps: "all" });
                     }
@@ -260,6 +256,81 @@ window.addEventListener('load', () => {
                 overwrite: "auto"
             });
         });
+    }
+
+    // -----------------------------------------
+    // 4. Interactive Mindmap Logic
+    // -----------------------------------------
+    const mindmapSection = document.getElementById('home-camp');
+    const mindmap = document.querySelector('.mindmap-container');
+    const mmCenter = document.getElementById('mm-center');
+    const mmWinter = document.getElementById('mm-winter');
+    const mmSummer = document.getElementById('mm-summer');
+    const winterWords = document.querySelectorAll('.mm-word.winter');
+    const summerWords = document.querySelectorAll('.mm-word.summer');
+    
+    if (mmCenter && mindmapSection) {
+        let currentMapState = 'none';
+
+        // Helper functions mapped to node states
+        function activateWinter() {
+            if (currentMapState === 'winter') return;
+            currentMapState = 'winter';
+            gsap.to(mmWinter, { opacity: 1, textShadow: '0 0 20px rgba(255,255,255,0.6)', duration: 0.5 });
+            gsap.to(winterWords, { opacity: 1, pointerEvents: 'auto', duration: 1, ease: 'power2.out', stagger: 0.05 });
+            gsap.to(summerWords, { opacity: 0, pointerEvents: 'none', duration: 0.5 });
+            gsap.to(mmSummer, { opacity: 0.3, textShadow: '0 0 0px rgba(255,255,255,0)', duration: 0.5 });
+        }
+        
+        function activateSummer() {
+            if (currentMapState === 'summer') return;
+            currentMapState = 'summer';
+            gsap.to(mmSummer, { opacity: 1, textShadow: '0 0 20px rgba(255,255,255,0.6)', duration: 0.5 });
+            gsap.to(summerWords, { opacity: 1, pointerEvents: 'auto', duration: 1, ease: 'power2.out', stagger: 0.05 });
+            gsap.to(winterWords, { opacity: 0, pointerEvents: 'none', duration: 0.5 });
+            gsap.to(mmWinter, { opacity: 0.3, textShadow: '0 0 0px rgba(255,255,255,0)', duration: 0.5 });
+        }
+        
+        function resetToCenter() {
+            if (currentMapState === 'center') return;
+            currentMapState = 'center';
+            gsap.to([mmWinter, mmSummer], { opacity: 0.6, textShadow: '0 0 15px rgba(255,255,255,0.2)', duration: 1.2, ease: 'power2.out' });
+            gsap.to([winterWords, summerWords], { opacity: 0, pointerEvents: 'none', duration: 0.8 });
+        }
+
+        // --- DESKTOP FLUID ZONES ---
+        mindmapSection.addEventListener('mousemove', (e) => {
+            if (window.innerWidth <= 992) return;
+            
+            const rect = mindmapSection.getBoundingClientRect();
+            const xPercentage = (e.clientX - rect.left) / rect.width;
+            
+            if (xPercentage < 0.42) { // Left 42% of the screen
+                activateWinter();
+            } else if (xPercentage > 0.58) { // Right 42% of the screen
+                activateSummer();
+            } else { // Center 16% safety margin
+                resetToCenter();
+            }
+        });
+
+        // Desktop Total Reset when leaving section
+        mindmapSection.addEventListener('mouseleave', () => {
+            if (window.innerWidth <= 992) return;
+            currentMapState = 'none';
+            gsap.to([mmWinter, mmSummer], { opacity: 0, textShadow: '0 0 0px rgba(255,255,255,0)', duration: 1.5 });
+            gsap.to([winterWords, summerWords], { opacity: 0, pointerEvents: 'none', duration: 1.0 });
+        });
+
+        // --- MOBILE TAP TOGGLES ---
+        if(window.innerWidth <= 992) {
+            gsap.set([mmWinter, mmSummer], { opacity: 0.6 });
+            currentMapState = 'center';
+        }
+        // Universal listeners filtered dynamically
+        mmWinter.addEventListener('click', () => { if(window.innerWidth <= 992) activateWinter(); });
+        mmSummer.addEventListener('click', () => { if(window.innerWidth <= 992) activateSummer(); });
+        mmCenter.addEventListener('click', () => { if(window.innerWidth <= 992) resetToCenter(); });
     }
 
 });

@@ -146,6 +146,15 @@ html:has(#fullscreen-menu.open) .logo {
     width: 35px;
     height: 3px;
     background-color: var(--accent-color);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease;
+}
+
+/* CSS Cross Transformation */
+.menu-toggle.open .bar:nth-child(1) {
+    transform: translateY(5.5px) rotate(45deg);
+}
+.menu-toggle.open .bar:nth-child(2) {
+    transform: translateY(-5.5px) rotate(-45deg);
 }
 
 /* Hero Section */
@@ -809,57 +818,137 @@ html:has(#fullscreen-menu.open) .logo {
     pointer-events: none;
 }
 
-.camp-content-container {
-    position: relative;
+/* -----------------------------------
+   SONGCAMP MINDMAP INTERACTION
+   ----------------------------------- */
+.mindmap-container {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
     z-index: 10;
-    width: 100%;
-    height: 100%;
-    max-width: 1440px;
-    margin: 0 auto;
-    padding: 6rem 4rem 4rem 4rem; /* Deep insular padding */
-    
+    pointer-events: none; /* Allows free movement until over a specific word */
+}
+
+/* Base Node Properties */
+.mm-node {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    pointer-events: auto; /* Make nodes interactive */
+    color: #fff;
+    font-family: var(--font-primary);
+    white-space: nowrap;
+}
+
+/* Center Node (Always glows softly) */
+.mm-center {
+    top: 50%;
+    left: 50%;
+    font-size: clamp(1.5rem, 3vw, 3rem); /* Smaller, sharper center anchor */
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    color: rgba(255, 255, 255, 0.4); /* Fades natively via color, keeping opacity clean */
+    animation: mmGlow 3s ease-in-out infinite alternate;
+    transition: color 1.2s ease, text-shadow 1.2s ease;
+    cursor: pointer;
+}
+.mm-center:hover {
+    color: rgba(255, 255, 255, 1);
+    text-shadow: 0 0 40px rgba(255,255,255,0.6);
+    animation-play-state: paused;
+}
+
+@keyframes mmGlow {
+    0% { text-shadow: 0 0 10px rgba(255,255,255,0.1); }
+    100% { text-shadow: 0 0 30px rgba(255,255,255,0.4); }
+}
+
+/* Branch Subheaders (Winter/Summer) */
+.mm-branch {
+    font-size: clamp(1.25rem, 2vw, 1.8rem);
+    font-weight: 100; /* Minimalist aesthetic */
+    letter-spacing: 0.05em;
+    opacity: 0; /* Fully transparent initially, handled by JS */
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: opacity 0.4s ease;
+    text-shadow: 0 0 15px rgba(255,255,255,0.2);
+}
+
+/* Scattered Words */
+.mm-word {
+    font-size: 1.15rem;
+    font-weight: 300;
+    letter-spacing: 0.02em;
+    color: rgba(255, 255, 255, 0.6); /* Soft base state decoupled from JS opacity fade */
+    opacity: 0; /* Fully transparent initially, JS brings this to 1 */
+    pointer-events: none; /* Block interactions until revealed by JS */
+    cursor: pointer;
+    /* Smooth, snappy hover state for the individual word */
+    transition: color 0.3s ease, font-weight 0.2s ease, text-shadow 0.3s ease;
+    /* Independent Float Animation */
+    animation: mmFloat 4s ease-in-out infinite alternate;
+}
+
+/* Create chaotic random float offsets */
+.mm-word:nth-child(even) {
+    animation-duration: 5.5s;
+    animation-delay: -1.5s;
+}
+.mm-word:nth-child(3n) {
+    animation-duration: 4.8s;
+    animation-delay: -3s;
+}
+
+/* -----------------------------------
+   SONGCAMP CONTENT PAGE SPECIFICS
+   ----------------------------------- */
+.sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: start; }
+.sc-format-grid { display: grid; grid-template-columns: repeat(5, 1fr); border: 1px solid var(--bg-secondary); }
+.sc-day-card { padding: 2.5rem 1.5rem; border-right: 1px solid var(--bg-secondary); }
+.sc-day-card:last-child { border-right: none; }
+.sc-alumni-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+.sc-fact-grid { display: flex; gap: 4rem; flex-wrap: wrap; }
+.sc-cta-box { display: flex; gap: 1rem; width: 100%; max-width: 500px; margin: 0 auto; }
+
+/* Fluid Scroll Wrappers */
+.sc-block { 
+    min-height: 100vh;
+    padding: 8rem 4rem; 
+    width: 100%; 
+    box-sizing: border-box; 
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* Splinters Pre-text to the ceiling and Main-text to the floor */
+    scroll-snap-align: start;
+    scroll-snap-stop: normal;
+}
+#songcamps .sc-block:nth-child(even) {
+    background-color: var(--bg-secondary);
+}
+.sc-block-inner { width: 100%; max-width: 1440px; margin: auto; }
+
+/* Base Coordinates (Desktop) */
+.branch-winter { top: 20%; left: 25%; }
+.branch-summer { top: 20%; left: 75%; }
+
+.w1 { top: 35%; left: 18%; }
+.w2 { top: 50%; left: 12%; }
+.w3 { top: 65%; left: 22%; }
+.w4 { top: 80%; left: 15%; }
+
+.s1 { top: 35%; left: 82%; }
+.s2 { top: 52%; left: 88%; }
+.s3 { top: 72%; left: 78%; }
+
+/* Lock word when hovering exactly over it */
+.mm-word:hover {
+    color: rgba(255, 255, 255, 1); /* Quick smooth pierce */
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
+    font-weight: 600; /* Slight physical boldness to emphasize locking */
+    animation-play-state: paused !important; /* Freezes the word perfectly */
 }
 
-/* Elegant Top-Left Pre-Text "Agency" Wrapper */
-.camp-pre-text-wrapper {
-    display: inline-flex;
-    align-items: center;
-    gap: 1.5rem;
-    
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 1.5s ease-out 0.4s, transform 1.5s cubic-bezier(0.16, 1, 0.3, 1) 0.4s;
-}
-
-/* Mirroring the Trigger Line conceptually */
-.camp-pre-line {
-    width: 60px;
-    height: 1px;
-    background-color: rgba(255, 255, 255, 0.3);
-    transition: width 2.5s cubic-bezier(0.16, 1, 0.3, 1) 0.6s, background-color 1s ease 0.6s;
-}
-.home-camp-section.is-visible .camp-pre-line {
-    width: 160px; /* Organically sweeps out into the dark room */
-    background-color: rgba(255, 255, 255, 0.6);
-}
-
-.camp-pre-text {
-    font-family: var(--font-primary); /* Understatement in Söhne */
-    font-size: 0.95rem; /* Reduced to brutalist, quiet scale */
-    font-weight: 400;
-    color: rgba(255, 255, 255, 0.55); /* Pale, not intrusive */
-    letter-spacing: 0.05em; /* Expanded tracking for the absolute 'Agency' atmosphere */
-    max-width: 320px;
-    line-height: 1.6;
-}
-
-.camp-main-text {
-    margin-bottom: 2rem; /* Anchors the block peacefully to the bottom left */
-    padding-left: 2rem; /* Aligns with the thought above */
-    max-width: 600px;
+@keyframes mmFloat {
+    0%   { transform: translate(-50%, -50%); }
+    100% { transform: translate(-50%, calc(-50% - 15px)); }
 }
 
 .camp-cta {
@@ -891,7 +980,6 @@ html:has(#fullscreen-menu.open) .logo {
 }
 
 /* Visibility Trigger States (Triggered by standard IntersectionObserver) */
-.home-camp-section.is-visible .camp-pre-text-wrapper,
 .home-camp-section.is-visible .camp-cta {
     opacity: 1;
     transform: translateY(0);
@@ -899,12 +987,31 @@ html:has(#fullscreen-menu.open) .logo {
 
 /* Mobile Immersive Camp Overrides */
 @media (max-width: 992px) {
-    .camp-content-container {
-        padding: 6rem 2rem 4rem 2rem;
+    .mm-node {
+        font-size: clamp(0.75rem, 2vw, 1rem); /* Scaling down words and branches proportionally */
     }
-    .camp-main-text {
-        padding-left: 0;
+    
+    .mm-center {
+        top: 22%; /* Push the anchor massively up */
     }
+    
+    /* Focused Toggles positioned perfectly centrally below Songcamp */
+    .branch-winter { top: 35%; left: 25%; font-size: 0.9rem; letter-spacing: 0.1em; color: rgba(255,255,255,0.8); }
+    .branch-summer { top: 35%; left: 75%; font-size: 0.9rem; letter-spacing: 0.1em; color: rgba(255,255,255,0.8); }
+    
+    /* Shared centralized play zone: Since JS mutually excludes opacity, W and S words can elegantly overlap their physical space! */
+    .w1, .s1 { top: 52%; left: 50%; }
+    .w2, .s2 { top: 65%; left: 28%; }
+    .w3, .s3 { top: 76%; left: 70%; }
+    .w4 { top: 88%; left: 45%; }
+    .sc-grid { grid-template-columns: 1fr; gap: 4rem; }
+    .sc-format-grid { grid-template-columns: 1fr 1fr; border-bottom: none; }
+    .sc-day-card { border-right: 1px solid var(--bg-secondary); border-bottom: 1px solid var(--bg-secondary); }
+    .sc-alumni-grid { grid-template-columns: 1fr; }
+    .sc-fact-grid { gap: 2rem; }
+    .sc-cta-box { flex-direction: column; }
+    .sc-block { padding: 4rem 1.5rem; }
+    
 }
 
 /* Subtler Third Path Trigger (Ich weiß noch gar nicht) */
@@ -1185,9 +1292,13 @@ html:has(#fullscreen-menu.open) .logo {
     list-style: none;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 1rem 2rem;
+    row-gap: 0;
+    column-gap: 2rem;
     padding: 0;
     margin: 0;
+}
+.footer-nav li {
+    line-height: 1.6;
 }
 .footer-nav a {
     color: var(--text-primary);
