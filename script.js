@@ -256,81 +256,90 @@ window.addEventListener('load', () => {
                 overwrite: "auto"
             });
         });
-    }
-
+    }    // -----------------------------------------
+    // 4. Immersive Teaser Mouse Tracking
     // -----------------------------------------
-    // 4. Interactive Mindmap Logic
-    // -----------------------------------------
-    const mindmapSection = document.getElementById('home-camp');
-    const mindmap = document.querySelector('.mindmap-container');
-    const mmCenter = document.getElementById('mm-center');
-    const mmWinter = document.getElementById('mm-winter');
-    const mmSummer = document.getElementById('mm-summer');
-    const winterWords = document.querySelectorAll('.mm-word.winter');
-    const summerWords = document.querySelectorAll('.mm-word.summer');
+    const teaserSection = document.getElementById('home-camp');
+    const teaserBg = document.querySelector('.teaser-bg');
     
-    if (mmCenter && mindmapSection) {
-        let currentMapState = 'none';
+    if (teaserSection && teaserBg) {
+        let dwellTimeout;
+        let lastX = 0;
+        let lastY = 0;
+        let isDwelling = false;
+        const dwellTriggerDistance = 150; // Massively widened: ~300px box allows huge micro-adjustments
+        const baseScale = 1.08; // Higher base scale provides wider buffer for visible panning
+        const zoomScale = 1.25; // Deeper zoom ceiling
+        const panAmount = -80; // Tripled panning distance for extremely noticeable camera swing
 
-        // Helper functions mapped to node states
-        function activateWinter() {
-            if (currentMapState === 'winter') return;
-            currentMapState = 'winter';
-            gsap.to(mmWinter, { opacity: 1, textShadow: '0 0 20px rgba(255,255,255,0.6)', duration: 0.5 });
-            gsap.to(winterWords, { opacity: 1, pointerEvents: 'auto', duration: 1, ease: 'power2.out', stagger: 0.05 });
-            gsap.to(summerWords, { opacity: 0, pointerEvents: 'none', duration: 0.5 });
-            gsap.to(mmSummer, { opacity: 0.3, textShadow: '0 0 0px rgba(255,255,255,0)', duration: 0.5 });
-        }
-        
-        function activateSummer() {
-            if (currentMapState === 'summer') return;
-            currentMapState = 'summer';
-            gsap.to(mmSummer, { opacity: 1, textShadow: '0 0 20px rgba(255,255,255,0.6)', duration: 0.5 });
-            gsap.to(summerWords, { opacity: 1, pointerEvents: 'auto', duration: 1, ease: 'power2.out', stagger: 0.05 });
-            gsap.to(winterWords, { opacity: 0, pointerEvents: 'none', duration: 0.5 });
-            gsap.to(mmWinter, { opacity: 0.3, textShadow: '0 0 0px rgba(255,255,255,0)', duration: 0.5 });
-        }
-        
-        function resetToCenter() {
-            if (currentMapState === 'center') return;
-            currentMapState = 'center';
-            gsap.to([mmWinter, mmSummer], { opacity: 0.6, textShadow: '0 0 15px rgba(255,255,255,0.2)', duration: 1.2, ease: 'power2.out' });
-            gsap.to([winterWords, summerWords], { opacity: 0, pointerEvents: 'none', duration: 0.8 });
-        }
+        teaserSection.addEventListener('mousemove', (e) => {
+            if (window.innerWidth <= 992) return; 
+            
+            const rect = teaserSection.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+            
+            const normX = (mouseX / rect.width) - 0.5;
+            const normY = (mouseY / rect.height) - 0.5;
+            
+            const deltaX = Math.abs(mouseX - lastX);
+            const deltaY = Math.abs(mouseY - lastY);
+            
+            // Only update the anchor target when NOT actively zooming.
+            // This prevents visual snapping and allows smooth micro-panning inside the active zoom.
+            if (!isDwelling) {
+                const originX = (mouseX / rect.width) * 100;
+                const originY = (mouseY / rect.height) * 100;
+                gsap.set(teaserBg, { transformOrigin: `${originX}% ${originY}%` });
+            }
+            
+            gsap.to(teaserBg, {
+                x: normX * panAmount,
+                y: normY * panAmount,
+                duration: 2.5, // Perfectly balanced wait/mass ratio
+                ease: 'power3.out',
+                overwrite: 'auto' // CRITICAL: Fixes GSAP stacking on mousemove
+            });
 
-        // --- DESKTOP FLUID ZONES ---
-        mindmapSection.addEventListener('mousemove', (e) => {
-            if (window.innerWidth <= 992) return;
-            
-            const rect = mindmapSection.getBoundingClientRect();
-            const xPercentage = (e.clientX - rect.left) / rect.width;
-            
-            if (xPercentage < 0.42) { // Left 42% of the screen
-                activateWinter();
-            } else if (xPercentage > 0.58) { // Right 42% of the screen
-                activateSummer();
-            } else { // Center 16% safety margin
-                resetToCenter();
+            if (deltaX > dwellTriggerDistance || deltaY > dwellTriggerDistance) {
+                clearTimeout(dwellTimeout);
+                lastX = mouseX;
+                lastY = mouseY;
+                
+                if (isDwelling) {
+                    isDwelling = false;
+                    gsap.to(teaserBg, {
+                        scale: baseScale,
+                        duration: 1.2, // Softer exit
+                        ease: 'power3.out'
+                    });
+                }
+                
+                dwellTimeout = setTimeout(() => {
+                    isDwelling = true;
+                    // Execute slow cinematic zoom
+                    gsap.to(teaserBg, {
+                        scale: zoomScale,
+                        duration: 8, // Träge, majestic build up
+                        ease: 'power1.inOut' 
+                    });
+                }, 200); // Trigger deep dwell slightly faster since box is huge
             }
         });
 
-        // Desktop Total Reset when leaving section
-        mindmapSection.addEventListener('mouseleave', () => {
+        teaserSection.addEventListener('mouseleave', () => {
             if (window.innerWidth <= 992) return;
-            currentMapState = 'none';
-            gsap.to([mmWinter, mmSummer], { opacity: 0, textShadow: '0 0 0px rgba(255,255,255,0)', duration: 1.5 });
-            gsap.to([winterWords, summerWords], { opacity: 0, pointerEvents: 'none', duration: 1.0 });
+            clearTimeout(dwellTimeout);
+            isDwelling = false;
+            gsap.to(teaserBg, {
+                x: 0,
+                y: 0,
+                scale: baseScale,
+                duration: 1.5,
+                ease: 'power3.out',
+                transformOrigin: "center 40%" 
+            });
         });
-
-        // --- MOBILE TAP TOGGLES ---
-        if(window.innerWidth <= 992) {
-            gsap.set([mmWinter, mmSummer], { opacity: 0.6 });
-            currentMapState = 'center';
-        }
-        // Universal listeners filtered dynamically
-        mmWinter.addEventListener('click', () => { if(window.innerWidth <= 992) activateWinter(); });
-        mmSummer.addEventListener('click', () => { if(window.innerWidth <= 992) activateSummer(); });
-        mmCenter.addEventListener('click', () => { if(window.innerWidth <= 992) resetToCenter(); });
     }
 
 });

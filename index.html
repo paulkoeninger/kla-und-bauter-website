@@ -76,7 +76,7 @@
                         <a href="#" class="entry-card entry-card-1" data-route="sessions">
                             <div class="entry-card-inner">
                                 <div class="entry-image-wrapper">
-                                    <img src="images/session_home.webp" alt="Einfach anfangen" class="entry-img">
+                                    <img src="images/songcamp/session_home.webp" alt="Einfach anfangen" class="entry-img">
                                 </div>
                                 <div class="entry-content">
                                     <h3 class="entry-title">Einen Song anfangen.</h3>
@@ -104,7 +104,7 @@
                         <a href="#" class="entry-card camp-path" data-route="songcamps">
                             <div class="entry-card-inner">
                                 <div class="entry-image-wrapper">
-                                    <img src="images/songcamp/DSCF9981.jpg" alt="Unser Songcamp" class="entry-img">
+                                    <img src="images/songcamp/camp_home.jpg" alt="Unser Songcamp" class="entry-img">
                                 </div>
                                 <div class="entry-content">
                                     <h3 class="entry-title">Auf die Suche gehen.</h3>
@@ -125,38 +125,18 @@
                 </div>
             </section>
 
-            <!-- HOME: SONGCAMP IMMERSIVE HOOK SECTION -->
-            <section class="home-camp-section" id="home-camp">
-                <div class="camp-bg-wrapper">
-                    <!-- Bild ist dominant und trägt die gesamte 100vh Fläche -->
-                    <img src="images/sc_mood4.webp" alt="Songcamp Atmosphäre" class="camp-bg-img">
-                    <div class="camp-overlay"></div>
-                </div>
-
-                <!-- INTERACTIVE MINDMAP -->
-                <div class="mindmap-container">
-                    <!-- CENTER NODE -->
-                    <div class="mm-node mm-center" id="mm-center">SONGCAMP</div>
-                    
-                    <!-- HIGH NODES (20% height) -->
-                    <div class="mm-node mm-branch branch-winter" id="mm-winter">WINTERCAMP</div>
-                    <div class="mm-node mm-branch branch-summer" id="mm-summer">SOMMERCAMP</div>
-                    
-                    <!-- SCATTERED WORDS WINTER (below 20%, strict left column) -->
-                    <div class="mm-node mm-word winter w1">Sauna</div>
-                    <div class="mm-node mm-word winter w2">Kerzenschein</div>
-                    <div class="mm-node mm-word winter w3">Schneewanderung</div>
-                    <div class="mm-node mm-word winter w4">Writing am Kamin</div>
-
-                    <!-- SCATTERED WORDS SUMMER (below 20%, strict right column) -->
-                    <div class="mm-node mm-word summer s1">Poolplantschen</div>
-                    <div class="mm-node mm-word summer s2">Grillabende</div>
-                    <div class="mm-node mm-word summer s3">Writing in der Sonne</div>
-                </div>
-
-                <!-- CTA anchored securely at the bottom center -->
-                <div class="camp-cta-wrapper" style="position: absolute; bottom: 4rem; left: 50%; transform: translateX(-50%); z-index: 20;">
-                    <a href="#" class="camp-cta" data-route="songcamps">Mehr zum Songcamp <span class="arrow-icon">⟶</span></a>
+            <!-- HOME: SONGCAMP IMMERSIVE TEASER SECTION -->
+            <section class="home-camp-section teaser" id="home-camp" onclick="document.querySelector('[data-route=\'songcamps\']').click()">
+                <div class="teaser-bg"></div>
+                <div class="teaser-overlay"></div>
+                <div class="teaser-content">
+                    <p class="teaser-kicker">Songcamp</p>
+                    <h2 class="teaser-headline">
+                        Willst du Musik <em style="font-style: italic; color: var(--accent-color);">haben</em><span class="teaser-dash"></span>oder Musik <em style="font-style: italic; color: var(--accent-color);">machen</em>?
+                    </h2>
+                    <span class="teaser-cta">
+                        Mehr erfahren <span class="teaser-arrow"></span>
+                    </span>
                 </div>
             </section>
         </section> <!-- This closes id="home" -->
@@ -299,20 +279,18 @@
             <!-- 1. HERO -->
             <div class="sc-block">
                 <div class="sc-block-inner sc-hero">
-                    <div style="margin-bottom: 2rem; font-family: var(--font-primary); font-size: var(--text-sm); font-weight: 500; letter-spacing: var(--tracking-wider); text-transform: uppercase; color: var(--accent-color);">
-                        Songcamp · Ein Format von Kla & Bauter
-                    </div>
-                    <h2 class="editorial-title" style="font-family: var(--font-secondary); font-size: clamp(3rem, 6vw, 5.5rem); line-height: 1.1; margin-bottom: 3rem;">
+                    <span class="sc-kicker">Songcamp · Ein Format von Kla & Bauter</span>
+                    <h2 class="editorial-title" style="font-family: var(--font-secondary); font-size: clamp(3rem, 6vw, 5.5rem); line-height: 1.1; margin-bottom: 2rem;">
                         Fünf Tage.<br>Für die Musik, die<br><em style="font-style: italic; color: var(--accent-color);">schon längst</em> in dir steckt.
                     </h2>
-                    <div class="sc-grid" style="row-gap: 3rem; column-gap: 4rem;">
+                    <div class="sc-grid" style="gap: 2rem; column-gap: 4rem;">
                         <div>
                             <p class="editorial-lead" style="font-family: var(--font-primary); font-size: var(--text-base); font-weight: 300; line-height: 1.65; color: var(--text-secondary); max-width: 48ch;">
                                 Du machst seit Jahren Musik. Du hast Ideen, Fragmente, halbfertige Sachen. Beim Songcamp werden daraus echte Songs – nicht einer, sondern mehrere. In einem Raum, den wir gemeinsam schaffen.
                             </p>
-                            <div style="display: flex; gap: 2rem; align-items: center; margin-top: 3rem;">
-                                <button class="btn-primary" style="padding: 14px 32px; background: var(--accent-color); color: var(--bg-primary); border: none; border-radius: 2px; font-family: var(--font-primary); font-size: var(--text-sm); font-weight: 500; cursor: pointer;">Auf Warteliste setzen</button>
-                                <span style="font-family: var(--font-primary); font-size: var(--text-sm); font-weight: 300; text-decoration: underline; text-underline-offset: 4px; cursor: pointer;">Wie es läuft →</span>
+                            <div style="display: flex; gap: 2rem; align-items: center; margin-top: 2rem;">
+                                <a class="kb-btn-primary" onclick="document.getElementById('sc-warteliste').scrollIntoView({behavior: 'smooth'});">Auf Warteliste setzen <span class="arrow-icon">⟶</span></a>
+                                <a class="kb-link" onclick="document.getElementById('sc-format').scrollIntoView({behavior: 'smooth'});">Wie es läuft <span class="arrow-icon">⟶</span></a>
                             </div>
                         </div>
                         <div style="text-align: right; display: flex; flex-direction: column; gap: 1rem; align-items: flex-end;">
@@ -326,24 +304,24 @@
             </div>
 
             <!-- 2. FÜR WEN -->
-            <div class="sc-block">
+            <div class="sc-block" style="background-color: #111; background-image: linear-gradient(rgba(15, 15, 15, 0.75), rgba(15, 15, 15, 0.85)), url('images/songcamp/sc_mood4.webp'); background-size: cover; background-position: center; color: white;">
                 <div class="sc-block-inner">
-                    <span style="font-family: var(--font-primary); font-size: 10px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent-color); background: var(--bg-secondary); border: 0.5px solid rgba(0,0,0,0.05); border-radius: 2px; padding: 4px 10px; display: inline-block; margin-bottom: 2rem;">Für wen</span>
+                    <span class="sc-kicker">Für wen</span>
                     <div class="sc-grid">
                         <div>
-                            <h2 style="font-family: var(--font-secondary); font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 400; line-height: 1.2; margin-bottom: 2rem;">Du bist kein Anfänger.<br>Aber noch nicht da,<br>wo du sein willst.</h2>
+                            <h2 style="font-family: var(--font-secondary); font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 400; line-height: 1.2; margin-bottom: 2rem; color: white;">Du bist kein Anfänger.<br>Aber noch nicht da,<br>wo du sein willst.</h2>
                             <ul style="list-style: none;">
-                                <li style="padding: 0.8rem 0; border-bottom: 0.5px solid var(--bg-secondary); font-size: 15px; color: var(--text-primary); display: flex; gap: 1rem;"><span style="color: var(--accent-color); flex-shrink: 0;">—</span> Du machst seit Jahren Musik – und weißt, dass sie mehr verdient als die Abende allein am Rechner.</li>
-                                <li style="padding: 0.8rem 0; border-bottom: 0.5px solid var(--bg-secondary); font-size: 15px; color: var(--text-primary); display: flex; gap: 1rem;"><span style="color: var(--accent-color); flex-shrink: 0;">—</span> Du schreibst eigene Songs – und weißt, dass da noch mehr drin steckt.</li>
-                                <li style="padding: 0.8rem 0; border-bottom: 0.5px solid var(--bg-secondary); font-size: 15px; color: var(--text-primary); display: flex; gap: 1rem;"><span style="color: var(--accent-color); flex-shrink: 0;">—</span> Du hast Musikerfahrung, aber noch nie so konzentriert an deinen Songs gearbeitet, wie du es eigentlich willst.</li>
-                                <li style="padding: 0.8rem 0; border-bottom: 0.5px solid var(--bg-secondary); font-size: 15px; color: var(--text-primary); display: flex; gap: 1rem;"><span style="color: var(--accent-color); flex-shrink: 0;">—</span> Du willst nicht unterrichtet werden. Du willst arbeiten.</li>
-                                <li style="padding: 0.8rem 0; border-bottom: 0.5px solid var(--bg-secondary); font-size: 15px; color: var(--text-primary); display: flex; gap: 1rem;"><span style="color: var(--accent-color); flex-shrink: 0;">—</span> Du suchst Menschen auf deinem Level – nicht Anfänger, nicht Stars.</li>
+                                <li style="padding: 0.8rem 0; border-bottom: 0.5px solid rgba(255,255,255,0.1); font-size: 15px; color: rgba(255,255,255,0.95); display: flex; gap: 1rem;"><span style="color: var(--accent-color); flex-shrink: 0;">—</span> Du machst seit Jahren Musik – und weißt, dass sie mehr verdient als die Abende allein am Rechner.</li>
+                                <li style="padding: 0.8rem 0; border-bottom: 0.5px solid rgba(255,255,255,0.1); font-size: 15px; color: rgba(255,255,255,0.95); display: flex; gap: 1rem;"><span style="color: var(--accent-color); flex-shrink: 0;">—</span> Du schreibst eigene Songs – und weißt, dass da noch mehr drin steckt.</li>
+                                <li style="padding: 0.8rem 0; border-bottom: 0.5px solid rgba(255,255,255,0.1); font-size: 15px; color: rgba(255,255,255,0.95); display: flex; gap: 1rem;"><span style="color: var(--accent-color); flex-shrink: 0;">—</span> Du hast Musikerfahrung, aber noch nie so konzentriert an deinen Songs gearbeitet, wie du es eigentlich willst.</li>
+                                <li style="padding: 0.8rem 0; border-bottom: 0.5px solid rgba(255,255,255,0.1); font-size: 15px; color: rgba(255,255,255,0.95); display: flex; gap: 1rem;"><span style="color: var(--accent-color); flex-shrink: 0;">—</span> Du willst nicht unterrichtet werden. Du willst arbeiten.</li>
+                                <li style="padding: 0.8rem 0; border-bottom: 0.5px solid rgba(255,255,255,0.1); font-size: 15px; color: rgba(255,255,255,0.95); display: flex; gap: 1rem;"><span style="color: var(--accent-color); flex-shrink: 0;">—</span> Du suchst Menschen auf deinem Level – nicht Anfänger, nicht Stars.</li>
                             </ul>
                         </div>
                         <div>
-                            <div style="background: var(--bg-secondary); border: 0.5px solid rgba(0,0,0,0.05); border-radius: 4px; padding: 2rem;">
-                                <p style="font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 1rem;">Das ist Songcamp nicht</p>
-                                <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.7;">Kein Kurs. Kein Seminar. Keine Karrierevorbereitung. Wir werden dich nicht entdecken und du wirst danach nicht berühmt sein. Aber du merkst, was passiert, wenn du es nicht alleine machst.</p>
+                            <div style="background: rgba(0,0,0,0.5); border: 0.5px solid rgba(255,255,255,0.15); backdrop-filter: blur(12px); border-radius: 4px; padding: 2.5rem;">
+                                <p style="font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 1rem;">Das ist Songcamp nicht</p>
+                                <p style="font-size: 14px; color: rgba(255,255,255,0.9); line-height: 1.7;">Kein Kurs. Kein Seminar. Keine Karrierevorbereitung. Wir werden dich nicht entdecken und du wirst danach nicht berühmt sein. Aber du merkst, was passiert, wenn du es nicht alleine machst.</p>
                             </div>
 
                         </div>
@@ -354,7 +332,7 @@
             <!-- 3. DAS VERSPRECHEN -->
             <div class="sc-block">
                 <div class="sc-block-inner">
-                    <span style="font-family: var(--font-primary); font-size: 10px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent-color); background: var(--bg-primary); border: 0.5px solid rgba(0,0,0,0.05); border-radius: 2px; padding: 4px 10px; display: inline-block; margin-bottom: 2rem;">Das Versprechen</span>
+                    <span class="sc-kicker">Das Versprechen</span>
                     <div style="max-width: 680px;">
                         <h2 style="font-family: var(--font-secondary); font-size: clamp(1.6rem, 3.5vw, 2.6rem); font-weight: 400; line-height: 1.3; color: var(--text-primary); margin: 2rem 0; padding-left: 2rem; border-left: 2px solid var(--accent-color);">Willst du Musik haben — oder Musik machen?</h2>
                         <p style="font-size: 16px; color: var(--text-primary); line-height: 1.75; font-weight: 300; margin-top: 1.5rem;">Musik ist kein Ergebnis. Musik ist ein Prozess. Ein Sound öffnet eine Tür, die du nicht gesucht hast. Die führt zu einem Satz, den du nicht geplant hattest. Der führt zu einer Akkordfolge, die du noch nie gespielt hast. Die macht auf einmal Mut, über ein Gefühl zu schreiben, von dem du vorher noch nicht mal deinem besten Freund erzählt hast. Musik ist der Prozess. Nicht sein Ergebnis.</p>
@@ -362,13 +340,12 @@
                     </div>
                 </div>
             </div>
-
             <!-- 4. DAS FORMAT -->
-            <div class="sc-block">
+            <div class="sc-block" id="sc-format">
                 <div class="sc-block-inner">
-                    <span style="font-family: var(--font-primary); font-size: 10px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent-color); background: var(--bg-secondary); border: 0.5px solid rgba(0,0,0,0.05); border-radius: 2px; padding: 4px 10px; display: inline-block; margin-bottom: 2rem;">Wie eine Woche aussieht</span>
-                    <h2 style="font-family: var(--font-secondary); font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 400; line-height: 1.2; margin-bottom: 2rem;">Fünf Tage, ein Rhythmus.</h2>
-                    <p style="font-size: 16px; color: var(--text-primary); line-height: 1.75; font-weight: 300; margin-bottom: 3rem; max-width: 680px;">Jeder Tag läuft gleich. Vormittags-Session, Mittagspause, Nachmittags-Session. Zwei Räume, paralleles Arbeiten. Pro Session entsteht meistens ein neuer Song — vom weißen Blatt, aus einer Idee, einem Gefühl. Vier Sessions sind dir garantiert. Was daraus wird, ist offen.</p>
+                    <span class="sc-kicker">Wie eine Woche aussieht</span>
+                    <h2 style="font-family: var(--font-secondary); font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 400; line-height: 1.2; margin-bottom: 1.5rem;">Fünf Tage, ein Rhythmus.</h2>
+                    <p style="font-size: 16px; color: var(--text-primary); line-height: 1.75; font-weight: 300; margin-bottom: 2rem; max-width: 680px;">Jeder Tag läuft gleich. Vormittags-Session, Mittagspause, Nachmittags-Session. Zwei Räume, paralleles Arbeiten. Pro Session entsteht meistens ein neuer Song — vom weißen Blatt, aus einer Idee, einem Gefühl. Vier Sessions sind dir garantiert. Was daraus wird, ist offen.</p>
 
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 2rem;">
                         <div class="sc-day-card" style="border-top: 1px solid var(--accent-color); border-radius: 0; padding: 1.5rem 1rem 0 0; background: transparent;">
@@ -389,7 +366,7 @@
                         </div>
                     </div>
                     
-                    <div style="display: flex; gap: 2rem; flex-wrap: wrap; margin-top: 4rem; padding-top: 4rem; border-top: 0.5px solid var(--bg-secondary);">
+                    <div style="display: flex; gap: 2rem; flex-wrap: wrap; margin-top: 2.5rem; padding-top: 2.5rem; border-top: 0.5px solid var(--bg-secondary);">
                         <div>
                             <span style="font-family: var(--font-secondary); font-size: 2.5rem; color: var(--accent-color); display: block; line-height: 1;">10–18</span>
                             <span style="font-size: 12px; color: var(--text-secondary); margin-top: 0.5rem; display: block;">Uhr täglich, Mittagspause inklusive</span>
@@ -418,7 +395,7 @@
             <!-- 5. ALUMNI -->
             <div class="sc-block">
                 <div class="sc-block-inner">
-                    <span style="font-family: var(--font-primary); font-size: 10px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent-color); background: var(--bg-primary); border: 0.5px solid rgba(0,0,0,0.05); border-radius: 2px; padding: 4px 10px; display: inline-block; margin-bottom: 2rem;">Was andere sagen</span>
+                    <span class="sc-kicker">Was andere sagen</span>
                     <div class="sc-alumni-grid">
                         <div style="background: var(--bg-primary); border: 0.5px solid rgba(0,0,0,0.05); border-radius: 4px; padding: 2rem; display: flex; flex-direction: column; justify-content: space-between;">
                             <blockquote style="font-size: 15px; line-height: 1.7; font-weight: 300; color: var(--text-primary); margin-bottom: 1.5rem;">„Ich schreibe seit zwölf Jahren Songs – meistens alleine, meistens abends, meistens nie fertig. In dieser einen Woche habe ich zum ersten Mal Songs wirklich zu Ende gebracht. Nicht weil ich musste. Weil ich wollte."</blockquote>
@@ -458,7 +435,7 @@
             <!-- 6. DIE MACHER -->
             <div class="sc-block">
                 <div class="sc-block-inner" style="max-width: 800px; margin: auto; text-align: center;">
-                    <span style="font-family: var(--font-primary); font-size: 10px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent-color); background: var(--bg-secondary); border: 0.5px solid rgba(0,0,0,0.05); border-radius: 2px; padding: 4px 10px; display: inline-block; margin-bottom: 2rem;">Wer dahinter steckt</span>
+                    <span class="sc-kicker">Wer dahinter steckt</span>
                     <h3 style="font-family: var(--font-secondary); font-size: 2rem; font-weight: 400; margin-bottom: 1.5rem;">Kla & Bauter</h3>
                     <p style="font-size: 20px; color: var(--text-primary); line-height: 1.75; font-weight: 300; margin-bottom: 2rem;">Wir haben Jazz studiert, in Köln, und von Anfang an gemeinsam Musik gemacht. Lange haben wir im Hintergrund gearbeitet – für andere Artists, unsichtbar, wie der Klabautermann in der Mythologie.</p>
                     <p style="font-size: 20px; color: var(--accent-color); font-weight: 400; font-family: var(--font-secondary);">Songcamp ist das Gegenteil davon.</p>
@@ -487,7 +464,7 @@
             </div>
 
             <!-- 7. WARTELISTE CTA -->
-            <div class="sc-block">
+            <div class="sc-block" id="sc-warteliste">
                 <div class="sc-block-inner" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
                     <h2 style="font-family: var(--font-secondary); font-size: clamp(2.5rem, 5vw, 4.5rem); font-weight: 400; line-height: 1.15; margin-bottom: 4rem;">Das nächste Camp. Mit dir?</h2>
                     

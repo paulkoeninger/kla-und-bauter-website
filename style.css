@@ -782,120 +782,164 @@ html:has(#fullscreen-menu.open) .logo {
     }
 }
 
-/* Home Songcamp Hook Section (Immersive Full-Bleed) */
-.home-camp-section {
+/* Home Songcamp Teaser Section (Immersive Full-Bleed) */
+.home-camp-section.teaser {
     position: relative;
+    width: 100%;
     height: 100vh;
     min-height: 100vh;
+    overflow: hidden;
+    cursor: pointer;
+    background: #111; /* Fallback dark */
     scroll-snap-align: start;
     scroll-snap-stop: always;
-    overflow: hidden;
-    background-color: var(--text-primary); /* Pitch black / dark base */
+}
+
+.teaser-bg {
+    position: absolute;
+    inset: 0;
+    background-image: url('images/songcamp/sessionpaul.jpg');
+    background-size: cover;
+    background-position: center 40%;
+    opacity: 0.35;
+    filter: saturate(0.7);
+    transition: opacity 0.8s ease; 
+    transform: scale(1.05); /* Base scale for pan buffer */
+    will-change: transform, opacity;
+}
+
+.home-camp-section.teaser:hover .teaser-bg {
+    opacity: 0.45;
+}
+
+.teaser-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        180deg,
+        rgba(15, 15, 15, 0.4) 0%,
+        rgba(15, 15, 15, 0.2) 40%,
+        rgba(15, 15, 15, 0.6) 100%
+    );
+}
+
+/* Subtle grain texture via CSS */
+.home-camp-section.teaser::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    opacity: 0.04;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 256px 256px;
+}
+
+.teaser-content {
+    position: relative;
+    z-index: 2;
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    text-align: center;
 }
 
-.camp-bg-wrapper {
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    z-index: 1;
-}
-.camp-bg-img {
-    width: 100%; height: 100%;
-    object-fit: cover;
-    /* Cinematic grading: darken deeply, drop abrasive contrast, boost a late-afternoon sepia warmth */
-    filter: brightness(0.60) contrast(0.85) saturate(0.8) sepia(0.2) hue-rotate(-5deg);
-    /* GSAP Cinematic Parallax handles transform interactions */
-    will-change: transform;
-}
-
-.camp-overlay {
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    /* Extra subtle dark vignette protecting the left-aligned typography */
-    background: linear-gradient(65deg, rgba(20, 20, 18, 0.7) 0%, rgba(20, 20, 18, 0.2) 50%, rgba(20, 20, 18, 0) 100%);
-    pointer-events: none;
-}
-
-/* -----------------------------------
-   SONGCAMP MINDMAP INTERACTION
-   ----------------------------------- */
-.mindmap-container {
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    z-index: 10;
-    pointer-events: none; /* Allows free movement until over a specific word */
-}
-
-/* Base Node Properties */
-.mm-node {
-    position: absolute;
-    transform: translate(-50%, -50%);
-    pointer-events: auto; /* Make nodes interactive */
-    color: #fff;
+.teaser-kicker {
     font-family: var(--font-primary);
-    white-space: nowrap;
-}
-
-/* Center Node (Always glows softly) */
-.mm-center {
-    top: 50%;
-    left: 50%;
-    font-size: clamp(1.5rem, 3vw, 3rem); /* Smaller, sharper center anchor */
-    font-weight: 900;
-    letter-spacing: 0.1em;
-    color: rgba(255, 255, 255, 0.4); /* Fades natively via color, keeping opacity clean */
-    animation: mmGlow 3s ease-in-out infinite alternate;
-    transition: color 1.2s ease, text-shadow 1.2s ease;
-    cursor: pointer;
-}
-.mm-center:hover {
-    color: rgba(255, 255, 255, 1);
-    text-shadow: 0 0 40px rgba(255,255,255,0.6);
-    animation-play-state: paused;
-}
-
-@keyframes mmGlow {
-    0% { text-shadow: 0 0 10px rgba(255,255,255,0.1); }
-    100% { text-shadow: 0 0 30px rgba(255,255,255,0.4); }
-}
-
-/* Branch Subheaders (Winter/Summer) */
-.mm-branch {
-    font-size: clamp(1.25rem, 2vw, 1.8rem);
-    font-weight: 100; /* Minimalist aesthetic */
-    letter-spacing: 0.05em;
-    opacity: 0; /* Fully transparent initially, handled by JS */
-    cursor: pointer;
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
-    transition: opacity 0.4s ease;
-    text-shadow: 0 0 15px rgba(255,255,255,0.2);
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 1s ease, transform 1s ease;
 }
 
-/* Scattered Words */
-.mm-word {
-    font-size: 1.15rem;
-    font-weight: 300;
-    letter-spacing: 0.02em;
-    color: rgba(255, 255, 255, 0.6); /* Soft base state decoupled from JS opacity fade */
-    opacity: 0; /* Fully transparent initially, JS brings this to 1 */
-    pointer-events: none; /* Block interactions until revealed by JS */
-    cursor: pointer;
-    /* Smooth, snappy hover state for the individual word */
-    transition: color 0.3s ease, font-weight 0.2s ease, text-shadow 0.3s ease;
-    /* Independent Float Animation */
-    animation: mmFloat 4s ease-in-out infinite alternate;
+.teaser-headline {
+    font-family: var(--font-secondary);
+    font-weight: 400;
+    font-size: clamp(2rem, 5vw, 4rem);
+    line-height: 1.25;
+    color: var(--bg-primary); /* Ensures light cream text */
+    max-width: 800px;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 1s ease, transform 1s ease;
 }
 
-/* Create chaotic random float offsets */
-.mm-word:nth-child(even) {
-    animation-duration: 5.5s;
-    animation-delay: -1.5s;
+.teaser-dash {
+    display: inline-block;
+    width: 1.2em;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.4);
+    vertical-align: middle;
+    margin: 0 0.3em;
+    position: relative;
+    top: -0.1em;
 }
-.mm-word:nth-child(3n) {
-    animation-duration: 4.8s;
-    animation-delay: -3s;
+
+.teaser-cta {
+    margin-top: 3rem;
+    font-family: var(--font-primary);
+    font-weight: 400;
+    font-size: 15px;
+    letter-spacing: 0.08em;
+    color: rgba(255, 255, 255, 0.6);
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 1s ease, transform 1s ease, color 0.4s ease;
+}
+
+.home-camp-section.teaser:hover .teaser-cta {
+    color: var(--bg-primary);
+}
+
+.teaser-arrow {
+    display: inline-block;
+    width: 24px;
+    height: 1px;
+    background: currentColor;
+    position: relative;
+    transition: width 0.4s ease;
+}
+.teaser-arrow::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: -3px;
+    width: 7px;
+    height: 7px;
+    border-right: 1px solid currentColor;
+    border-top: 1px solid currentColor;
+    transform: rotate(45deg);
+}
+.home-camp-section.teaser:hover .teaser-arrow {
+    width: 36px;
+}
+
+/* Scroll Fade Triggers using IntersectionObserver */
+.home-camp-section.teaser.is-visible .teaser-kicker {
+    opacity: 1; transform: translateY(0); transition-delay: 0.2s;
+}
+.home-camp-section.teaser.is-visible .teaser-headline {
+    opacity: 1; transform: translateY(0); transition-delay: 0.4s;
+}
+.home-camp-section.teaser.is-visible .teaser-cta {
+    opacity: 1; transform: translateY(0); transition-delay: 0.6s;
+}
+
+@media (max-width: 600px) {
+    .teaser-kicker { margin-bottom: 1.8rem; }
+    .teaser-cta { margin-top: 2rem; }
 }
 
 /* -----------------------------------
@@ -909,13 +953,42 @@ html:has(#fullscreen-menu.open) .logo {
 .sc-fact-grid { display: flex; gap: 4rem; flex-wrap: wrap; }
 .sc-cta-box { display: flex; gap: 1rem; width: 100%; max-width: 500px; margin: 0 auto; }
 
+/* KB Standard Editorial Link */
+.kb-link {
+    font-family: var(--font-primary);
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--text-primary);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding-bottom: 0.25rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15); 
+    transition: color 0.4s ease, border-color 0.4s ease;
+    cursor: pointer;
+}
+.kb-link:hover {
+    color: var(--accent-color);
+    border-color: var(--accent-color);
+}
+.kb-link .arrow-icon {
+    font-size: 1.1rem;
+    transform: translateY(1px);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.kb-link:hover .arrow-icon {
+    transform: translate(6px, 1px);
+}
+
 /* Fluid Scroll Wrappers */
 .sc-block { 
     min-height: 100vh;
-    padding: 8rem 4rem; 
+    padding: clamp(80px, 12vh, 120px) 4rem clamp(2rem, 8vh, 6rem); 
     width: 100%; 
     box-sizing: border-box; 
     display: flex;
+    justify-content: center;
     flex-direction: column;
     scroll-snap-align: start;
     scroll-snap-stop: normal;
@@ -924,6 +997,56 @@ html:has(#fullscreen-menu.open) .logo {
     background-color: var(--bg-secondary);
 }
 .sc-block-inner { width: 100%; max-width: 1440px; margin: auto; }
+
+/* Section Kickers (Dynamic Light/Dark) */
+.sc-kicker {
+    font-family: var(--font-primary); 
+    font-size: 10px; 
+    font-weight: 600; 
+    letter-spacing: 0.18em; 
+    text-transform: uppercase; 
+    color: var(--accent-color); 
+    background: var(--bg-secondary); 
+    border: 0.5px solid rgba(0,0,0,0.05);
+    border-radius: 2px; 
+    padding: 6px 12px; 
+    display: inline-block; 
+    margin-bottom: 2rem;
+}
+#songcamps .sc-block:nth-child(even) .sc-kicker {
+    color: var(--bg-primary); 
+    background: var(--accent-color); 
+    border: none;
+}
+
+/* Primary Button (Solid with Slide Arrow) */
+.kb-btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 14px 32px; 
+    background: var(--accent-color); 
+    color: var(--bg-primary); 
+    border: none; 
+    border-radius: 2px; 
+    font-family: var(--font-primary); 
+    font-size: 15px; 
+    font-weight: 500; 
+    cursor: pointer;
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+}
+.kb-btn-primary:hover {
+    opacity: 0.9;
+}
+.kb-btn-primary .arrow-icon {
+    font-size: 1.1rem;
+    transform: translateY(1px);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.kb-btn-primary:hover .arrow-icon {
+    transform: translate(6px, 1px);
+}
 
 /* Base Coordinates (Desktop) */
 .branch-winter { top: 20%; left: 25%; }
@@ -1010,7 +1133,7 @@ html:has(#fullscreen-menu.open) .logo {
     .sc-alumni-grid { grid-template-columns: 1fr; }
     .sc-fact-grid { gap: 2rem; }
     .sc-cta-box { flex-direction: column; }
-    .sc-block { padding: 4rem 1.5rem; }
+    .sc-block { padding: clamp(80px, 10vh, 100px) 1.5rem 3rem; }
     
 }
 
