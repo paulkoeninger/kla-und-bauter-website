@@ -811,6 +811,11 @@ html:has(#fullscreen-menu.open) .logo {
     scroll-snap-stop: always;
 }
 
+@keyframes slowZoom {
+    0% { transform: scale(1.0); }
+    100% { transform: scale(1.15); }
+}
+
 .teaser-bg {
     position: absolute;
     inset: 0;
@@ -819,9 +824,9 @@ html:has(#fullscreen-menu.open) .logo {
     background-position: center 40%;
     opacity: 0.35;
     filter: saturate(0.7);
-    transition: opacity 0.8s ease; 
-    transform: scale(1.05); /* Base scale for pan buffer */
+    transform: scale(1.0);
     will-change: transform, opacity;
+    animation: slowZoom 45s linear infinite alternate;
 }
 
 .home-camp-section.teaser:hover .teaser-bg {
@@ -906,26 +911,28 @@ html:has(#fullscreen-menu.open) .logo {
     font-weight: 400;
     font-size: 15px;
     letter-spacing: 0.08em;
-    color: rgba(255, 255, 255, 0.6);
-    display: flex;
+    color: rgba(255, 255, 255, 0.45);
+    display: inline-flex;
     align-items: center;
-    gap: 0.6rem;
+    gap: 0.8rem;
+    padding: 10px 15px;
     opacity: 0;
     transform: translateY(16px);
-    transition: opacity 1s ease, transform 1s ease, color 0.4s ease;
+    transition: opacity 1s ease, transform 1s ease, color 0.7s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.home-camp-section.teaser:hover .teaser-cta {
-    color: var(--bg-primary);
+.teaser-cta:hover {
+    color: rgba(255, 255, 255, 1);
 }
 
 .teaser-arrow {
     display: inline-block;
-    width: 24px;
+    width: 20px;
     height: 1px;
     background: currentColor;
     position: relative;
-    transition: width 0.4s ease;
+    transform-origin: left center;
+    transition: width 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .teaser-arrow::after {
     content: '';
@@ -938,8 +945,10 @@ html:has(#fullscreen-menu.open) .logo {
     border-top: 1px solid currentColor;
     transform: rotate(45deg);
 }
-.home-camp-section.teaser:hover .teaser-arrow {
-    width: 36px;
+
+.teaser-cta:hover .teaser-arrow {
+    width: 48px;
+    transform: translateX(6px);
 }
 
 /* Scroll Fade Triggers using IntersectionObserver */

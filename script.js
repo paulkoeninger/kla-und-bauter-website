@@ -129,10 +129,44 @@ window.addEventListener('load', () => {
         navigateTo(targetRoute, isMenuLink);
     });
 
+    // Initialize SPA via native URLs
     let currentRoute = 'home';
     let isTransitioning = false;
 
-    function navigateTo(targetRoute, instant = false) {
+    // Boot hook: natively parse deep links
+    window.addEventListener('popstate', (e) => {
+        if (e.state && e.state.route) {
+            if (e.state.route !== currentRoute) {
+                navigateTo(e.state.route, true, true);
+            }
+        } else {
+            if (currentRoute !== 'home') navigateTo('home', true, true);
+        }
+    });
+
+    const initialPath = window.location.pathname.replace(/^\/|\/$/g, '');
+    const validRoutes = ['home', 'produktion', 'sessions', 'songcamps'];
+    
+    if (initialPath && validRoutes.includes(initialPath)) {
+        setTimeout(() => navigateTo(initialPath, true, true), 50);
+    } else {
+        try {
+            history.replaceState({route: 'home'}, '', '/');
+        } catch(e) {
+            // Fails on local file:// execution, silently ignore
+        }
+    }
+
+    function navigateTo(targetRoute, instant = false, skipHistory = false) {
+        if (!skipHistory) {
+            const urlPath = targetRoute === 'home' ? '/' : '/' + targetRoute;
+            try {
+                history.pushState({route: targetRoute}, '', urlPath);
+            } catch(e) {
+                // Silently ignore file:// execution errors
+            }
+        }
+
         const incomingSection = document.getElementById(targetRoute);
         if(!incomingSection) return;
 
@@ -144,14 +178,13 @@ window.addEventListener('load', () => {
         // Centralized heavy-duty scroll reset to beat mobile rendering lag
         const forceScrollToTop = () => {
             window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-            // Defer scroll to next render frames to guarantee layout height has updated
             requestAnimationFrame(() => window.scrollTo(0, 0));
             setTimeout(() => window.scrollTo(0, 0), 10);
             setTimeout(() => window.scrollTo(0, 0), 50);
         };
 
         if (instant) {
-            outgoingSection.classList.remove('active');
+            if (outgoingSection) outgoingSection.classList.remove('active');
             incomingSection.classList.add('active');
             forceScrollToTop();
             currentRoute = targetRoute;
@@ -356,90 +389,6 @@ window.addEventListener('load', () => {
                 duration: 4,
                 ease: "power2.out",
                 overwrite: "auto"
-            });
-        });
-    }    // -----------------------------------------
-    // 4. Immersive Teaser Mouse Tracking
-    // -----------------------------------------
-    const teaserSection = document.getElementById('home-camp');
-    const teaserBg = document.querySelector('.teaser-bg');
-    
-    if (teaserSection && teaserBg) {
-        let dwellTimeout;
-        let lastX = 0;
-        let lastY = 0;
-        let isDwelling = false;
-        const dwellTriggerDistance = 150; // Massively widened: ~300px box allows huge micro-adjustments
-        const baseScale = 1.08; // Higher base scale provides wider buffer for visible panning
-        const zoomScale = 1.25; // Deeper zoom ceiling
-        const panAmount = -80; // Tripled panning distance for extremely noticeable camera swing
-
-        teaserSection.addEventListener('mousemove', (e) => {
-            if (window.innerWidth <= 992) return; 
-            
-            const rect = teaserSection.getBoundingClientRect();
-            const mouseX = e.clientX - rect.left;
-            const mouseY = e.clientY - rect.top;
-            
-            const normX = (mouseX / rect.width) - 0.5;
-            const normY = (mouseY / rect.height) - 0.5;
-            
-            const deltaX = Math.abs(mouseX - lastX);
-            const deltaY = Math.abs(mouseY - lastY);
-            
-            // Only update the anchor target when NOT actively zooming.
-            // This prevents visual snapping and allows smooth micro-panning inside the active zoom.
-            if (!isDwelling) {
-                const originX = (mouseX / rect.width) * 100;
-                const originY = (mouseY / rect.height) * 100;
-                gsap.set(teaserBg, { transformOrigin: `${originX}% ${originY}%` });
-            }
-            
-            gsap.to(teaserBg, {
-                x: normX * panAmount,
-                y: normY * panAmount,
-                duration: 2.5, // Perfectly balanced wait/mass ratio
-                ease: 'power3.out',
-                overwrite: 'auto' // CRITICAL: Fixes GSAP stacking on mousemove
-            });
-
-            if (deltaX > dwellTriggerDistance || deltaY > dwellTriggerDistance) {
-                clearTimeout(dwellTimeout);
-                lastX = mouseX;
-                lastY = mouseY;
-                
-                if (isDwelling) {
-                    isDwelling = false;
-                    gsap.to(teaserBg, {
-                        scale: baseScale,
-                        duration: 1.2, // Softer exit
-                        ease: 'power3.out'
-                    });
-                }
-                
-                dwellTimeout = setTimeout(() => {
-                    isDwelling = true;
-                    // Execute slow cinematic zoom
-                    gsap.to(teaserBg, {
-                        scale: zoomScale,
-                        duration: 8, // Träge, majestic build up
-                        ease: 'power1.inOut' 
-                    });
-                }, 200); // Trigger deep dwell slightly faster since box is huge
-            }
-        });
-
-        teaserSection.addEventListener('mouseleave', () => {
-            if (window.innerWidth <= 992) return;
-            clearTimeout(dwellTimeout);
-            isDwelling = false;
-            gsap.to(teaserBg, {
-                x: 0,
-                y: 0,
-                scale: baseScale,
-                duration: 1.5,
-                ease: 'power3.out',
-                transformOrigin: "center 40%" 
             });
         });
     }
