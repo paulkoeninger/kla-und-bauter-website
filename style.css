@@ -99,6 +99,22 @@ blockquote, .quote {
     height: 45px;
     width: auto;
     display: block;
+    transform-origin: center center;
+}
+
+@keyframes tickle {
+    0%   { transform: rotate(0deg) scale(1) translateY(0px); }
+    15%  { transform: rotate(-8deg) scale(1.15) translateY(-3px); }
+    30%  { transform: rotate(10deg) scale(1.15) translateY(2px); }
+    45%  { transform: rotate(-10deg) scale(1.15) translateY(-2px); }
+    60%  { transform: rotate(8deg) scale(1.15) translateY(1px); }
+    75%  { transform: rotate(-5deg) scale(1.15) translateY(-1px); }
+    90%  { transform: rotate(2deg) scale(1.1) translateY(0px); }
+    100% { transform: rotate(0deg) scale(1) translateY(0px); }
+}
+
+.logo:hover .nav-logo-img {
+    animation: tickle 0.4s ease-in-out;
 }
 
 /* Navigation */
@@ -946,6 +962,26 @@ html:has(#fullscreen-menu.open) .logo {
    SONGCAMP CONTENT PAGE SPECIFICS
    ----------------------------------- */
 .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: start; }
+.sc-list-item { 
+    padding: 0.8rem 0; 
+    border-bottom: 0.5px solid rgba(255,255,255,0.1); 
+    font-size: 15px; 
+    color: rgba(255,255,255,0.7); 
+    display: flex; 
+    gap: 1rem;
+    transition: opacity 0.4s ease, color 0.4s ease;
+}
+.sc-list-item:hover {
+    color: rgba(255,255,255,1);
+}
+.sc-list-item span {
+    color: var(--accent-color); 
+    flex-shrink: 0;
+    transition: transform 0.4s ease;
+}
+.sc-list-item:hover span {
+    transform: translateX(3px); /* Subtle dash momentum without making the whole text block feel like a button */
+}
 .sc-format-grid { display: grid; grid-template-columns: repeat(5, 1fr); border: 1px solid var(--bg-secondary); }
 .sc-day-card { padding: 2.5rem 1.5rem; border-right: 1px solid var(--bg-secondary); }
 .sc-day-card:last-child { border-right: none; }
@@ -1006,7 +1042,7 @@ html:has(#fullscreen-menu.open) .logo {
     letter-spacing: 0.18em; 
     text-transform: uppercase; 
     color: var(--accent-color); 
-    background: var(--bg-secondary); 
+    background: rgba(0,0,0,0.03); 
     border: 0.5px solid rgba(0,0,0,0.05);
     border-radius: 2px; 
     padding: 6px 12px; 
@@ -1356,17 +1392,25 @@ html:has(#fullscreen-menu.open) .logo {
 /* Footer Styles */
 .site-footer {
     background-color: var(--bg-primary);
-    padding: 8rem 4rem 1.5rem 4rem; /* Drastically reduced bottom void */
+    padding: clamp(5rem, 8vh, 8rem) 4rem 1.5rem 4rem; 
     position: relative;
     z-index: 10;
     scroll-snap-align: start;
+    height: 100vh;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
 }
 .footer-container {
     max-width: 1440px;
+    width: 100%;
     margin: 0 auto;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 .footer-cta {
-    margin-bottom: 15rem;
+    margin-bottom: auto; /* Pushes the navigation grid strictly to the floor */
     max-width: 900px;
 }
 .footer-cta h2 {
@@ -1455,10 +1499,10 @@ html:has(#fullscreen-menu.open) .logo {
 }
 
 @media (max-width: 1200px) {
-    .site-footer { padding: 8rem 2rem 2rem 2rem; }
+    .site-footer { padding: clamp(4rem, 6vh, 8rem) 2rem 2rem 2rem; }
 }
 @media (max-width: 992px) {
-    .site-footer { padding: 6rem 2rem 2rem 2rem; }
+    .site-footer { height: auto; min-height: 100vh; padding: 6rem 2rem 2rem 2rem; }
     .footer-cta { margin-bottom: 6rem; }
     .footer-cta h2 { font-size: 2.2rem; }
     .footer-grid { grid-template-columns: 1fr 1fr; gap: 3rem; margin-bottom: 3rem; }
@@ -1699,5 +1743,132 @@ html:has(#fullscreen-menu.open) .logo {
     }
     .editorial-quote .editorial-title {
         font-size: 1.7rem;
+    }
+}
+
+/* -----------------------------------
+   EASTER EGGS / GLOBAL FLOATING COMPS
+   ----------------------------------- */
+#klabauter-wrapper {
+    position: absolute;
+    top: 5px; /* Offset behind the box */
+    left: 20px;
+    width: 38px; /* Slightly smaller scale matching the box typography */
+    opacity: 0; 
+    pointer-events: none; 
+    z-index: 5; /* Remains hidden naturally behind the zIndex:10 white box */
+    will-change: transform, opacity;
+}
+
+#klabautermann {
+    width: 100%; 
+    display: block;
+    filter: brightness(0) invert(1);
+}
+
+/* ======================================================================
+   PROMISE REVEAL SECTION (INTERACTIVE LIGHT NATIVE MASK)
+   ====================================================================== */
+.section-promise.cursor-active {
+    cursor: none;
+}
+.promise-inner {
+    position: relative;
+}
+.text-reveal {
+    position: relative;
+    max-width: 680px;
+}
+.blurred-text {
+    position: relative;
+    filter: blur(5px);
+    opacity: 0.55;
+    transition: filter 1.5s ease, opacity 1.5s ease;
+    user-select: none;
+}
+.sharp-mask-text {
+    opacity: 1; 
+}
+.reveal-word {
+    opacity: 0;
+    filter: blur(6px);
+    transition: opacity 0.5s ease, filter 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.reveal-word.revealed {
+    opacity: 1;
+    filter: blur(0);
+}
+.closing-line {
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 2s ease, transform 2s ease;
+}
+.closing-line.revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
+.light-cursor {
+    position: fixed;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 100;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(
+      circle,
+      rgba(255, 220, 160, 0.22) 0%,
+      rgba(255, 210, 140, 0.12) 30%,
+      rgba(255, 200, 120, 0.04) 60%,
+      transparent 75%
+    );
+    mix-blend-mode: multiply;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+.light-cursor.active {
+    opacity: 1;
+}
+.hint {
+    position: absolute;
+    right: 0;
+    top: -2rem;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--text-secondary);
+    font-style: italic;
+    transition: opacity 1.2s ease;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.hint::before {
+    content: '';
+    display: inline-block;
+    width: 24px;
+    height: 1px;
+    background: var(--text-secondary);
+}
+.hint.hidden {
+    opacity: 0;
+}
+@media (hover: none), (max-width: 992px) {
+    .blurred-text {
+        filter: none !important;
+        opacity: 1 !important;
+    }
+    .sharp-mask-text {
+        display: none !important;
+    }
+    .closing-line {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+    .light-cursor, .hint {
+        display: none !important;
+    }
+    .section-promise.cursor-active {
+        cursor: auto !important;
     }
 }

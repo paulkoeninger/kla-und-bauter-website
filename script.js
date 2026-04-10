@@ -49,9 +49,9 @@ window.addEventListener('load', () => {
         loader.style.display = 'none';
     })
     .from('.menu-toggle .bar', { opacity: 0, duration: 0.8, ease: "power3.out" }, "-=0.4")
-    .from('#home .hero-title', { y: 120, opacity: 0, duration: 1.2, ease: "power4.out" }, "-=0.6")
-    .from('#home .hero-subtitle', { width: 0, opacity: 0, duration: 1, ease: "power3.inOut" }, "-=0.8")
-    .from('#home .image-wrapper', { scale: 0.85, opacity: 0, duration: 2, ease: "expo.out" }, "-=1.2");
+    .from('#home .hero-title', { y: 40, opacity: 0, filter: "blur(12px)", duration: 1.8, ease: "power3.out" }, "-=0.6")
+    .from('#home .hero-subtitle', { y: 20, opacity: 0, filter: "blur(8px)", duration: 1.8, ease: "power3.out" }, "-=1.4")
+    .from('#home .image-wrapper', { scale: 0.85, opacity: 0, filter: "blur(10px)", duration: 2.2, ease: "expo.out" }, "-=1.6");
 
     // -----------------------------------------
     // 2. Fullscreen Menu Logic (Instant)
@@ -62,7 +62,7 @@ window.addEventListener('load', () => {
     // Menu Hover Effect
     const menuToggle = document.querySelector('.menu-toggle');
     const bars = document.querySelectorAll('.bar');
-    
+
     menuToggle.addEventListener('mouseenter', () => {
         if (!isMenuOpen) {
             gsap.to(bars[0], { x: 8, duration: 0.3, ease: 'power2.out' });
@@ -112,7 +112,18 @@ window.addEventListener('load', () => {
         // If the link is inside the menu, it's instant
         const isMenuLink = link.closest('#fullscreen-menu') !== null || link.classList.contains('logo');
         
-        if (isMenuOpen) toggleMenu();
+        if (isMenuOpen) {
+            // Instant Reset Logo if routing from menu
+            if (isMenuLink && !link.classList.contains('logo')) {
+                const logo = document.querySelector('.logo');
+                logo.style.transition = 'none'; // Lock transition
+                toggleMenu();
+                // Restore transition after browser applies the snap-back
+                setTimeout(() => logo.style.transition = '', 50);
+            } else {
+                toggleMenu();
+            }
+        }
         if (targetRoute === currentRoute || isTransitioning) return;
         
         navigateTo(targetRoute, isMenuLink);
@@ -222,6 +233,97 @@ window.addEventListener('load', () => {
     // Apply observer to specific scroll-reveal components globally
     const animatedSections = document.querySelectorAll('.home-entry-section, .home-camp-section, .scroll-anim');
     animatedSections.forEach(sec => scrollObserver.observe(sec));
+
+    // --- EASTER EGG KLABAUTERMANN TRACKER ---
+    const klabauter = document.getElementById('klabauter-wrapper');
+    if (klabauter) {
+        gsap.set(klabauter, { y: 0, opacity: 0 }); // Initial hiding
+        
+        let hasDroppedInFuerWen = false; // Ensures it only runs exactly once per page load
+
+        const klabauterObserver = new IntersectionObserver((entries) => {
+            if (window.innerWidth <= 992) return; // Only process on Desktop
+            
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    if (entry.target.id === 'sc-hero-block') {
+                        // Winched back up to the ceiling silently
+                        // Does not explicitly reset the tracking flag so it stays dead.
+                        gsap.to(klabauter, {
+                            opacity: 0,
+                            y: 0,
+                            x: window.innerWidth * 0.85, 
+                            duration: 1.5,
+                            ease: 'power3.inOut',
+                            overwrite: 'auto'
+                        });
+                    } else if (entry.target.id === 'sc-fuer-wen-block' && !hasDroppedInFuerWen) {
+                        hasDroppedInFuerWen = true;
+                        
+                        const whiteBox = document.getElementById('sc-white-box');
+                        const sectionRect = entry.target.getBoundingClientRect();
+                        const boxRect = whiteBox ? whiteBox.getBoundingClientRect() : { top: 0, bottom: 0 };
+                        
+                        // Distance to the bottom floor of the section relative to his local starting point
+                        const floorDropDistance = sectionRect.bottom - boxRect.top - 80;
+
+                        // Start position behind the left side of the white box
+                        gsap.set(klabauter, { x: 0, y: 0, opacity: 0, scaleX: -1, scaleY: 1, rotation: 0, zIndex: 5, transformOrigin: 'bottom center' }); 
+
+                        gsap.killTweensOf('#klabautermann');
+                        gsap.set('#klabautermann', { rotation: 0 });
+
+                        // The cliff dive stealth timeline!
+                        const tl = gsap.timeline();
+                        
+                        // 1. Peer out (Pops head up from behind the border box)
+                        tl.to(klabauter, { opacity: 1, duration: 0.1, delay: 0.2 })
+                          .to(klabauter, { y: -25, duration: 0.6, ease: 'power2.out' }) // Peers head up 
+                          
+                          // 2. Paranoia Look-Around while half-hidden
+                          .to(klabauter, { scaleX: 1, duration: 0.1, delay: 0.2 }) // Looks right
+                          .to(klabauter, { scaleX: -1, duration: 0.1, delay: 0.3 }) // Looks left
+                          
+                          // 3. Climb up actively and change depth (Z-Index) to clear the box edge
+                          .to(klabauter, { y: -40, zIndex: 20, duration: 0.3, ease: 'power1.out', delay: 0.2 }) 
+                          
+                          // 4. Stand fully on the box and look around the cliff
+                          .to(klabauter, { scaleX: 1, duration: 0.1, delay: 0.2 })
+                          .to(klabauter, { scaleX: -1, duration: 0.1, delay: 0.3 })
+                          
+                          // 5. Jump off the cliff! (Arc backwards then drop)
+                          .to(klabauter, { x: -45, y: -55, duration: 0.2, ease: 'power1.out' }, "+=0.2") 
+                          .to(klabauter, { y: floorDropDistance, duration: 0.5, ease: 'power2.in' }) // The long drop mimicking gravity
+                          
+                          // 6. Tactical Squat upon impact
+                          .to(klabauter, { scaleY: 0.5, duration: 0.15, ease: 'power2.out' }) 
+                          .to(klabauter, { scaleY: 1, duration: 0.25, ease: 'back.out(2)' })
+                          
+                          // 6. Sprint away immediately!
+                          .addLabel("runStart", "+=0.1")
+                          .to(klabauter, { x: -2500, duration: 4.5, ease: 'power2.in' }, "runStart"); // Sprints deeply off any sized screen
+
+                        // Frantic Waddle constraint applied concurrently alongside the sprint ONLY
+                        tl.to(klabauter, {
+                            rotation: -25, scaleY: 0.85, 
+                            yoyo: true, repeat: 35, 
+                            duration: 0.12, ease: 'sine.inOut'
+                        }, "runStart")
+                        .to(klabauter, {
+                            y: "-=30", // Bouncing up locally from the floor target!
+                            yoyo: true, repeat: 35, 
+                            duration: 0.12, ease: 'sine.inOut'
+                        }, "runStart+=0.06");
+                    }
+                }
+            });
+        }, { threshold: 0.6 }); 
+        
+        const scHero = document.getElementById('sc-hero-block');
+        const scFuerWen = document.getElementById('sc-fuer-wen-block');
+        if (scHero) klabauterObserver.observe(scHero);
+        if (scFuerWen) klabauterObserver.observe(scFuerWen);
+    }
 
     // Extremely sluggish cinematic GSAP Mouse Parallax
     const campSection = document.querySelector('.home-camp-section');
@@ -342,4 +444,126 @@ window.addEventListener('load', () => {
         });
     }
 
+    // ----------------------------------------------------
+    // PROMISE INTERACTIVE TEXT REVEAL LOGIC
+    // ----------------------------------------------------
+    const promiseSection = document.getElementById('promise-section');
+    const blurredText = document.getElementById('blurredText');
+    const revealCanvas = document.getElementById('revealCanvas');
+    const revealShapes = document.getElementById('revealShapes');
+    const closingLine = document.getElementById('closingLine');
+    const lightCursor = document.getElementById('lightCursor');
+    const sharpTextNode = document.getElementById('sharpText');
+    const promiseHint = document.getElementById('promise-hint');
+
+    if (promiseSection && blurredText && window.matchMedia('(hover: hover)').matches && window.innerWidth > 992) {
+        
+        promiseSection.classList.add('cursor-active');
+
+        // Tracking individual Word Spans natively
+        let wordSpans = null;
+        let currentUnlockedWordIndex = 0;
+        let idleResetTimeout;
+        let hintDismissed = false;
+        let closingShown = false;
+
+        function addReveal(x, y) {
+            // Lazy load the spans array once on first interaction
+            if (!wordSpans && sharpTextNode) {
+                wordSpans = sharpTextNode.querySelectorAll('.reveal-word');
+            }
+            if (!wordSpans || wordSpans.length === 0) return;
+
+            // Strict Sequential Zipper Logic
+            // We sequentially check if the mouse satisfies the *immediate next* locked word.
+            // If you scrub quickly, the loop processes multiple words cascadingly in a single frame.
+            while (currentUnlockedWordIndex < wordSpans.length) {
+                let targetSpan = wordSpans[currentUnlockedWordIndex];
+                let rect = targetSpan.getBoundingClientRect();
+                
+                // Generous vertical tolerance so your hand doesn't slip off
+                let hitTop = rect.top - 80;
+                let hitBottom = rect.bottom + 80;
+                
+                // Forgiving left approach, but STRICT right approach boundary.
+                // This prevents "mass pop-in" if you enter the line backwards from the right.
+                let hitLeft = rect.left - 40;
+                let hitRight = rect.right + 70;
+                
+                if (x > hitLeft && x < hitRight && y > hitTop && y < hitBottom) {
+                    targetSpan.classList.add('revealed');
+                    currentUnlockedWordIndex++;
+                } else {
+                    // You haven't functionally touched this precise next word yet. 
+                    // Break stops any future words from unlocking!
+                    break;
+                }
+            }
+
+            if (!hintDismissed && promiseHint) {
+                promiseHint.classList.add('hidden');
+                hintDismissed = true;
+            }
+
+            // Has everything been fully read?
+            if (currentUnlockedWordIndex >= wordSpans.length) {
+                if (!closingShown && closingLine) {
+                    closingLine.classList.add('revealed');
+                    closingShown = true;
+                }
+            }
+
+            resetIdleTimer();
+        }
+
+        function resetIdleTimer() {
+            clearTimeout(idleResetTimeout);
+            idleResetTimeout = setTimeout(() => {
+                if (wordSpans) {
+                    wordSpans.forEach(span => span.classList.remove('revealed'));
+                }
+                if (closingLine) closingLine.classList.remove('revealed');
+                closingShown = false;
+                currentUnlockedWordIndex = 0;
+            }, 8000); // Reset sequence automatically if they abandon reading it
+        }
+
+        let lastAddX = -9999, lastAddY = -9999;
+
+        promiseSection.addEventListener('mouseenter', () => {
+            mouseInsidePromise = true;
+            if (lightCursor) lightCursor.classList.add('active');
+            updateCanvasSize();
+        });
+
+        promiseSection.addEventListener('mouseleave', () => {
+            mouseInsidePromise = false;
+            if (lightCursor) lightCursor.classList.remove('active');
+        });
+
+        let isTicking = false;
+        promiseSection.addEventListener('mousemove', (e) => {
+            if (lightCursor) {
+                lightCursor.style.left = e.clientX + 'px';
+                lightCursor.style.top = e.clientY + 'px';
+            }
+
+            // Run at full 60FPS fluid logic natively coupled to monitors refresh rate
+            if (!isTicking) {
+                window.requestAnimationFrame(() => {
+                    addReveal(e.clientX, e.clientY);
+                    isTicking = false;
+                });
+                isTicking = true;
+            }
+        });
+
+        // Auto-hide hint after 6 seconds even without interaction
+        setTimeout(() => {
+            if (!hintDismissed && promiseHint) {
+                promiseHint.classList.add('hidden');
+                hintDismissed = true;
+            }
+        }, 6000);
+    }
 });
