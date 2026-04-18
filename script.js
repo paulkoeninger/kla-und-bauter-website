@@ -149,7 +149,7 @@ window.addEventListener('load', () => {
     });
 
     const initialPath = window.location.pathname.replace(/^\/|\/$/g, '');
-    const validRoutes = ['home', 'produktion', 'sessions', 'songcamps'];
+    const validRoutes = ['home', 'produktion', 'sessions', 'songcamps', 'team', 'releases', 'kontakt', 'impressum', 'datenschutz'];
     
     if (initialPath && validRoutes.includes(initialPath)) {
         setTimeout(() => navigateTo(initialPath, true, true), 50);
@@ -192,7 +192,7 @@ window.addEventListener('load', () => {
             incomingSection.classList.add('active');
             forceScrollToTop();
             currentRoute = targetRoute;
-            if (['home', 'produktion', 'songcamps'].includes(targetRoute)) document.documentElement.classList.add('snap-active');
+            if (['home', 'produktion', 'songcamps', 'sessions', 'team'].includes(targetRoute)) document.documentElement.classList.add('snap-active');
             return;
         }
 
@@ -238,7 +238,7 @@ window.addEventListener('load', () => {
                     ease: "power3.out",
                     onComplete: () => {
                         currentRoute = targetRoute;
-                        if (['home', 'produktion', 'songcamps'].includes(targetRoute)) document.documentElement.classList.add('snap-active');
+                        if (['home', 'produktion', 'songcamps', 'sessions', 'team'].includes(targetRoute)) document.documentElement.classList.add('snap-active');
                         isTransitioning = false;
                         gsap.set(incomingElements, { clearProps: "all" });
                     }
