@@ -7,16 +7,16 @@ Alle Sections leben in [index.html](../index.html) als `.page-section`-Blöcke. 
 | Route | DOM-ID | Zweck | Status |
 |---|---|---|---|
 | `/` | `#home` | Hero, 3-Pfad-Entry, Songcamp-Teaser | live |
-| `/produktion` | `#produktion` | Hero → Haltung → 4-Step-Prozess → Preis → CTA | live |
-| `/sessions` | `#sessions` | Einfaches Editorial-Split mit CTA | live, minimal |
-| `/songcamps` | `#songcamps` | Hero, Für-wen, Versprechen (interactive), Format, Alumni, **Camp-Fertigstellung**, Zitat, Warteliste | live, reichste Seite |
-| `/team` | `#team` | Adrian + Paul Bios | live |
-| `/releases` | `#releases` | 6 YouTube-Embeds im Grid | live |
-| `/kontakt` | `#kontakt` | Form + Info | live, Form ohne Backend |
+| `/produktion` | `#produktion` | Hero (Statement + Quick-Nav) → Haltung → 4 Steps → Full-Bleed → Preis → CTA | live |
+| `/sessions` | `#sessions` | Hero → Haltung → Full-Bleed → Preis → CTA (Taupe) → Songcamp-Verweis → Full-Bleed | live |
+| `/songcamps` | `#songcamps` | Hero → Für-Wen-Bild → Für Wen → Das-ist-nicht → Format → Preis → Alumni (Slider) → Vision → Versprechen → Warteliste → Camp-Fertigstellung | live, reichste Seite |
+| `/team` | `#team` | Hero → Adrian → Paul → Wir-Zitat | live |
+| `/releases` | `#releases` | 6 YouTube-Embeds im responsiven Grid | live |
+| `/kontakt` | `#kontakt` | Minimaler Hero + Mail-CTA | live, kein Formular |
 | `/impressum` | `#impressum` | Rechtliches | live |
-| `/datenschutz` | `#datenschutz` | DSGVO-Text | live |
+| `/datenschutz` | `#datenschutz` | DSGVO-Text (WordPress-Reste, muss aktualisiert werden) | live |
 
-> `validRoutes` in [script.js:148](../script.js#L148) listet aktuell nur `home, produktion, sessions, songcamps` als Deep-Link-fähig. Team/Releases/Kontakt/Impressum/Datenschutz sind **nicht** deep-linkbar — das sollte erweitert werden, sonst landet ein Deep-Link z. B. auf `/team` beim Reload auf Home.
+> Alle Routes sind seit der Session vom 18. April 2026 deep-linkbar — `validRoutes` in [script.js](../script.js) umfasst `home, produktion, sessions, songcamps, team, releases, kontakt, impressum, datenschutz`.
 
 ## Navigation
 - **Header-Logo** (oben links) → Home
@@ -26,7 +26,7 @@ Alle Sections leben in [index.html](../index.html) als `.page-section`-Blöcke. 
 ## Key Copy (aktuell auf der Seite)
 
 ### Home — Hero
-`KLA & BAUTER` / `DEIN TEAM FÜR DEINE IDEEN`
+`KLA & BAUTER` / *„Mit dir. Nicht für dich."*
 
 ### Home — 3-Pfad-Entry („Wonach ist dir?")
 1. **Einen Song anfangen.** — „Komm mit einer Idee. Wir machen einen Song daraus." → Sessions
@@ -46,24 +46,51 @@ Alle Sections leben in [index.html](../index.html) als `.page-section`-Blöcke. 
 - Closing: **„Musik ist der Prozess. Nicht sein Ergebnis."**
 
 ### Songcamp — Warteliste-Termine
-- Wintercamp 2027 · 07.–14. Januar · NRW
-- Frühlingscamp 2027 · 21.–28. April · NRW
+- Sommercamp 2026 · 31. August – 6. September · NRW
+- Wintercamp 2027 · 15.–21. Februar · NRW
+
+### Produktion — Hero-Claim
+Kicker „Produktion" · Statement *„Bis der Song klingt, **wie du ihn meinst**."* · darunter Quick-Nav zu den 4 Steps.
 
 ### Produktion — Prozess-Steps
 1. **Arrangement** — „Struktur, Dynamik, Entscheidungen."
 2. **Klangwelt** — „Instrumente, Texturen, Atmosphäre."
 3. **Recording** — „Der Moment, in dem der Song greifbar wird."
 4. **Mix & Master** — „Alles kommt zusammen."
-Preis: **1.500 € netto** Vollproduktion, 500 € netto je Einzelschritt.
-Unter dem Preis dezenter Verweis: *„Song aus einem Camp? Eigene Stufen dafür ⟶"* (→ `/songcamps`).
+Preis: **1.785 €** (inkl. 19 % MwSt.) · darunter camp-pointer *„Song aus einem Camp? Eigene Stufen dafür ⟶"* zu `#camp-fertigstellung`.
 
-### Songcamp — Nach dem Camp (Camp-Fertigstellung)
-Kicker: *Nach dem Camp* · Headline: **Der Song geht weiter.**
-Drei Stufen als editoriale Liste:
-- **01 · Finishing — 500 € netto** — Mix, Mastering, letzter Schliff.
-- **02 · Completion — 900 € netto** — eine Seite fertig (Vocals ODER Produktion), andere neu.
-- **03 · Full Production — 1.500 € netto** — komplett neu, wie eine Vollproduktion.
+### Sessions — Seitenaufbau
+1. Hero — *„Eine Session. **Ein Song**."* + „Komm mit einer Idee…"
+2. Haltung — *„Kein Kurs. Kein Workshop. **Nur der Song**."*
+3. Full-Bleed-Pause (produktion_1.jpg)
+4. Preis — `Session · 500 € · inkl. 19 % MwSt.`
+5. CTA (Taupe + Accent-Line) — *„Schick uns **deine** Idee. **Wir schreiben dir zurück**."* + mailto
+6. Songcamp-Verweis — *„Eine Woche lang Sessions. Ein Haus in der Ruhe. Mit Garten und Kaffee."* + Link
+7. Full-Bleed-Pause (produktion_3.jpg)
+
+### Team — Seitenaufbau
+1. Hero — Kicker „Team" + *„Zwei Musiker, die gelernt haben, **zuzuhören**."*
+2. Adrian — Kicker + Role-Label + *„Macht Akkordfolgen zu **Songs**."* + Bio-Zeile + `adrian.jpg`
+3. Paul — Kicker + Role-Label + *„Arbeitet nah an **Sprache**, Emotion und Struktur."* + Bio-Zeile + `paul.jpg`
+4. Wir-Zitat — *„Wir sind keine Lehrer. Keine Coaches…"*
+
+### Kontakt
+Minimaler Hero: Accent-Line + Kicker „Kontakt" + *„Schick uns deine **Idee**."* + Lead + `hallo@klaundbauter-musikproduktion.com`.
+
+### Songcamp — Preis (eigene Section, subtil)
+**1.200 €** · *„Sieben Tage. Unterkunft inklusive."* · *„inkl. 19 % MwSt."*
+
+### Songcamp — Nach dem Camp (Camp-Fertigstellung, 100 vh forced)
+Kicker „Nach dem Camp" · Headline *„Der Song geht weiter."* · ID `#camp-fertigstellung` für Anchor-Links.
+Drei Stufen:
+- **01 · Finishing — 500 €** — Mix, Mastering, letzter Schliff.
+- **02 · Completion — 900 €** — eine Seite fertig, die andere neu.
+- **03 · Full Production — 1.500 €** — *„De facto eine Vollproduktion — als Camp-Rabatt, sonst 1.785 €."*
+Gemeinsamer Hinweis: *„inkl. 19 % MwSt."*
 Schluss: *„Welche Stufe deiner braucht, entscheiden wir gemeinsam. Keine schwarze Box."*
+
+### Songcamp — Alumni-Pager
+Kicker „Was Artists sagen" + Headline *„Gedanken aus den **Camps**."* + Lead. Horizontaler Slider mit 3 Seiten à 3 Cards (9 Cards total, alle Platzhalter außer den originalen 3). Pager-Dots (1/2/3) unten. Auf Mobile aufgelöst zu langer Liste ohne Pager.
 
 ## Asset-Inventar
 
