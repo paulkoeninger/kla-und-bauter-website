@@ -38,6 +38,30 @@
     --body-color: var(--text-primary);
     --body-max-width: 680px;
 
+    /* Layout-Spacing — zentrale Source of Truth für horizontale Ränder.
+       Breakpoints (am :root unten) passen den Wert an.
+       Regel: Desktop 4rem, Tablet/Mobile 2rem, Small 1rem. */
+    --edge: 4rem;
+
+    /* Vertikaler Abstand von Navbar-Oberkante bis Content-Start.
+       Editorial-luftig: Content darf nie direkt unter der Navbar kleben. */
+    --content-top: 14rem;
+
+    /* Breakpoint-Referenz (Media Queries können keine Custom Properties):
+       --bp-tablet: 992px  — Tablet → Mobile-Layout
+       --bp-mobile: 768px  — Phone-Layout
+       --bp-small:  480px  — sehr kleine Phones */
+
+}
+
+@media (max-width: 992px) {
+    :root {
+        --edge: 2rem;
+        --content-top: 11rem;
+    }
+}
+@media (max-width: 480px) {
+    :root { --edge: 1rem; }
 }
 
 * {
@@ -112,6 +136,13 @@ blockquote, .quote {
     display: block;
     transform-origin: center center;
 }
+@media (max-width: 768px) {
+    /* Matcht die Footer-Klabautermann-Größe exakt (beide 42px). */
+    .nav-logo-img {
+        width: 42px;
+        height: auto;
+    }
+}
 
 @keyframes tickle {
     0%   { transform: rotate(0deg) scale(1) translateY(0px); }
@@ -132,7 +163,7 @@ blockquote, .quote {
 .navbar {
     position: absolute;
     top: 0; left: 0; width: 100%;
-    padding: 2.5rem 4rem;
+    padding: 2.5rem var(--edge);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -141,7 +172,8 @@ blockquote, .quote {
 }
 @media (max-width: 768px) {
     .navbar {
-        padding: 1.5rem 2rem;
+        padding-top: 1.5rem;
+        padding-bottom: 1.5rem;
     }
 }
 .navbar > * {
@@ -169,7 +201,7 @@ html:has(#fullscreen-menu.open) .logo {
     flex-direction: column;
     gap: 8px;
     position: fixed;
-    right: 4rem;
+    right: var(--edge);
     top: calc(2.5rem + 15.5px); /* Align perfectly with the 45px logo */
     z-index: 200;
     padding: 1rem; /* unsichtbarer Touch-Target-Vergrößerer */
@@ -177,7 +209,6 @@ html:has(#fullscreen-menu.open) .logo {
 }
 @media (max-width: 768px) {
     .menu-toggle {
-        right: 2rem;
         margin: -1rem;
     }
 }
@@ -198,8 +229,8 @@ html:has(#fullscreen-menu.open) .logo {
 
 /* Hero Section */
 .hero {
-    min-height: 100vh;
-    padding: 0 4rem;
+    min-height: 100svh;
+    padding: 0 var(--edge);
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -260,9 +291,9 @@ html:has(#fullscreen-menu.open) .logo {
 /* Home Entry Section */
 .home-entry-section {
     position: relative; /* Anchors the new thought-panel absolute overlay on Desktop */
-    height: 100vh;
-    min-height: 100vh;
-    padding: 0 4rem;
+    height: 100svh;
+    min-height: 100svh;
+    padding: 0 var(--edge);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -345,25 +376,36 @@ html:has(#fullscreen-menu.open) .logo {
     flex-direction: column;
 }
 
-/* Core Expansion Magic triggered ONLY by explicit intent */
-.home-entry-section:has(.entry-thought-trigger:hover) .entry-card,
-.home-entry-section:has(.camp-path:hover) .entry-card,
+/* Core Expansion Magic — getrennt in zwei Pfade:
+   1) Hover-getriggert (Desktop): nur auf Geräten mit echter Maus/Trackpad.
+   2) Klick-getriggert (.is-expanded): auf allen Geräten. */
+@media (hover: hover) {
+    .home-entry-section:has(.entry-thought-trigger:hover) .entry-card,
+    .home-entry-section:has(.camp-path:hover) .entry-card {
+        transition-delay: 0s !important;
+    }
+    .home-entry-section:has(.entry-thought-trigger:hover) .entry-card-1,
+    .home-entry-section:has(.camp-path:hover) .entry-card-1 {
+        width: 33.333%; padding-right: 2.5rem;
+    }
+    .home-entry-section:has(.entry-thought-trigger:hover) .entry-card-2,
+    .home-entry-section:has(.camp-path:hover) .entry-card-2 {
+        width: 33.333%; padding-left: 2.5rem; padding-right: 2.5rem;
+    }
+    .home-entry-section:has(.entry-thought-trigger:hover) .camp-path,
+    .home-entry-section:has(.camp-path:hover) .camp-path {
+        width: 33.333%; padding-left: 2.5rem; opacity: 1; pointer-events: auto;
+    }
+}
 .home-entry-section.is-expanded .entry-card {
     transition-delay: 0s !important; /* Safely override entry stagger */
 }
-
-.home-entry-section:has(.entry-thought-trigger:hover) .entry-card-1,
-.home-entry-section:has(.camp-path:hover) .entry-card-1,
 .home-entry-section.is-expanded .entry-card-1 {
     width: 33.333%; padding-right: 2.5rem;
 }
-.home-entry-section:has(.entry-thought-trigger:hover) .entry-card-2,
-.home-entry-section:has(.camp-path:hover) .entry-card-2,
 .home-entry-section.is-expanded .entry-card-2 {
     width: 33.333%; padding-left: 2.5rem; padding-right: 2.5rem;
 }
-.home-entry-section:has(.entry-thought-trigger:hover) .camp-path,
-.home-entry-section:has(.camp-path:hover) .camp-path,
 .home-entry-section.is-expanded .camp-path {
     width: 33.333%; padding-left: 2.5rem; opacity: 1; pointer-events: auto;
 }
@@ -467,7 +509,7 @@ html:has(#fullscreen-menu.open) .logo {
 /* Home Entry Responsive Info */
 @media (max-width: 992px) {
     .home-entry-section {
-        padding: 6rem 2rem 4rem 2rem;
+        padding: var(--content-top) var(--edge) 4rem;
         height: auto;
         display: block; /* Disable 100vh center flex to allow natural scrolling if mobile cards get tall */
     }
@@ -488,7 +530,7 @@ html:has(#fullscreen-menu.open) .logo {
     display: none;
     opacity: 0;
     width: 100%;
-    min-height: 100vh;
+    min-height: 100svh;
     position: absolute;
     top: 0;
     left: 0;
@@ -524,10 +566,7 @@ html:has(#fullscreen-menu.open) .logo {
     text-align: left;
     width: 100%;
     max-width: 1440px;
-    padding: 0 4rem;
-}
-@media (max-width: 992px) {
-    .menu-content { padding: 0 2rem; }
+    padding: 0 var(--edge);
 }
 .menu-links {
     list-style: none;
@@ -570,7 +609,7 @@ html:has(#fullscreen-menu.open) .logo {
 
 /* Base Page Styles */
 .page-container {
-    padding: 140px 4rem 4rem 4rem; /* top padding for navbar */
+    padding: var(--content-top) var(--edge) 4rem;
     max-width: 1440px;
     margin: 0 auto;
 }
@@ -920,9 +959,9 @@ html:has(#fullscreen-menu.open) .logo {
 /* Typography + spacings mirror the other sc-blocks (Format, Für Wen) for visual parity. */
 /* Force 100vh Section-Höhe — Spacings kompakter, damit Typo nicht gequetscht wird. */
 .sc-block.camp-finish-section {
-    height: 100vh;
-    min-height: 100vh;
-    max-height: 100vh;
+    height: 100svh;
+    min-height: 100svh;
+    max-height: 100svh;
     overflow: hidden;
 }
 /* Mobile: 100vh-Zwang lockern, damit Content nicht gecuttet wird */
@@ -954,34 +993,25 @@ html:has(#fullscreen-menu.open) .logo {
     margin-bottom: 1.5rem;
     max-width: 680px;
 }
+/* Analog zur Fünf-Tage-Aufzählung: Grid von Cards mit accent-Top-Strich.
+   Titel 17px secondary + Preis inline, Desc 13px secondary-color. */
 .camp-finish-stages {
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-    padding-top: 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2rem;
     margin-bottom: 1.5rem;
-    border-top: 0.5px solid rgba(0, 0, 0, 0.1);
 }
 .camp-finish-stage {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 2rem;
-    align-items: baseline;
-}
-.camp-finish-num {
-    font-family: var(--font-primary);
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.18em;
-    color: var(--accent-color);
-    padding-top: 0.4em;
+    border-top: 1px solid var(--accent-color);
+    padding: 1.5rem 1rem 0 0;
+    background: transparent;
 }
 .camp-finish-title {
     font-family: var(--font-secondary);
     font-size: 17px;
     font-weight: 400;
     line-height: 1.3;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
     color: var(--text-primary);
 }
 .camp-finish-price {
@@ -1011,13 +1041,8 @@ html:has(#fullscreen-menu.open) .logo {
     max-width: none;
 }
 @media (max-width: 768px) {
-    .camp-finish-stage {
-        grid-template-columns: 1fr;
-        gap: 0.35rem;
-    }
-    .camp-finish-num {
-        padding-top: 0;
-    }
+    /* Preis auf Mobile in eigene Zeile unter den Titel — sonst bricht die
+       Kombination Titel + „— 500 €" ungünstig um. */
     .camp-finish-price {
         display: block;
         margin-left: 0;
@@ -1083,16 +1108,16 @@ html:has(#fullscreen-menu.open) .logo {
         order: -1;
     }
     .page-container {
-        padding: 120px 2rem 2rem 2rem;
+        padding: var(--content-top) var(--edge) 2rem;
     }
-    .hero { 
-        padding: 100px 2rem 4rem 2rem; /* Massively pulled up so hero images and text start high under the standard top-left navbar */
+    .hero {
+        padding: var(--content-top) var(--edge) 4rem;
         flex-direction: column;
         justify-content: flex-start;
-        align-items: center; /* Centers items */
+        align-items: center;
         gap: 3rem;
         height: auto;
-        min-height: 100vh;
+        min-height: 100svh;
     }
     .hero-content {
         flex: none;
@@ -1126,7 +1151,7 @@ html:has(#fullscreen-menu.open) .logo {
         gap: 1.5rem;
     }
 }
-@media (max-width: 576px) {
+@media (max-width: 768px) {
     .process-overview {
         grid-template-columns: 1fr;
     }
@@ -1136,8 +1161,8 @@ html:has(#fullscreen-menu.open) .logo {
 .home-camp-section.teaser {
     position: relative;
     width: 100%;
-    height: 100vh;
-    min-height: 100vh;
+    height: 100svh;
+    min-height: 100svh;
     overflow: hidden;
     cursor: pointer;
     background: #111; /* Fallback dark */
@@ -1298,7 +1323,7 @@ html:has(#fullscreen-menu.open) .logo {
     opacity: 1; transform: translateY(0); transition-delay: 0.6s;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 480px) {
     .teaser-kicker { margin-bottom: 1.8rem; }
     .teaser-cta { margin-top: 2rem; }
 }
@@ -1338,9 +1363,8 @@ html:has(#fullscreen-menu.open) .logo {
 .sc-list-item--light:hover {
     color: var(--text-primary);
 }
-.sc-format-grid { display: grid; grid-template-columns: repeat(5, 1fr); border: 1px solid var(--bg-secondary); }
-.sc-day-card { padding: 2.5rem 1.5rem; border-right: 1px solid var(--bg-secondary); }
-.sc-day-card:last-child { border-right: none; }
+.sc-format-grid { display: grid; grid-template-columns: repeat(5, 1fr); }
+.sc-day-card { padding: 2.5rem 1.5rem; }
 .sc-alumni-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
 
 /* Alumni-Pager — horizontaler Slider mit sichtbarem Gap zwischen Seiten */
@@ -1393,7 +1417,8 @@ html:has(#fullscreen-menu.open) .logo {
     color: var(--bg-primary);
     border-color: var(--accent-color);
 }
-/* Mobile: Slider auflösen, alle Cards als lange Liste untereinander — kein Pager */
+/* Mobile: Slider auflösen, progressive Reveal — initial nur Page 1 (3 Stimmen),
+   Klick auf .sc-alumni-more enthüllt jeweils die nächste Page. */
 @media (max-width: 768px) {
     .sc-alumni-pager {
         overflow: visible;
@@ -1407,8 +1432,51 @@ html:has(#fullscreen-menu.open) .logo {
         flex: 0 0 auto;
         width: 100%;
     }
+    /* Page 2 und 3 default hidden auf Mobile */
+    .sc-alumni-pager-track > .sc-alumni-page:nth-child(n+2) {
+        display: none;
+    }
+    /* Step 1: Page 2 sichtbar */
+    .sc-alumni-pager[data-reveal="1"] .sc-alumni-pager-track > .sc-alumni-page:nth-child(2),
+    /* Step 2: Page 2 + 3 sichtbar */
+    .sc-alumni-pager[data-reveal="2"] .sc-alumni-pager-track > .sc-alumni-page:nth-child(-n+3) {
+        display: block;
+    }
     .sc-alumni-nav {
         display: none;
+    }
+}
+
+/* „Mehr Stimmen"-Button — nur Mobile sichtbar, Desktop hidden. */
+.sc-alumni-more {
+    display: none;
+}
+@media (max-width: 768px) {
+    .sc-alumni-more {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.6rem;
+        width: fit-content;
+        margin: 2.5rem auto 0;
+        padding: 0.75rem 0;
+        background: transparent;
+        border: none;
+        border-bottom: 1px solid var(--accent-color);
+        font-family: var(--font-primary);
+        font-size: 15px;
+        font-weight: 500;
+        letter-spacing: 0.02em;
+        color: var(--text-primary);
+        cursor: pointer;
+        transition: border-color 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .sc-alumni-more[hidden] {
+        display: none;
+    }
+    .sc-alumni-more .arrow-icon {
+        display: inline-block;
+        transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     }
 }
 .sc-fact-grid { display: flex; gap: 4rem; flex-wrap: wrap; }
@@ -1443,11 +1511,11 @@ html:has(#fullscreen-menu.open) .logo {
 }
 
 /* Fluid Scroll Wrappers */
-.sc-block { 
-    min-height: 100vh;
-    padding: clamp(80px, 12vh, 120px) 4rem clamp(2rem, 8vh, 6rem); 
-    width: 100%; 
-    box-sizing: border-box; 
+.sc-block {
+    min-height: 100svh;
+    padding: clamp(80px, 12vh, 120px) var(--edge) clamp(2rem, 8vh, 6rem);
+    width: 100%;
+    box-sizing: border-box;
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -1624,20 +1692,30 @@ html:has(#fullscreen-menu.open) .logo {
         text-align: left !important;
         align-items: flex-start !important;
     }
-    .sc-format-grid { grid-template-columns: 1fr 1fr; border-bottom: none; }
-    .sc-day-card { border-right: 1px solid var(--bg-secondary); border-bottom: 1px solid var(--bg-secondary); }
+    .sc-format-grid { grid-template-columns: 1fr 1fr; }
     .sc-alumni-grid { grid-template-columns: 1fr; }
     .sc-fact-grid { gap: 2rem; }
     .sc-cta-box { flex-direction: column; }
-    .sc-block { padding: clamp(80px, 10vh, 100px) 1.5rem 3rem; }
-    
+    /* Analog zu .snap-block: großzügige min-height, Content mittig,
+       viel Atem. Desktop-100vh-Ästhetik auf Mobile ohne den Zwang. */
+    .sc-block {
+        min-height: 80svh;
+        justify-content: center;
+        padding: 6rem var(--edge);
+    }
+    .page-section > .sc-block:first-child {
+        padding-top: var(--content-top);
+        padding-bottom: 8rem;
+        min-height: 90svh;
+    }
+
 }
 
 /* Subtler Third Path Trigger (Ich weiß noch gar nicht) */
 .entry-thought-trigger {
     position: absolute;
     bottom: 2rem;
-    right: 4rem; /* Aligns neatly to the right section edge */
+    right: var(--edge); /* Aligns neatly to the right section edge */
     display: flex;
     align-items: center;
     gap: 1rem; /* Connects line visual smoothly to text */
@@ -1691,55 +1769,41 @@ html:has(#fullscreen-menu.open) .logo {
     opacity: 0.8;
 }
 
-/* Mobile Grid Overrides for Grid Expansion */
+/* Mobile: alle drei Karten gleichberechtigt untereinander.
+   Desktop-„versteckter dritter Weg"-Trick entfällt — auf Touch kann man
+   nicht hovern, und die Entdeckung würde nur im Weg stehen. */
 @media (max-width: 992px) {
     .entry-grid {
         flex-direction: column;
     }
-    .entry-card-1 {
-        width: 100%;
-        padding-right: 0;
-    }
-    .entry-card-2 {
-        width: 100%;
-        padding-left: 0;
-        margin-top: 4rem; /* Manual vertical gap */
-    }
+    .entry-card-1,
+    .entry-card-2,
     .entry-card.camp-path {
         width: 100%;
         padding-left: 0;
-        
-        display: grid;
-        grid-template-rows: 0fr;
-        opacity: 0;
-        margin-top: 0;
-        pointer-events: none;
-        
-        transition: grid-template-rows 0.7s cubic-bezier(0.16, 1, 0.3, 1), margin-top 0.7s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
+        padding-right: 0;
+    }
+    .entry-card-2,
+    .entry-card.camp-path {
+        margin-top: 4rem;
+    }
+    /* camp-path tritt als dritte Karte in den Reveal ein, statt versteckt zu bleiben. */
+    .entry-card.camp-path {
+        pointer-events: auto;
+        transition-delay: 0.45s;
     }
     .entry-card-inner {
-        width: 100%; /* Drops strict clamp fixing logic on mobile */
+        width: 100%;
         max-width: 100%;
-        overflow: hidden; /* Enables strict vertical expansion scaling natively */
     }
-
-    .home-entry-section.is-expanded .entry-card-1,
-    .home-entry-section.is-expanded .entry-card-2 {
-        width: 100%;
-        padding-left: 0; padding-right: 0;
-    }
-    .home-entry-section.is-expanded .camp-path {
-        width: 100%;
-        grid-template-rows: 1fr;
-        padding-left: 0;
-        margin-top: 4rem;
-        opacity: 1;
-        pointer-events: auto;
+    /* Thought-Trigger gehört zum Desktop-Reveal — auf Mobile redundant. */
+    .entry-thought-trigger {
+        display: none;
     }
 }
 .camp-image-col {
     flex: 1; /* Matches the remaining 65% width natively */
-    height: 100vh;
+    height: 100svh;
     overflow: hidden;
     position: relative;
     background-color: var(--text-primary);
@@ -1772,7 +1836,7 @@ html:has(#fullscreen-menu.open) .logo {
         height: auto;
     }
     .camp-text-col {
-        padding: 6rem 2rem;
+        padding: var(--content-top) var(--edge);
     }
     .camp-image-col {
         height: 60vh; /* Controlled image window for mobile */
@@ -1854,10 +1918,10 @@ html:has(#fullscreen-menu.open) .logo {
 /* Footer Styles */
 .site-footer {
     background-color: var(--bg-primary);
-    padding: clamp(5rem, 8vh, 8rem) 4rem 1.5rem 4rem;
+    padding: clamp(5rem, 8vh, 8rem) var(--edge) 1.5rem;
     position: relative;
     z-index: 10;
-    height: 100vh;
+    height: 100svh;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -2010,41 +2074,35 @@ html:has(#fullscreen-menu.open) .logo {
     color: var(--accent-color);
 }
 
-/* Mobile Footer: nur Klabautermann zentriert, alles andere hidden */
+/* Klabautermann-Only-Footer auf Mobile. Desktop-Default hidden. */
 .footer-logo-mobile {
     display: none;
 }
-@media (max-width: 768px) {
-    .footer-cta {
-        margin-bottom: auto;
-    }
-    .footer-grid,
-    .footer-bottom {
-        display: none;
-    }
-    .footer-logo-mobile {
-        display: block;
-        width: 64px;
-        height: auto;
-        margin: 2rem auto 0 auto;
-        opacity: 0.5;
-    }
-}
 
-@media (max-width: 1200px) {
-    .site-footer { padding: clamp(4rem, 6vh, 8rem) 2rem 2rem 2rem; }
-}
+/* Tablet (≤992px): Footer wächst mit Inhalt, CTA-Headline kleiner,
+   Adressen-Grid auf 2 Spalten. */
 @media (max-width: 992px) {
-    .site-footer { height: auto; min-height: 100vh; padding: 6rem 2rem 2rem 2rem; }
+    .site-footer { height: auto; min-height: 100svh; padding: 6rem var(--edge) 2rem; }
     .footer-cta { margin-bottom: 6rem; }
     .footer-cta h2 { font-size: 2.2rem; }
     .footer-grid { grid-template-columns: 1fr 1fr; gap: 3rem; margin-bottom: 3rem; }
 }
+
+/* Phone (≤768px): Reduktion auf CTA oben + Klabautermann ganz unten.
+   Adressen, Navi und Copyright verschwinden bewusst — kommt alles in der
+   Hauptnavigation vor. margin-bottom: auto am CTA pusht das Logo ans
+   untere Ende der flex-column. */
 @media (max-width: 768px) {
-    .footer-cta { margin-bottom: 4rem; }
-    .footer-grid { grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 3rem; } /* Places addresses side by side with tighter gap to prevent text wrap on extremely small screens */
-    .footer-col:last-child { grid-column: 1 / -1; margin-top: 1.5rem; } /* Pushes Navigation neatly into its own full-width row below the addresses */
-    .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
+    .footer-cta { margin-bottom: auto; }
+    .footer-grid,
+    .footer-bottom { display: none; }
+    .footer-logo-mobile {
+        display: block;
+        width: 42px;
+        height: auto;
+        margin: 2rem auto 0;
+        opacity: 1;
+    }
 }
 /* ======================================================================
    EDITORIAL SYSTEM (SUBPAGES)
@@ -2052,7 +2110,7 @@ html:has(#fullscreen-menu.open) .logo {
 .editorial-container {
     max-width: 1440px;
     margin: 0 auto;
-    padding: 10rem 4rem 10rem 4rem; /* High breathing margins */
+    padding: var(--content-top) var(--edge);
 }
 .editorial-header {
     max-width: 800px;
@@ -2191,7 +2249,7 @@ html:has(#fullscreen-menu.open) .logo {
 /* Mobile Breakdowns */
 @media (max-width: 992px) {
     .editorial-container {
-        padding: 6rem 2rem;
+        padding: var(--content-top) var(--edge);
     }
     .editorial-split {
         grid-template-columns: 1fr;
@@ -2220,16 +2278,16 @@ html:has(#fullscreen-menu.open) .logo {
     }
 }
 
-/* Viewport Locking / Snap Blocks */
+/* 100vh-Pacing-Container (historisch „snap-block" — Scroll-Snap wurde entfernt, Name bleibt) */
 .snap-block {
-    min-height: 100vh;
+    min-height: 100svh;
     width: 100%;
     margin-left: auto;
     margin-right: auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 0 4rem;
+    padding: 0 var(--edge);
     box-sizing: border-box;
     position: relative;
 }
@@ -2243,10 +2301,10 @@ html:has(#fullscreen-menu.open) .logo {
 }
 .snap-block-inner.full-bleed {
     max-width: none;
-    height: 100vh;
+    height: 100svh;
 }
 .snap-block-inner.full-bleed .cinematic-img {
-    height: 100vh;
+    height: 100svh;
 }
 
 /* Production Snap Imaging */
@@ -2267,8 +2325,19 @@ html:has(#fullscreen-menu.open) .logo {
 }
 
 @media (max-width: 992px) {
+    /* Mobile-Ästhetik folgt Desktop: viel Weißraum, Content schwebt mittig.
+       Kein starrer 100svh-Zwang — dafür großzügige min-height (80%) +
+       generöses Padding + Flex-Center. Kurzer Content → editorial Luft
+       oben und unten. Langer Content → Section dehnt sich natürlich aus. */
     .snap-block {
-        padding: 0 1.5rem;
+        min-height: 80svh;
+        justify-content: center;
+        padding: 6rem var(--edge);
+    }
+    .page-section > .snap-block:first-child {
+        padding-top: var(--content-top);
+        padding-bottom: 8rem;
+        min-height: 90svh;
     }
     .snap-block-inner.editorial-split {
         gap: 2rem;
@@ -2281,15 +2350,12 @@ html:has(#fullscreen-menu.open) .logo {
         object-fit: contain;
     }
     .editorial-quote .editorial-title {
-        font-size: 2rem; /* scale down positioning block */
+        font-size: 2rem;
     }
 }
 @media (max-width: 480px) {
     .prod-hero-img, .prod-img {
         max-height: 35vh; /* heavily constrain image on small screens to fit text inside 100vh */
-    }
-    .snap-block {
-        padding: 0 1rem;
     }
     .editorial-quote .editorial-title {
         font-size: 1.7rem;
@@ -2403,5 +2469,117 @@ html:has(#fullscreen-menu.open) .logo {
     }
     .section-promise.cursor-active {
         cursor: auto !important;
+    }
+}
+
+/* ======================================================================
+   TOUCH-DEVICE HOVER-RESET
+   ----------------------------------------------------------------------
+   Auf Geräten ohne Maus-Hover emuliert der Browser :hover beim ersten Tap
+   („Sticky Hover"): Elemente bleiben im Hover-Zustand hängen, bis woanders
+   getippt wird. Sieht unsauber aus.
+   Dieser Block neutralisiert jede Hover-Regel auf den Base-Wert der Klasse
+   zurück. Gleiche Spezifität wie das Original → späterer Eintrag gewinnt.
+   Kein !important nötig (außer bei Regeln, deren Original !important ist).
+   ====================================================================== */
+@media (hover: none) {
+    /* Navbar / Logo */
+    .logo:hover .nav-logo-img { animation: none; }
+    .navbar:has(.menu-toggle:hover) .logo { opacity: 1; }
+
+    /* Entry-Cards (Home) */
+    .entry-card:hover .entry-img {
+        transform: none;
+        filter: brightness(0.9) saturate(0.85);
+    }
+    .entry-card:hover .entry-title { color: var(--text-primary); }
+    .entry-card:hover .entry-cta { border-bottom-color: var(--accent-color); }
+    .entry-card:hover .entry-cta .arrow-icon { transform: none; }
+
+    /* Menü / Small Links */
+    .menu-links a:hover { color: var(--text-primary); }
+    .small-link:hover { color: var(--text-primary); }
+
+    /* Generic Buttons */
+    .cta-button:hover {
+        background-color: var(--text-primary);
+        transform: none;
+    }
+    .process-step:hover { transform: none; }
+    .prod-hero-nav-item:hover {
+        transform: none;
+        color: var(--text-primary);
+    }
+    .camp-pointer-link:hover { border-bottom-color: var(--accent-color); }
+    .camp-pointer-link:hover .arrow-icon { transform: none; }
+
+    /* Teaser (Home Songcamp) */
+    .home-camp-section.teaser:hover .teaser-bg { opacity: 0.35; }
+    .teaser-cta:hover { color: rgba(255, 255, 255, 0.45); }
+    .teaser-cta:hover .teaser-arrow { width: 20px; transform: none; }
+
+    /* Songcamp-Listen / Pager */
+    .sc-list-item:hover { color: rgba(255, 255, 255, 0.7); }
+    .sc-list-item:hover span { transform: none; }
+    .sc-list-item--light:hover { color: var(--text-secondary); }
+    .sc-alumni-dot:hover {
+        color: var(--text-secondary);
+        border-color: rgba(0, 0, 0, 0.2);
+    }
+
+    /* KB-Links / Primary-Button / Cards */
+    .kb-link:hover {
+        color: var(--text-primary);
+        border-color: rgba(0, 0, 0, 0.15);
+    }
+    .kb-link:hover .arrow-icon { transform: translateY(1px); }
+    .sc-camp-card:hover {
+        transform: none;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+    }
+    .kb-btn-primary:hover { opacity: 1; }
+    .kb-btn-primary:hover .arrow-icon { transform: translateY(1px); }
+
+    /* MindMap-Wörter (Klabautermann-Section, auf Mobile eh abgeschaltet) */
+    .mm-word:hover {
+        color: inherit;
+        text-shadow: none;
+        font-weight: inherit;
+        animation-play-state: running !important;
+    }
+
+    /* Camp-CTA (White on Dark) */
+    .camp-cta:hover {
+        color: rgba(255, 255, 255, 0.85);
+        border-color: rgba(255, 255, 255, 0.3);
+    }
+    .camp-cta:hover .arrow-icon { transform: none; }
+
+    /* Thought-Trigger (auf Mobile display:none, Reset als Sicherheit) */
+    .entry-thought-trigger:hover { opacity: 0.45 !important; }
+    .entry-thought-trigger:hover .thought-text { color: var(--text-secondary); }
+    .entry-thought-trigger:hover .thought-line {
+        width: 60px;
+        background-color: var(--text-secondary);
+        opacity: 0.4;
+    }
+
+    /* Home-Camp Bildbereich */
+    .home-camp-section:hover .camp-img {
+        filter: brightness(0.9) saturate(0.85);
+        transform: none;
+    }
+
+    /* Footer */
+    .footer-cta-link:hover { border-bottom-color: var(--accent-color); }
+    .footer-cta-link:hover .arrow-icon { transform: none; }
+    .footer-link:hover { color: var(--text-primary); }
+    .footer-nav a:hover { color: var(--text-primary); }
+    .footer-legal-links a:hover { color: inherit; }
+
+    /* Editorial-Link (Subpages) */
+    .editorial-link:hover {
+        color: var(--text-primary);
+        border-color: var(--accent-color);
     }
 }

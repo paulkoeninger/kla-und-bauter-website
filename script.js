@@ -310,6 +310,19 @@ window.addEventListener('load', () => {
         });
     }
 
+    // Alumni „Mehr Stimmen"-Button (Mobile) — progressives Reveal, +3 Cards pro Klick
+    const alumniPager = document.querySelector('.sc-alumni-pager');
+    const alumniMore = document.querySelector('.sc-alumni-more');
+    if (alumniPager && alumniMore) {
+        let revealStep = 0;
+        const maxStep = document.querySelectorAll('.sc-alumni-pager-track > .sc-alumni-page').length - 1;
+        alumniMore.addEventListener('click', () => {
+            revealStep = Math.min(revealStep + 1, maxStep);
+            alumniPager.setAttribute('data-reveal', String(revealStep));
+            if (revealStep >= maxStep) alumniMore.hidden = true;
+        });
+    }
+
     // Extremely sluggish cinematic GSAP Mouse Parallax
     const campSection = document.querySelector('.home-camp-section');
     const campImg = document.querySelector('.camp-bg-img');
