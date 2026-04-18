@@ -789,6 +789,65 @@ html:has(#fullscreen-menu.open) .logo {
     opacity: 0.85;
 }
 
+/* Kontakt-Page — Studios Grid + Adress-Style */
+.contact-studios-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    max-width: 760px;
+}
+.studio-label {
+    font-family: var(--font-primary);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent-color);
+    margin-bottom: 1rem;
+}
+.studio-address {
+    font-family: var(--font-primary);
+    font-size: var(--body-font-size);
+    line-height: var(--body-line-height);
+    font-weight: var(--body-font-weight);
+    color: var(--text-primary);
+    margin: 0;
+    max-width: none;
+}
+@media (max-width: 768px) {
+    .contact-studios-grid {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+    }
+}
+
+/* Team-Page — Bio-Label + Meta-Zeile unter Editorial-Text */
+.team-role {
+    font-family: var(--font-primary);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    max-width: none;
+}
+.team-bio {
+    font-family: var(--font-primary);
+    font-size: 13px;
+    line-height: 1.7;
+    font-weight: 300;
+    color: var(--text-secondary);
+    margin-top: 2rem;
+    max-width: 680px;
+}
+.team-portrait {
+    width: 100%;
+    aspect-ratio: 4/5;
+    object-fit: cover;
+    filter: brightness(0.92) saturate(0.88);
+}
+
 /* Produktion Hero — Quick-Nav zu den 4 Schritten */
 .prod-hero-nav {
     display: flex;
