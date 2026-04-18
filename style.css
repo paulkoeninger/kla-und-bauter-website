@@ -29,6 +29,15 @@
     --tracking-wide: 0.05em;
     --tracking-wider: 0.1em;
     --max-width-text: 65ch;
+
+    /* Global Body Text — single source of truth for paragraph typography.
+       Matches the Songcamp reference (Fünf Tage, ein Rhythmus. body). */
+    --body-font-size: 16px;
+    --body-line-height: 1.75;
+    --body-font-weight: 300;
+    --body-color: var(--text-primary);
+    --body-max-width: 680px;
+
 }
 
 * {
@@ -37,8 +46,10 @@
     box-sizing: border-box;
 }
 
-html.snap-active {
-    scroll-snap-type: y mandatory;
+@media (pointer: coarse) {
+    html.snap-active {
+        scroll-snap-type: y mandatory;
+    }
 }
 
 body {
@@ -51,9 +62,12 @@ body {
 }
 
 p {
-    max-width: var(--max-width-text);
-    line-height: var(--lh-relaxed);
-    color: var(--text-secondary);
+    font-family: var(--font-primary);
+    font-size: var(--body-font-size);
+    line-height: var(--body-line-height);
+    font-weight: var(--body-font-weight);
+    color: var(--body-color);
+    max-width: var(--body-max-width);
 }
 
 em, i {
@@ -86,13 +100,14 @@ blockquote, .quote {
 .loader-logo {
     width: 80px;
     height: auto;
-    animation: pulse 1.5s infinite;
+    animation: floatSpin 1.8s linear infinite;
     transform-origin: center;
+    will-change: transform;
 }
-@keyframes pulse {
-    0% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.15); opacity: 0.7; }
-    100% { transform: scale(1); opacity: 1; }
+/* Flotte Rotation auf der Stelle — läuft solange der Loader sichtbar ist. */
+@keyframes floatSpin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
 }
 
 .nav-logo-img {
@@ -136,16 +151,15 @@ blockquote, .quote {
     font-weight: 400;
     font-size: var(--text-base);
     letter-spacing: var(--tracking-normal);
-    transition: transform 1s cubic-bezier(0.68, -0.6, 0.32, 1.6), opacity 0.6s ease;
+    transition: opacity 0.25s ease, transform 1s cubic-bezier(0.68, -0.6, 0.32, 1.6);
     display: inline-block;
 }
-/* Männchen springt lustig in die Mitte bei Hover aufs Toggle */
+/* Hover aufs Burger-Menü → Logo fadet dezent aus */
 .navbar:has(.menu-toggle:hover) .logo {
-    transform: translate(calc(50vw - 80px), 0) rotate(360deg); /* Bleibt auf gleicher Höhe & Größe */
+    opacity: 0;
 }
-/* Männchen verschwindet nach rechts, wenn das Menü auf ist */
+/* Menü offen → Logo bleibt unsichtbar */
 html:has(#fullscreen-menu.open) .logo {
-    transform: translate(120vw, 0) rotate(720deg); /* Fliegt geradeaus raus */
     opacity: 0;
 }
 .menu-toggle {
@@ -197,14 +211,22 @@ html:has(#fullscreen-menu.open) .logo {
     text-transform: uppercase;
 }
 .hero-subtitle {
-    font-family: var(--font-primary);
+    font-family: var(--font-secondary);
     font-weight: 400;
-    font-size: var(--text-sm);
-    letter-spacing: var(--tracking-wider);
-    border-top: 1px solid var(--bg-secondary);
-    padding-top: 1.5rem;
-    text-transform: uppercase;
-    display: inline-block;
+    font-size: clamp(1.5rem, 2.5vw, 2.2rem);
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    color: var(--text-primary);
+    text-transform: none;
+    display: block;
+    max-width: none;
+    margin-top: 1rem;
+}
+.hero-subtitle em {
+    font-family: var(--font-secondary);
+    font-style: italic;
+    font-weight: 300;
+    color: var(--accent-color);
 }
 
 /* Duotone Image Treatment (Like the old website) */
@@ -243,7 +265,7 @@ html:has(#fullscreen-menu.open) .logo {
 .entry-container {
     width: 100%;
     max-width: 1200px;
-    margin: 0 auto;
+    margin: 0; /* linksbündig — kein auto-centering, Block sitzt am 4rem-Edge wie Header */
 }
 .entry-header-wrap {
     display: flex;
@@ -252,19 +274,19 @@ html:has(#fullscreen-menu.open) .logo {
     margin-bottom: 3.5rem;
 }
 .entry-headline {
-    font-family: var(--font-primary);
-    font-size: 3rem;
-    font-weight: 900;
+    font-family: var(--font-secondary);
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 400;
     line-height: 1.2;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.01em;
     margin-bottom: 0; /* Margin moved to wrapper */
     color: var(--text-primary);
     white-space: nowrap;
-    
+
     /* Reveal Animation Start State */
     opacity: 0;
     transform: translateY(20px);
-    transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: opacity 0.55s ease-out, transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .entry-line {
     flex: 1; /* Automatically takes all remaining width rightward */
@@ -275,7 +297,7 @@ html:has(#fullscreen-menu.open) .logo {
     /* Draw Line Animation Start State */
     transform-origin: left;
     transform: scaleX(0);
-    transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.3s; /* Delays slightly after headline */
+    transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.15s; /* Delays slightly after headline */
 }
 .entry-grid {
     display: flex;
@@ -289,8 +311,8 @@ html:has(#fullscreen-menu.open) .logo {
     flex-direction: column;
     min-width: 0;
     
-    /* Native structural width animation */
-    transition: width 0.7s cubic-bezier(0.16, 1, 0.3, 1), padding 0.7s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease, transform 1s ease-out;
+    /* Native structural width animation (kept) + snappier reveal */
+    transition: width 0.7s cubic-bezier(0.16, 1, 0.3, 1), padding 0.7s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.55s ease, transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
     
     /* Reveal Bounds */
     opacity: 0;
@@ -373,48 +395,54 @@ html:has(#fullscreen-menu.open) .logo {
     flex-direction: column;
 }
 .entry-title {
-    font-family: var(--font-primary);
-    font-size: 1.8rem;
-    font-weight: 900;
-    letter-spacing: -0.02em;
+    font-family: var(--font-secondary);
+    font-size: clamp(1.4rem, 2.2vw, 1.9rem);
+    font-weight: 400;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
     margin-bottom: 1rem;
     color: var(--text-primary);
     transition: color 0.3s ease;
-    text-transform: none; /* No explicit uppercase per user request */
+    text-transform: none;
 }
 .entry-card:hover .entry-title {
     color: var(--accent-color);
 }
 .entry-desc {
     font-family: var(--font-primary);
-    font-size: 1.25rem;
-    line-height: 1.6;
-    color: var(--text-secondary);
+    font-size: var(--body-font-size);
+    line-height: var(--body-line-height);
+    font-weight: var(--body-font-weight);
+    color: var(--body-color);
     margin-bottom: 1.5rem; /* Reduced to bring CTA closer */
-    max-width: 100%;
+    max-width: 100%; /* Card-internal: use full card width, not global body max */
 }
 .entry-cta {
     font-family: var(--font-primary);
-    font-size: var(--text-base);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: var(--tracking-wide);
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
     color: var(--text-primary);
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 0.75rem;
-    transition: color 0.3s ease;
+    gap: 0.35rem;
+    align-self: flex-start;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--accent-color);
+    text-transform: none;
+    transition: border-color 0.5s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s ease;
 }
 .entry-card:hover .entry-cta {
-    color: var(--accent-color);
+    border-bottom-color: var(--text-primary);
 }
 .entry-cta .arrow-icon {
-    font-size: 1.5rem;
+    font-size: 1rem;
     line-height: 1;
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    display: inline-block;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .entry-card:hover .entry-cta .arrow-icon {
-    transform: translateX(10px); /* Gentle motion */
+    transform: translateX(6px);
 }
 
 /* Base Section Title used on other pages */
@@ -740,6 +768,220 @@ html:has(#fullscreen-menu.open) .logo {
     max-width: 800px;
 }
 
+/* Preis-Fußnote — „inkl. 19 % MwSt." dezent unter Preisen */
+.price-tax-note {
+    font-family: var(--font-primary);
+    font-size: 11px;
+    font-weight: 300;
+    letter-spacing: 0.05em;
+    color: var(--text-secondary);
+    opacity: 0.7;
+    margin: 0;
+    max-width: none;
+}
+
+/* CTA Accent-Line (Sessions, taupe backdrop) — kleiner editorial Akzent */
+.cta-accent-line {
+    width: 64px;
+    height: 1px;
+    background-color: var(--accent-color);
+    margin: 0 auto 2.5rem auto;
+    opacity: 0.85;
+}
+
+/* Produktion Hero — Quick-Nav zu den 4 Schritten */
+.prod-hero-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    margin-top: 2.25rem;
+    padding-top: 1.5rem;
+    border-top: 0.5px solid rgba(0, 0, 0, 0.1);
+    max-width: 340px;
+}
+.prod-hero-nav-item {
+    display: inline-grid;
+    grid-template-columns: 2.5rem 1fr;
+    align-items: baseline;
+    gap: 0.5rem;
+    padding: 0.5rem 0;
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s ease;
+}
+.prod-hero-nav-item:hover {
+    transform: translateX(4px);
+    color: var(--accent-color);
+}
+.prod-hero-nav-num {
+    font-family: var(--font-primary);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    color: var(--accent-color);
+}
+.prod-hero-nav-label {
+    font-family: var(--font-secondary);
+    font-size: 1.05rem;
+    font-weight: 400;
+    line-height: 1.2;
+}
+
+/* Scroll-margin für die Step-Anchors, damit sie nicht unter der Navbar sitzen */
+#prod-step-01, #prod-step-02, #prod-step-03, #prod-step-04 {
+    scroll-margin-top: 0;
+}
+
+/* Camp-Fertigstellung (auf /songcamps, zwischen Alumni und Vision) */
+/* Typography + spacings mirror the other sc-blocks (Format, Für Wen) for visual parity. */
+/* Force 100vh Section-Höhe — Spacings kompakter, damit Typo nicht gequetscht wird. */
+.sc-block.camp-finish-section {
+    height: 100vh;
+    min-height: 100vh;
+    max-height: 100vh;
+    overflow: hidden;
+}
+.camp-finish {
+    max-width: 720px;
+    margin: 0 auto;
+}
+.camp-finish-headline {
+    font-family: var(--font-secondary);
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 400;
+    line-height: 1.2;
+    margin-bottom: 1.25rem;
+    color: var(--text-primary);
+}
+.camp-finish-lead {
+    font-family: var(--font-primary);
+    font-size: 16px;
+    line-height: 1.7;
+    font-weight: 300;
+    color: var(--text-primary);
+    margin-bottom: 1.5rem;
+    max-width: 680px;
+}
+.camp-finish-stages {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-top: 0.5px solid rgba(0, 0, 0, 0.1);
+}
+.camp-finish-stage {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 2rem;
+    align-items: baseline;
+}
+.camp-finish-num {
+    font-family: var(--font-primary);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    color: var(--accent-color);
+    padding-top: 0.4em;
+}
+.camp-finish-title {
+    font-family: var(--font-secondary);
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.3;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+.camp-finish-price {
+    font-family: var(--font-primary);
+    font-size: 13px;
+    font-weight: 300;
+    letter-spacing: 0.02em;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    margin-left: 0.25rem;
+}
+.camp-finish-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.65;
+    max-width: 54ch;
+}
+.camp-finish-closing {
+    font-family: var(--font-secondary);
+    font-style: italic;
+    font-size: 16px;
+    line-height: 1.55;
+    font-weight: 400;
+    color: var(--text-primary);
+    padding-top: 1.5rem;
+    border-top: 0.5px solid rgba(0, 0, 0, 0.1);
+    max-width: none;
+}
+@media (max-width: 768px) {
+    .camp-finish-stage {
+        grid-template-columns: 1fr;
+        gap: 0.35rem;
+    }
+    .camp-finish-num {
+        padding-top: 0;
+    }
+    .camp-finish-price {
+        display: block;
+        margin-left: 0;
+        margin-top: 0.2rem;
+    }
+}
+.camp-pointer {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 0.5px solid rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.85rem;
+}
+/* Standalone-Variante (eigene Section, z. B. Sessions Songcamp-Verweis) — kein Top-Trenner. */
+.camp-pointer-standalone {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+}
+.camp-pointer-text {
+    font-family: var(--font-primary);
+    font-size: 14px;
+    line-height: 1.6;
+    font-weight: 300;
+    color: var(--text-secondary);
+    margin: 0;
+    max-width: none;
+}
+.camp-pointer-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding-bottom: 0.5rem;
+    font-family: var(--font-primary);
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--text-primary);
+    text-decoration: none;
+    border-bottom: 1px solid var(--accent-color);
+    white-space: nowrap;
+    transition: border-color 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.camp-pointer-link:hover {
+    border-bottom-color: var(--text-primary);
+}
+.camp-pointer-link .arrow-icon {
+    display: inline-block;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.camp-pointer-link:hover .arrow-icon {
+    transform: translateX(6px);
+}
+
 /* Responsive Overrides */
 @media (max-width: 992px) {
     .page-content-grid, .video-grid, .contact-grid {
@@ -871,15 +1113,19 @@ html:has(#fullscreen-menu.open) .logo {
 
 .teaser-kicker {
     font-family: var(--font-primary);
-    font-weight: 500;
-    font-size: 11px;
-    letter-spacing: 0.2em;
+    font-weight: 600;
+    font-size: 10px;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.6);
-    margin-bottom: 2.5rem;
+    color: var(--bg-primary);
+    background: var(--accent-color);
+    border-radius: 2px;
+    padding: 6px 12px;
+    display: inline-block;
+    margin-bottom: 2rem;
     opacity: 0;
     transform: translateY(16px);
-    transition: opacity 1s ease, transform 1s ease;
+    transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
 .teaser-headline {
@@ -891,7 +1137,7 @@ html:has(#fullscreen-menu.open) .logo {
     max-width: 800px;
     opacity: 0;
     transform: translateY(16px);
-    transition: opacity 1s ease, transform 1s ease;
+    transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
 .teaser-dash {
@@ -918,7 +1164,7 @@ html:has(#fullscreen-menu.open) .logo {
     padding: 10px 15px;
     opacity: 0;
     transform: translateY(16px);
-    transition: opacity 1s ease, transform 1s ease, color 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: opacity 0.6s ease, transform 0.6s ease, color 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .teaser-cta:hover {
@@ -971,12 +1217,14 @@ html:has(#fullscreen-menu.open) .logo {
    SONGCAMP CONTENT PAGE SPECIFICS
    ----------------------------------- */
 .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: start; }
-.sc-list-item { 
-    padding: 0.8rem 0; 
-    border-bottom: 0.5px solid rgba(255,255,255,0.1); 
-    font-size: 15px; 
-    color: rgba(255,255,255,0.7); 
-    display: flex; 
+.sc-list-item {
+    padding: 0.8rem 0;
+    border-bottom: 0.5px solid rgba(255,255,255,0.1);
+    font-size: 16px;
+    line-height: 1.75;
+    font-weight: 300;
+    color: rgba(255,255,255,0.7);
+    display: flex;
     gap: 1rem;
     transition: opacity 0.4s ease, color 0.4s ease;
 }
@@ -984,17 +1232,77 @@ html:has(#fullscreen-menu.open) .logo {
     color: rgba(255,255,255,1);
 }
 .sc-list-item span {
-    color: var(--accent-color); 
+    color: var(--accent-color);
     flex-shrink: 0;
     transition: transform 0.4s ease;
 }
 .sc-list-item:hover span {
     transform: translateX(3px); /* Subtle dash momentum without making the whole text block feel like a button */
 }
+
+/* Liste auf hellem Hintergrund (z. B. Für-Wen Section) */
+.sc-list-item--light {
+    border-bottom-color: rgba(0, 0, 0, 0.08);
+    color: var(--text-secondary);
+}
+.sc-list-item--light:hover {
+    color: var(--text-primary);
+}
 .sc-format-grid { display: grid; grid-template-columns: repeat(5, 1fr); border: 1px solid var(--bg-secondary); }
 .sc-day-card { padding: 2.5rem 1.5rem; border-right: 1px solid var(--bg-secondary); }
 .sc-day-card:last-child { border-right: none; }
 .sc-alumni-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+
+/* Alumni-Pager — horizontaler Slider mit sichtbarem Gap zwischen Seiten */
+.sc-alumni-pager {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+}
+.sc-alumni-pager-track {
+    display: flex;
+    gap: 3rem;
+    transform: translateX(0);
+    transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform;
+}
+.sc-alumni-page {
+    flex: 0 0 100%;
+    box-sizing: border-box;
+}
+.sc-alumni-nav {
+    display: flex;
+    justify-content: center;
+    gap: 0.85rem;
+    margin-top: 2.5rem;
+}
+.sc-alumni-dot {
+    background: transparent;
+    border: 0.5px solid rgba(0, 0, 0, 0.2);
+    color: var(--text-secondary);
+    font-family: var(--font-primary);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: background 0.4s ease, color 0.4s ease, border-color 0.4s ease;
+}
+.sc-alumni-dot:hover {
+    color: var(--text-primary);
+    border-color: var(--accent-color);
+}
+.sc-alumni-dot.is-active {
+    background: var(--accent-color);
+    color: var(--bg-primary);
+    border-color: var(--accent-color);
+}
 .sc-fact-grid { display: flex; gap: 4rem; flex-wrap: wrap; }
 .sc-cta-box { display: flex; gap: 1rem; width: 100%; max-width: 500px; margin: 0 auto; }
 
@@ -1045,18 +1353,50 @@ html:has(#fullscreen-menu.open) .logo {
 
 /* Section Kickers (Dynamic Light/Dark) */
 .sc-kicker {
-    font-family: var(--font-primary); 
-    font-size: 10px; 
-    font-weight: 600; 
-    letter-spacing: 0.18em; 
-    text-transform: uppercase; 
-    color: var(--accent-color); 
-    background: rgba(0,0,0,0.03); 
+    font-family: var(--font-primary);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent-color);
+    background: rgba(0,0,0,0.03);
     border: 0.5px solid rgba(0,0,0,0.05);
-    border-radius: 2px; 
-    padding: 6px 12px; 
-    display: inline-block; 
+    border-radius: 2px;
+    padding: 6px 12px;
+    display: inline-block;
     margin-bottom: 2rem;
+}
+
+/* Für-Wen block background — in external CSS so URL resolves against /style.css,
+   which is base-URI-immune (works on file:// and survives pushState routing). */
+.sc-fuer-wen {
+    background-color: #111;
+    background-image:
+        linear-gradient(rgba(15, 15, 15, 0.75), rgba(15, 15, 15, 0.85)),
+        url('images/songcamp/sc_mood4.webp');
+    background-size: cover;
+    background-position: center;
+}
+
+/* Songcamp Waitlist — darker section backdrop, lighter cards stand out as tiles */
+#sc-warteliste {
+    background-color: var(--bg-secondary);
+}
+.sc-camp-card {
+    background: var(--bg-primary);
+    border: 0.5px solid rgba(0, 0, 0, 0.05);
+    border-radius: 4px;
+    padding: 2.5rem;
+    text-align: left;
+    max-width: 400px;
+    width: 100%;
+    box-sizing: border-box;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.sc-camp-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
 }
 #songcamps .sc-block:nth-child(even) .sc-kicker {
     color: var(--bg-primary); 
@@ -1215,8 +1555,10 @@ html:has(#fullscreen-menu.open) .logo {
     pointer-events: none;
 }
 .thought-text {
-    font-family: var(--font-primary);
-    font-size: 0.9rem; /* Slightly smaller for subtlety */
+    font-family: var(--font-secondary);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 0.95rem;
     color: var(--text-secondary);
     transition: color 0.4s ease;
 }
@@ -1401,7 +1743,7 @@ html:has(#fullscreen-menu.open) .logo {
 /* Footer Styles */
 .site-footer {
     background-color: var(--bg-primary);
-    padding: clamp(5rem, 8vh, 8rem) 4rem 1.5rem 4rem; 
+    padding: clamp(5rem, 8vh, 8rem) 4rem 1.5rem 4rem;
     position: relative;
     z-index: 10;
     scroll-snap-align: start;
@@ -1409,6 +1751,11 @@ html:has(#fullscreen-menu.open) .logo {
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
+}
+.footer-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
 }
 .footer-container {
     max-width: 1440px;
@@ -1419,23 +1766,58 @@ html:has(#fullscreen-menu.open) .logo {
     flex-direction: column;
 }
 .footer-cta {
-    margin-bottom: auto; /* Pushes the navigation grid strictly to the floor */
-    max-width: 900px;
+    margin-bottom: auto; /* pushes grid down */
+    max-width: 680px;
+    text-align: left;
 }
 .footer-cta h2 {
-    font-size: 3rem;
-    font-weight: 900;
+    font-family: var(--font-secondary);
+    font-size: clamp(2.5rem, 4.5vw, 3.8rem);
+    font-weight: 400;
     line-height: 1.2;
+    letter-spacing: -0.01em;
     margin-bottom: 1.5rem;
-    letter-spacing: -0.02em;
+    color: var(--text-primary);
 }
-.footer-cta h2 .highlight-text {
+.footer-cta h2 em {
+    font-family: var(--font-secondary);
+    font-style: italic;
+    font-weight: 300;
     color: var(--accent-color);
 }
 .footer-cta p {
-    font-size: 1.25rem;
-    line-height: 1.6;
-    opacity: 0.8;
+    font-family: var(--font-primary);
+    font-size: 16px;
+    line-height: 1.75;
+    font-weight: 300;
+    color: var(--text-primary);
+    max-width: 560px;
+    margin: 0;
+    text-align: left;
+}
+.footer-cta-link {
+    display: inline-block;
+    margin-top: 2.5rem;
+    font-family: var(--font-primary);
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    text-decoration: none;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--accent-color);
+    transition: border-color 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    letter-spacing: 0.02em;
+}
+.footer-cta-link:hover {
+    border-bottom-color: var(--text-primary);
+}
+.footer-cta-link .arrow-icon {
+    display: inline-block;
+    margin-left: 0.35rem;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.footer-cta-link:hover .arrow-icon {
+    transform: translateX(6px);
 }
 .footer-grid {
     display: grid;
@@ -1451,8 +1833,9 @@ html:has(#fullscreen-menu.open) .logo {
     margin-bottom: 1.5rem;
 }
 .footer-col p {
-    font-size: 1rem;
-    line-height: 1.6;
+    font-size: 14px;
+    line-height: 1.7;
+    font-weight: 300;
     margin-bottom: 1rem;
 }
 .footer-link {
@@ -1474,9 +1857,11 @@ html:has(#fullscreen-menu.open) .logo {
     margin: 0;
 }
 .footer-nav li {
-    line-height: 1.6;
+    line-height: 1.9;
 }
 .footer-nav a {
+    font-size: 14px;
+    font-weight: 300;
     color: var(--text-primary);
     text-decoration: none;
     transition: color 0.3s;
@@ -1491,14 +1876,22 @@ html:has(#fullscreen-menu.open) .logo {
     border-top: 1px solid var(--bg-secondary);
     padding-top: 1.5rem;
     padding-bottom: 0; /* Removed internal bottom buffer */
-    font-size: 0.85rem;
     opacity: 0.5;
+}
+.footer-bottom p {
+    font-size: 14px;
+    line-height: 1.7;
+    font-weight: 300;
+    margin: 0;
 }
 .footer-legal-links {
     display: flex;
     gap: 2rem;
 }
 .footer-legal-links a {
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.7;
     color: inherit;
     text-decoration: none;
     transition: color 0.3s;
@@ -1536,19 +1929,20 @@ html:has(#fullscreen-menu.open) .logo {
 }
 .editorial-title {
     font-family: var(--font-secondary);
-    font-size: clamp(3rem, 5vw, 4.5rem);
-    font-weight: 300;
-    line-height: var(--lh-tight);
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 400;
+    line-height: 1.2;
     color: var(--text-primary);
-    margin-bottom: 2.5rem;
-    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.01em;
 }
 .editorial-lead {
     font-family: var(--font-primary);
-    font-size: 1.25rem;
-    line-height: 1.6;
-    color: var(--text-secondary);
-    max-width: 600px;
+    font-size: 16px;
+    line-height: 1.75;
+    font-weight: 300;
+    color: var(--text-primary);
+    max-width: 680px;
 }
 /* Editorial Flowing Sequential List */
 .editorial-list {
@@ -1570,24 +1964,33 @@ html:has(#fullscreen-menu.open) .logo {
 }
 .editorial-num {
     font-family: var(--font-primary);
-    font-size: 0.85rem;
-    color: var(--text-secondary);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    color: var(--accent-color);
+    text-transform: uppercase;
 }
 .editorial-sub {
     font-family: var(--font-primary);
-    font-size: 1.1rem;
-    font-weight: 400;
+    font-size: 10px;
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--text-primary);
-    margin-bottom: 1rem;
+    letter-spacing: 0.18em;
+    color: var(--accent-color);
+    background: rgba(0, 0, 0, 0.03);
+    border: 0.5px solid rgba(0, 0, 0, 0.05);
+    border-radius: 2px;
+    padding: 6px 12px;
+    display: inline-block;
+    margin-bottom: 1.5rem;
 }
 .editorial-desc {
     font-family: var(--font-primary);
-    font-size: 1.1rem;
-    line-height: 1.6;
-    color: var(--text-secondary);
-    max-width: 60ch; /* Restricts line-length per requirements */
+    font-size: 16px;
+    line-height: 1.75;
+    font-weight: 300;
+    color: var(--text-primary);
+    max-width: 680px;
 }
 /* Editorial Split (Quiet Image/Text layout) */
 .editorial-split {
@@ -1613,15 +2016,17 @@ html:has(#fullscreen-menu.open) .logo {
 }
 .editorial-link {
     font-family: var(--font-primary);
-    font-size: 0.95rem;
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
     color: var(--text-primary);
     text-decoration: none;
     display: inline-flex;
     align-items: center;
-    gap: 0.75rem;
-    padding-bottom: 0.25rem;
-    border-bottom: 1px solid rgba(0,0,0,0.2);
-    transition: color 0.4s ease, border-color 0.4s ease;
+    gap: 0.35rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--accent-color);
+    transition: color 0.4s ease, border-color 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     margin-top: 2rem;
 }
 .editorial-link:hover {
@@ -1644,7 +2049,7 @@ html:has(#fullscreen-menu.open) .logo {
 .scroll-anim {
     opacity: 0;
     transform: translateY(20px);
-    transition: opacity 1.5s ease-out, transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: opacity 0.7s ease-out, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .is-visible .scroll-anim,
 .is-visible.scroll-anim {
@@ -1758,23 +2163,6 @@ html:has(#fullscreen-menu.open) .logo {
 /* -----------------------------------
    EASTER EGGS / GLOBAL FLOATING COMPS
    ----------------------------------- */
-#klabauter-wrapper {
-    position: absolute;
-    top: 5px; /* Offset behind the box */
-    left: 20px;
-    width: 38px; /* Slightly smaller scale matching the box typography */
-    opacity: 0; 
-    pointer-events: none; 
-    z-index: 5; /* Remains hidden naturally behind the zIndex:10 white box */
-    will-change: transform, opacity;
-}
-
-#klabautermann {
-    width: 100%; 
-    display: block;
-    filter: brightness(0) invert(1);
-}
-
 /* ======================================================================
    PROMISE REVEAL SECTION (INTERACTIVE LIGHT NATIVE MASK)
    ====================================================================== */
