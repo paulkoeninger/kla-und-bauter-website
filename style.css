@@ -199,16 +199,21 @@ html:has(#fullscreen-menu.open) .logo {
     cursor: pointer;
     display: flex;
     flex-direction: column;
+    justify-content: center; /* Zentriert Bars vertikal in der Box */
     gap: 8px;
     position: fixed;
     right: var(--edge);
-    top: calc(2.5rem + 15.5px); /* Align perfectly with the 45px logo */
+    top: 2.5rem; /* == .navbar padding-top */
     z-index: 200;
+    height: 45px; /* == .nav-logo-img height, via justify-content mittig */
+    box-sizing: content-box; /* Padding extern → Content-Area bleibt Logo-gross */
     padding: 1rem; /* unsichtbarer Touch-Target-Vergrößerer */
     margin: -1rem -1rem -1rem 0; /* hebt Padding visuell wieder auf */
 }
 @media (max-width: 768px) {
     .menu-toggle {
+        top: 1.5rem; /* == .navbar padding-top auf Mobile */
+        height: 42px; /* == .nav-logo-img width auf Mobile */
         margin: -1rem;
     }
 }
@@ -2265,6 +2270,20 @@ html:has(#fullscreen-menu.open) .logo {
     .editorial-split-text[style*="sticky"] {
         position: static !important; /* Sticky macht auf Mobile keinen Sinn im 1-col-Flow */
         top: auto !important;
+    }
+    /* Team-Page Mobile: Bio-Zeile („1996 München · Jazzgitarre Köln…") gehört
+       unters Portrait, nicht über 4 Textblöcke gestapelt. display:contents
+       löst den text-container auf, dann via order die Reihenfolge:
+       kicker → role → title → lead → [img] → [bio]. Greift automatisch auf
+       Produktion/Sessions ohne Nebenwirkung (dort gibts kein .team-bio). */
+    .editorial-split .editorial-split-text {
+        display: contents;
+    }
+    .editorial-split .editorial-split-img {
+        order: 1;
+    }
+    .editorial-split .team-bio {
+        order: 2;
     }
     .editorial-item {
         grid-template-columns: 1fr;
