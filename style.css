@@ -46,11 +46,7 @@
     box-sizing: border-box;
 }
 
-@media (pointer: coarse) {
-    html.snap-active {
-        scroll-snap-type: y mandatory;
-    }
-}
+/* Snap-Scroll komplett entfernt — Seite scrollt frei auf allen Geräten */
 
 body {
     background-color: var(--bg-primary);
@@ -203,7 +199,6 @@ html:has(#fullscreen-menu.open) .logo {
 /* Hero Section */
 .hero {
     min-height: 100vh;
-    scroll-snap-align: start;
     padding: 0 4rem;
     display: flex;
     flex-direction: row;
@@ -271,8 +266,6 @@ html:has(#fullscreen-menu.open) .logo {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    scroll-snap-align: start;
-    scroll-snap-stop: always;
     overflow: hidden; /* Guarantee strict bounds */
 }
 .entry-container {
@@ -1148,8 +1141,6 @@ html:has(#fullscreen-menu.open) .logo {
     overflow: hidden;
     cursor: pointer;
     background: #111; /* Fallback dark */
-    scroll-snap-align: start;
-    scroll-snap-stop: always;
 }
 
 @keyframes slowZoom {
@@ -1460,8 +1451,6 @@ html:has(#fullscreen-menu.open) .logo {
     display: flex;
     justify-content: center;
     flex-direction: column;
-    scroll-snap-align: start;
-    scroll-snap-stop: normal;
 }
 #songcamps .sc-block:nth-child(even) {
     background-color: var(--bg-secondary);
@@ -1868,7 +1857,6 @@ html:has(#fullscreen-menu.open) .logo {
     padding: clamp(5rem, 8vh, 8rem) 4rem 1.5rem 4rem;
     position: relative;
     z-index: 10;
-    scroll-snap-align: start;
     height: 100vh;
     box-sizing: border-box;
     display: flex;
@@ -2020,6 +2008,27 @@ html:has(#fullscreen-menu.open) .logo {
 }
 .footer-legal-links a:hover {
     color: var(--accent-color);
+}
+
+/* Mobile Footer: nur Klabautermann zentriert, alles andere hidden */
+.footer-logo-mobile {
+    display: none;
+}
+@media (max-width: 768px) {
+    .footer-cta {
+        margin-bottom: auto;
+    }
+    .footer-grid,
+    .footer-bottom {
+        display: none;
+    }
+    .footer-logo-mobile {
+        display: block;
+        width: 64px;
+        height: auto;
+        margin: 2rem auto 0 auto;
+        opacity: 0.5;
+    }
 }
 
 @media (max-width: 1200px) {
@@ -2220,8 +2229,6 @@ html:has(#fullscreen-menu.open) .logo {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    scroll-snap-align: start;
-    scroll-snap-stop: normal;
     padding: 0 4rem;
     box-sizing: border-box;
     position: relative;

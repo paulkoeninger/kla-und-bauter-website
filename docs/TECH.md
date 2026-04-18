@@ -77,9 +77,7 @@ Nativer `IntersectionObserver` in [script.js:255](../script.js#L255). Fügt `.is
 - Siehe [DESIGN.md](DESIGN.md).
 
 ### Scroll-Snap
-`html.snap-active { scroll-snap-type: y mandatory }` — die Klasse wird in JS hinzugefügt/entfernt, um während Page-Transitions Rendering-Konflikte zu vermeiden (siehe [script.js:176](../script.js#L176)).
-
-**Snap ist nur auf Touch-Geräten aktiv** — die Regel ist in `@media (pointer: coarse)` gewrappt. Desktop (Maus und Trackpad, beide `pointer: fine`) scrollt frei. Grund: Mausrad-Events + mandatory Snap geben eine sperrige UX, und Trackpad vs. Maus ist in CSS nicht unterscheidbar; JS-Heuristiken wären fragil.
+**Scroll-Snap wurde komplett entfernt.** Weder Desktop noch Mobile haben `scroll-snap-type`. Die Seite scrollt frei, das visuelle Pacing entsteht allein durch die `min-height: 100vh`-Container (`.snap-block`, `.sc-block`). Grund: mandatory Snap fühlt sich auf allen Eingabegeräten sperrig an, und die Sections tragen sich ohne Snap ebenso gut.
 
 ### Layout-Grundform
 - `.snap-block` = volle Viewport-Höhe mit `scroll-snap-align: start`.

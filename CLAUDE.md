@@ -7,7 +7,7 @@ This project is a high-end, editorial, single-page application (SPA) for the mus
 - **Colors:** Deep, dark backgrounds with pure whites and a subtle accent color (`--accent-color`).
 - **Typography:** Uses premium, highly legible fonts (`var(--font-primary)`, `var(--font-secondary)`).
 - **Interactions:** Animations must use long durations (e.g. `0.6s` to `1.2s`) and cinematic easing curves (like `cubic-bezier(0.16, 1, 0.3, 1)` or GSAP's `power3.out`). **No sudden snapping or aggressive bouncing.**
-- **Layouts:** Relies heavily on CSS native `scroll-snap` (`.snap-block`) for immersive, full-viewport pacing. Give the text room to breathe. Do not pack the screen.
+- **Layouts:** Uses `.snap-block` / `.sc-block` containers with `min-height: 100vh` for immersive, full-viewport pacing. CSS `scroll-snap` wurde bewusst entfernt — die Seite scrollt frei, das Pacing kommt allein durch die 100 vh-Blocks. Give the text room to breathe. Do not pack the screen.
 
 ## 2. Technical Architecture & Rules
 - **SPA Only (DO NOT split files):** The entire website operates within `index.html`. Sections are shown/hidden dynamically.
