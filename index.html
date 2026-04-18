@@ -33,14 +33,15 @@
     <!-- FULLSCREEN MENU -->
     <nav id="fullscreen-menu" class="fullscreen-menu">
         <div class="menu-content">
+            <span class="sc-kicker menu-kicker">Navigation</span>
             <ul class="menu-links">
-                <li><a href="#" data-route="home">HOME</a></li>
-                <li><a href="#" data-route="produktion">PRODUKTION</a></li>
-                <li><a href="#" data-route="sessions">SESSIONS</a></li>
-                <li><a href="#" data-route="songcamps">SONGCAMPS</a></li>
-                <li><a href="#" data-route="team">TEAM</a></li>
-                <li><a href="#" data-route="releases">RELEASES</a></li>
-                <li><a href="#" data-route="kontakt">KONTAKT</a></li>
+                <li><a href="#" data-route="home">Home<em>der Anfang</em></a></li>
+                <li><a href="#" data-route="produktion">Produktion<em>bis der Song klingt, wie du ihn meinst</em></a></li>
+                <li><a href="#" data-route="sessions">Sessions<em>einen Song anfangen</em></a></li>
+                <li><a href="#" data-route="songcamps">Songcamps<em>7 Tage, ein Rhythmus</em></a></li>
+                <li><a href="#" data-route="team">Team<em>Adrian & Paul</em></a></li>
+                <li><a href="#" data-route="releases">Releases<em>was wir gemacht haben</em></a></li>
+                <li><a href="#" data-route="kontakt">Kontakt<em>schreib uns</em></a></li>
             </ul>
             <div class="menu-footer">
                 <a href="#" data-route="impressum" class="small-link">Impressum</a>
@@ -100,8 +101,9 @@
                             </div>
                         </a>
 
-                        <!-- Path 3: Songcamp (Ingegrated Expansion) -->
+                        <!-- Path 3: Songcamp — permanent sichtbar, default blurry auf Desktop mit Hint -->
                         <a href="#" class="entry-card camp-path" data-route="songcamps">
+                            <span class="camp-path-hint">Ich weiß noch gar nicht genau</span>
                             <div class="entry-card-inner">
                                 <div class="entry-image-wrapper">
                                     <img src="images/songcamp/camp_home.jpg" alt="Unser Songcamp" class="entry-img">
@@ -113,13 +115,6 @@
                                 </div>
                             </div>
                         </a>
-                    </div>
-
-                    <!-- Subtiler Dritter Weg (Thought Trigger) -->
-                    <div class="entry-thought-trigger"
-                        onclick="this.closest('.home-entry-section').classList.toggle('is-expanded')">
-                        <div class="thought-line"></div>
-                        <span class="thought-text">Ich weiß noch gar nicht genau, wonach mir ist.</span>
                     </div>
 
                 </div>
