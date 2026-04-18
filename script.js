@@ -2,56 +2,24 @@ window.addEventListener('load', () => {
     document.documentElement.classList.add('snap-active');
 
     // -----------------------------------------
-    // 1. Flying Logo & Intro Animation
+    // 1. Loader fade-out + Hero-Reveals (kein Flug mehr).
     // -----------------------------------------
     const loader = document.querySelector('.loader');
-    const loaderLogo = document.querySelector('.loader-logo');
-    const navLogoImg = document.querySelector('.nav-logo-img');
-    
-    // Stop CSS pulse and set explicit origins to prevent jumps
-    loaderLogo.style.animation = 'none';
-    navLogoImg.style.opacity = 0; // hide actual logo during flight
-
-    // Calculate center-to-center distance
-    const startRect = loaderLogo.getBoundingClientRect();
-    const targetRect = navLogoImg.getBoundingClientRect();
-    
-    const startX = startRect.left + startRect.width / 2;
-    const startY = startRect.top + startRect.height / 2;
-    const targetX = targetRect.left + targetRect.width / 2;
-    const targetY = targetRect.top + targetRect.height / 2;
-    
-    const destX = targetX - startX;
-    const destY = targetY - startY;
-    const scale = targetRect.width / startRect.width;
-
-    const tl = gsap.timeline();
-    
-    tl.to(loaderLogo, {
-        x: destX,
-        y: destY,
-        scale: scale,
-        duration: 1.2,
-        ease: "power3.inOut"
-    }, "+=0.3") // slight delay before flying
-    .to(loader, {
-        backgroundColor: "rgba(250, 250, 250, 0)", // Fade out loader background
-        duration: 1.2,
-        ease: "power2.inOut",
+    gsap.to(loader, {
+        opacity: 0,
+        duration: 0.5,
+        ease: "power2.out",
         onComplete: () => {
-             // Clean up and disable pointer events
-             loader.style.pointerEvents = 'none';
+            loader.style.display = 'none';
+            loader.style.pointerEvents = 'none';
         }
-    }, "<")
-    .add(() => {
-        // Swap flying logo with the real one
-        navLogoImg.style.opacity = 1;
-        loader.style.display = 'none';
-    })
-    .from('.menu-toggle .bar', { opacity: 0, duration: 0.8, ease: "power3.out" }, "-=0.4")
-    .from('#home .hero-title', { y: 40, opacity: 0, filter: "blur(12px)", duration: 1.8, ease: "power3.out" }, "-=0.6")
-    .from('#home .hero-subtitle', { y: 20, opacity: 0, filter: "blur(8px)", duration: 1.8, ease: "power3.out" }, "-=1.4")
-    .from('#home .image-wrapper', { scale: 0.85, opacity: 0, filter: "blur(10px)", duration: 2.2, ease: "expo.out" }, "-=1.6");
+    });
+
+    const tl = gsap.timeline({ delay: 0.2 });
+    tl.from('.menu-toggle .bar', { opacity: 0, duration: 0.5, ease: "power3.out" })
+      .from('#home .hero-title', { y: 40, opacity: 0, filter: "blur(12px)", duration: 1.1, ease: "power3.out" }, "-=0.25")
+      .from('#home .hero-subtitle', { y: 20, opacity: 0, filter: "blur(8px)", duration: 1.1, ease: "power3.out" }, "-=0.85")
+      .from('#home .image-wrapper', { scale: 0.85, opacity: 0, filter: "blur(10px)", duration: 1.3, ease: "expo.out" }, "-=1.0");
 
     // -----------------------------------------
     // 2. Fullscreen Menu Logic (Instant)
@@ -102,16 +70,35 @@ window.addEventListener('load', () => {
     // -----------------------------------------
     const slideSelectors = '.hero-title, .hero-subtitle, .image-wrapper, .section-title, .service-item, .page-title, .text-content, .image-content, .video-wrapper, .contact-info, .contact-form, .legal-text, .produktion-intro, .process-step, .detail-section, .songcamp-headline, .feature-list, .info-items, .songcamp-banner, .snap-block-inner';
     
+    // Hash-anchor clicks (z. B. Produktion Quick-Nav → #prod-step-01):
+    // smooth-scroll und replaceState statt null-state-push, das sonst den
+    // popstate-Handler in den home-Fallback zieht.
+    document.body.addEventListener('click', (e) => {
+        const anchor = e.target.closest('a[href^="#"]');
+        if (!anchor) return;
+        if (anchor.hasAttribute('data-route')) return; // data-route links weiter unten behandelt
+        const href = anchor.getAttribute('href');
+        if (!href || href === '#' || href.length < 2) return;
+        const target = document.getElementById(href.slice(1));
+        if (!target) return;
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        try {
+            history.replaceState({ route: currentRoute }, '', window.location.pathname + href);
+        } catch (err) { /* file:// throws, silently ignore */ }
+    });
+
     document.body.addEventListener('click', (e) => {
         const link = e.target.closest('[data-route]');
         if (!link) return;
-        
+
         e.preventDefault();
         const targetRoute = link.getAttribute('data-route');
-        
+        const scrollTo = link.getAttribute('data-scroll-to');
+
         // If the link is inside the menu, it's instant
         const isMenuLink = link.closest('#fullscreen-menu') !== null || link.classList.contains('logo');
-        
+
         if (isMenuOpen) {
             // Instant Reset Logo if routing from menu
             if (isMenuLink && !link.classList.contains('logo')) {
@@ -124,9 +111,26 @@ window.addEventListener('load', () => {
                 toggleMenu();
             }
         }
-        if (targetRoute === currentRoute || isTransitioning) return;
-        
+
+        if (targetRoute === currentRoute) {
+            // Schon auf der Zielseite — nur zum Anker scrollen falls gesetzt
+            if (scrollTo) {
+                const target = document.getElementById(scrollTo);
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+            return;
+        }
+        if (isTransitioning) return;
+
         navigateTo(targetRoute, isMenuLink);
+
+        if (scrollTo) {
+            // Nach Page-Transition (≈ 0.9 s) zum Anker scrollen
+            setTimeout(() => {
+                const target = document.getElementById(scrollTo);
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 1100);
+        }
     });
 
     // Initialize SPA via native URLs
@@ -267,95 +271,50 @@ window.addEventListener('load', () => {
     const animatedSections = document.querySelectorAll('.home-entry-section, .home-camp-section, .scroll-anim');
     animatedSections.forEach(sec => scrollObserver.observe(sec));
 
-    // --- EASTER EGG KLABAUTERMANN TRACKER ---
-    const klabauter = document.getElementById('klabauter-wrapper');
-    if (klabauter) {
-        gsap.set(klabauter, { y: 0, opacity: 0 }); // Initial hiding
-        
-        let hasDroppedInFuerWen = false; // Ensures it only runs exactly once per page load
+    // Alumni Pager (Songcamp „Was Artists sagen") — horizontaler Slider mit Pixel-basierter Translation
+    const alumniTrack = document.querySelector('.sc-alumni-pager-track');
+    const alumniDots = document.querySelectorAll('.sc-alumni-dot');
+    const alumniPages = document.querySelectorAll('.sc-alumni-page');
+    if (alumniTrack && alumniDots.length) {
+        let alumniCurrentPage = 0;
 
-        const klabauterObserver = new IntersectionObserver((entries) => {
-            if (window.innerWidth <= 992) return; // Only process on Desktop
-            
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    if (entry.target.id === 'sc-hero-block') {
-                        // Winched back up to the ceiling silently
-                        // Does not explicitly reset the tracking flag so it stays dead.
-                        gsap.to(klabauter, {
-                            opacity: 0,
-                            y: 0,
-                            x: window.innerWidth * 0.85, 
-                            duration: 1.5,
-                            ease: 'power3.inOut',
-                            overwrite: 'auto'
-                        });
-                    } else if (entry.target.id === 'sc-fuer-wen-block' && !hasDroppedInFuerWen) {
-                        hasDroppedInFuerWen = true;
-                        
-                        const whiteBox = document.getElementById('sc-white-box');
-                        const sectionRect = entry.target.getBoundingClientRect();
-                        const boxRect = whiteBox ? whiteBox.getBoundingClientRect() : { top: 0, bottom: 0 };
-                        
-                        // Distance to the bottom floor of the section relative to his local starting point
-                        const floorDropDistance = sectionRect.bottom - boxRect.top - 80;
+        const getAlumniPageShift = () => {
+            const container = alumniTrack.parentElement;
+            const gap = parseFloat(getComputedStyle(alumniTrack).gap) || 0;
+            return container.offsetWidth + gap;
+        };
 
-                        // Start position behind the left side of the white box
-                        gsap.set(klabauter, { x: 0, y: 0, opacity: 0, scaleX: -1, scaleY: 1, rotation: 0, zIndex: 5, transformOrigin: 'bottom center' }); 
-
-                        gsap.killTweensOf('#klabautermann');
-                        gsap.set('#klabautermann', { rotation: 0 });
-
-                        // The cliff dive stealth timeline!
-                        const tl = gsap.timeline();
-                        
-                        // 1. Peer out (Pops head up from behind the border box)
-                        tl.to(klabauter, { opacity: 1, duration: 0.1, delay: 0.2 })
-                          .to(klabauter, { y: -25, duration: 0.6, ease: 'power2.out' }) // Peers head up 
-                          
-                          // 2. Paranoia Look-Around while half-hidden
-                          .to(klabauter, { scaleX: 1, duration: 0.1, delay: 0.2 }) // Looks right
-                          .to(klabauter, { scaleX: -1, duration: 0.1, delay: 0.3 }) // Looks left
-                          
-                          // 3. Climb up actively and change depth (Z-Index) to clear the box edge
-                          .to(klabauter, { y: -40, zIndex: 20, duration: 0.3, ease: 'power1.out', delay: 0.2 }) 
-                          
-                          // 4. Stand fully on the box and look around the cliff
-                          .to(klabauter, { scaleX: 1, duration: 0.1, delay: 0.2 })
-                          .to(klabauter, { scaleX: -1, duration: 0.1, delay: 0.3 })
-                          
-                          // 5. Jump off the cliff! (Arc backwards then drop)
-                          .to(klabauter, { x: -45, y: -55, duration: 0.2, ease: 'power1.out' }, "+=0.2") 
-                          .to(klabauter, { y: floorDropDistance, duration: 0.5, ease: 'power2.in' }) // The long drop mimicking gravity
-                          
-                          // 6. Tactical Squat upon impact
-                          .to(klabauter, { scaleY: 0.5, duration: 0.15, ease: 'power2.out' }) 
-                          .to(klabauter, { scaleY: 1, duration: 0.25, ease: 'back.out(2)' })
-                          
-                          // 6. Sprint away immediately!
-                          .addLabel("runStart", "+=0.1")
-                          .to(klabauter, { x: -2500, duration: 4.5, ease: 'power2.in' }, "runStart"); // Sprints deeply off any sized screen
-
-                        // Frantic Waddle constraint applied concurrently alongside the sprint ONLY
-                        tl.to(klabauter, {
-                            rotation: -25, scaleY: 0.85, 
-                            yoyo: true, repeat: 35, 
-                            duration: 0.12, ease: 'sine.inOut'
-                        }, "runStart")
-                        .to(klabauter, {
-                            y: "-=30", // Bouncing up locally from the floor target!
-                            yoyo: true, repeat: 35, 
-                            duration: 0.12, ease: 'sine.inOut'
-                        }, "runStart+=0.06");
-                    }
-                }
+        const goToAlumniPage = (target) => {
+            alumniCurrentPage = target;
+            alumniTrack.style.transform = `translateX(-${target * getAlumniPageShift()}px)`;
+            alumniDots.forEach((d, idx) => {
+                d.classList.toggle('is-active', idx === target);
             });
-        }, { threshold: 0.6 }); 
-        
-        const scHero = document.getElementById('sc-hero-block');
-        const scFuerWen = document.getElementById('sc-fuer-wen-block');
-        if (scHero) klabauterObserver.observe(scHero);
-        if (scFuerWen) klabauterObserver.observe(scFuerWen);
+            alumniPages.forEach((page, idx) => {
+                page.classList.toggle('is-active', idx === target);
+            });
+        };
+
+        alumniDots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                const target = parseInt(dot.getAttribute('data-page'), 10);
+                goToAlumniPage(target);
+            });
+        });
+
+        // Reposition on window resize so the track stays aligned to the current page
+        let alumniResizeRaf;
+        window.addEventListener('resize', () => {
+            cancelAnimationFrame(alumniResizeRaf);
+            alumniResizeRaf = requestAnimationFrame(() => {
+                const prevTransition = alumniTrack.style.transition;
+                alumniTrack.style.transition = 'none';
+                alumniTrack.style.transform = `translateX(-${alumniCurrentPage * getAlumniPageShift()}px)`;
+                // force reflow then restore transition
+                void alumniTrack.offsetWidth;
+                alumniTrack.style.transition = prevTransition;
+            });
+        });
     }
 
     // Extremely sluggish cinematic GSAP Mouse Parallax
