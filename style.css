@@ -143,6 +143,11 @@ blockquote, .quote {
     z-index: 200;
     pointer-events: none;
 }
+@media (max-width: 768px) {
+    .navbar {
+        padding: 1.5rem 2rem;
+    }
+}
 .navbar > * {
     pointer-events: auto;
 }
@@ -171,6 +176,14 @@ html:has(#fullscreen-menu.open) .logo {
     right: 4rem;
     top: calc(2.5rem + 15.5px); /* Align perfectly with the 45px logo */
     z-index: 200;
+    padding: 1rem; /* unsichtbarer Touch-Target-Vergrößerer */
+    margin: -1rem -1rem -1rem 0; /* hebt Padding visuell wieder auf */
+}
+@media (max-width: 768px) {
+    .menu-toggle {
+        right: 2rem;
+        margin: -1rem;
+    }
 }
 .menu-toggle .bar {
     width: 35px;
@@ -427,7 +440,8 @@ html:has(#fullscreen-menu.open) .logo {
     align-items: center;
     gap: 0.35rem;
     align-self: flex-start;
-    padding-bottom: 0.5rem;
+    padding: 0.5rem 0;
+    min-height: 44px; /* Touch-Target */
     border-bottom: 1px solid var(--accent-color);
     text-transform: none;
     transition: border-color 0.5s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s ease;
@@ -630,6 +644,13 @@ html:has(#fullscreen-menu.open) .logo {
 .video-wrapper {
     aspect-ratio: 16/9;
     background-color: var(--text-primary);
+    overflow: hidden;
+}
+.video-wrapper iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
 }
 
 /* Contact Form */
@@ -788,6 +809,12 @@ html:has(#fullscreen-menu.open) .logo {
     margin: 0 auto 2.5rem auto;
     opacity: 0.85;
 }
+@media (max-width: 768px) {
+    .cta-accent-line {
+        width: 48px;
+        margin-bottom: 2rem;
+    }
+}
 
 /* Kontakt-Page — Studios Grid + Adress-Style */
 .contact-studios-grid {
@@ -849,6 +876,11 @@ html:has(#fullscreen-menu.open) .logo {
 }
 
 /* Produktion Hero — Quick-Nav zu den 4 Schritten */
+@media (max-width: 768px) {
+    .prod-hero-nav {
+        max-width: none;
+    }
+}
 .prod-hero-nav {
     display: flex;
     flex-direction: column;
@@ -899,6 +931,14 @@ html:has(#fullscreen-menu.open) .logo {
     min-height: 100vh;
     max-height: 100vh;
     overflow: hidden;
+}
+/* Mobile: 100vh-Zwang lockern, damit Content nicht gecuttet wird */
+@media (max-width: 992px) {
+    .sc-block.camp-finish-section {
+        height: auto;
+        max-height: none;
+        overflow: visible;
+    }
 }
 .camp-finish {
     max-width: 720px;
@@ -1343,8 +1383,8 @@ html:has(#fullscreen-menu.open) .logo {
     font-size: 12px;
     font-weight: 500;
     letter-spacing: 0.05em;
-    width: 32px;
-    height: 32px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
     cursor: pointer;
     display: inline-flex;
@@ -1361,6 +1401,24 @@ html:has(#fullscreen-menu.open) .logo {
     background: var(--accent-color);
     color: var(--bg-primary);
     border-color: var(--accent-color);
+}
+/* Mobile: Slider auflösen, alle Cards als lange Liste untereinander — kein Pager */
+@media (max-width: 768px) {
+    .sc-alumni-pager {
+        overflow: visible;
+    }
+    .sc-alumni-pager-track {
+        flex-direction: column;
+        gap: 2rem;
+        transform: none !important;
+    }
+    .sc-alumni-page {
+        flex: 0 0 auto;
+        width: 100%;
+    }
+    .sc-alumni-nav {
+        display: none;
+    }
 }
 .sc-fact-grid { display: flex; gap: 4rem; flex-wrap: wrap; }
 .sc-cta-box { display: flex; gap: 1rem; width: 100%; max-width: 500px; margin: 0 auto; }
@@ -1571,7 +1629,12 @@ html:has(#fullscreen-menu.open) .logo {
     .w2, .s2 { top: 65%; left: 28%; }
     .w3, .s3 { top: 76%; left: 70%; }
     .w4 { top: 88%; left: 45%; }
-    .sc-grid { grid-template-columns: 1fr; gap: 4rem; }
+    .sc-grid { grid-template-columns: 1fr; gap: 3rem; }
+    /* Songcamp Hero Meta-Spalte: rechts-aligned only makes sense auf Desktop */
+    #sc-hero-block .sc-grid > div[style*="text-align: right"] {
+        text-align: left !important;
+        align-items: flex-start !important;
+    }
     .sc-format-grid { grid-template-columns: 1fr 1fr; border-bottom: none; }
     .sc-day-card { border-right: 1px solid var(--bg-secondary); border-bottom: 1px solid var(--bg-secondary); }
     .sc-alumni-grid { grid-template-columns: 1fr; }
@@ -2128,6 +2191,13 @@ html:has(#fullscreen-menu.open) .logo {
     .editorial-split.reverse .editorial-split-text,
     .editorial-split.reverse .editorial-split-img {
         order: unset; /* Drop the reversal on mobile */
+    }
+    .editorial-split {
+        margin-top: 2rem;
+    }
+    .editorial-split-text[style*="sticky"] {
+        position: static !important; /* Sticky macht auf Mobile keinen Sinn im 1-col-Flow */
+        top: auto !important;
     }
     .editorial-item {
         grid-template-columns: 1fr;
