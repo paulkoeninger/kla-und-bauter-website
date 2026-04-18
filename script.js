@@ -1,6 +1,4 @@
 window.addEventListener('load', () => {
-    document.documentElement.classList.add('snap-active');
-
     // -----------------------------------------
     // 1. Loader fade-out + Hero-Reveals (kein Flug mehr).
     // -----------------------------------------
@@ -176,9 +174,6 @@ window.addEventListener('load', () => {
 
         const outgoingSection = document.getElementById(currentRoute);
 
-        // Preemptively disable snap to prevent browser layout engine fighting during route transition
-        document.documentElement.classList.remove('snap-active');
-
         // Centralized heavy-duty scroll reset to beat mobile rendering lag
         const forceScrollToTop = () => {
             window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
@@ -192,7 +187,6 @@ window.addEventListener('load', () => {
             incomingSection.classList.add('active');
             forceScrollToTop();
             currentRoute = targetRoute;
-            if (['home', 'produktion', 'songcamps', 'sessions', 'team'].includes(targetRoute)) document.documentElement.classList.add('snap-active');
             return;
         }
 
@@ -238,8 +232,7 @@ window.addEventListener('load', () => {
                     ease: "power3.out",
                     onComplete: () => {
                         currentRoute = targetRoute;
-                        if (['home', 'produktion', 'songcamps', 'sessions', 'team'].includes(targetRoute)) document.documentElement.classList.add('snap-active');
-                        isTransitioning = false;
+                                    isTransitioning = false;
                         gsap.set(incomingElements, { clearProps: "all" });
                     }
                 });
