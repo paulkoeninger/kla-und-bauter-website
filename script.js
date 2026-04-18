@@ -249,13 +249,13 @@ window.addEventListener('load', () => {
         threshold: 0.15 /* Triggers when 15% of the section is visible */
     };
 
-    const scrollObserver = new IntersectionObserver((entries) => {
+    const scrollObserver = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('is-visible');
-            } else {
-                /* Remove class so the animation gracefully replays when snapping back */
-                entry.target.classList.remove('is-visible');
+                /* Einmal animiert = fertig. Kein Re-Reveal beim Hochscrollen,
+                   keine zurück-Animation. */
+                observer.unobserve(entry.target);
             }
         });
     }, observerOptions);

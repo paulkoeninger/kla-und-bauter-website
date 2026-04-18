@@ -328,22 +328,26 @@ html:has(#fullscreen-menu.open) .logo {
     /* Reveal Animation Start State */
     opacity: 0;
     transform: translateY(20px);
-    transition: opacity 0.55s ease-out, transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: opacity 0.35s ease-out, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .entry-line {
     flex: 1; /* Automatically takes all remaining width rightward */
     height: 1px;
     background-color: var(--text-primary);
     opacity: 0.15;
-    
+
     /* Draw Line Animation Start State */
     transform-origin: left;
     transform: scaleX(0);
-    transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.15s; /* Delays slightly after headline */
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.1s;
 }
+/* Drei Karten immer permanent sichtbar, gleiche Breite via flex: 1, gap dazwischen.
+   Kein Layout-Shift, kein Expand. Die Songcamp-Karte (camp-path) ist auf Desktop
+   default blurry mit Hint-Overlay — Hover schärft sie, Hint fadet aus. */
 .entry-grid {
     display: flex;
     flex-wrap: nowrap;
+    gap: 4rem;
     width: 100%;
 }
 .entry-card {
@@ -351,68 +355,73 @@ html:has(#fullscreen-menu.open) .logo {
     color: inherit;
     display: flex;
     flex-direction: column;
+    flex: 1;
     min-width: 0;
-    
-    /* Native structural width animation (kept) + snappier reveal */
-    transition: width 0.7s cubic-bezier(0.16, 1, 0.3, 1), padding 0.7s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.55s ease, transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
-    
-    /* Reveal Bounds */
+    position: relative;
+
+    /* Reveal-Animation (opacity + transform) bleibt agil. */
+    transition: opacity 0.35s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+
     opacity: 0;
     transform: translateY(30px);
 }
 
-.entry-card-1 { width: 50%; padding-right: 4rem; transition-delay: 0.15s; }
-.entry-card-2 { width: 50%; padding-left: 4rem; padding-right: 0; transition-delay: 0.3s; }
+.entry-card-1 { transition-delay: 0.05s; }
+.entry-card-2 { transition-delay: 0.12s; }
+.entry-card.camp-path { transition-delay: 0.2s; }
 
-/* The Hidden 3rd Path */
-.entry-card.camp-path {
-    width: 0;
-    padding-left: 0;
-    opacity: 0;
-    overflow: hidden;
-    pointer-events: none;
-    transition-delay: 0s;
-}
-
-/* Inner fixates format during expansion width squash */
+/* Card-Inner füllt die Card-Fläche natürlich. */
 .entry-card-inner {
-    width: clamp(250px, 28vw, 420px);
+    width: 100%;
     display: flex;
     flex-direction: column;
 }
 
-/* Core Expansion Magic — getrennt in zwei Pfade:
-   1) Hover-getriggert (Desktop): nur auf Geräten mit echter Maus/Trackpad.
-   2) Klick-getriggert (.is-expanded): auf allen Geräten. */
+/* Songcamp-Karte: auf Hover-fähigen Geräten default blurry + reduziert,
+   schärft beim Hover. Touch-Geräte sehen sie einfach scharf. */
 @media (hover: hover) {
-    .home-entry-section:has(.entry-thought-trigger:hover) .entry-card,
-    .home-entry-section:has(.camp-path:hover) .entry-card {
-        transition-delay: 0s !important;
+    .entry-card.camp-path .entry-card-inner {
+        opacity: 0.35;
+        filter: blur(6px);
+        transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                    filter 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .home-entry-section:has(.entry-thought-trigger:hover) .entry-card-1,
-    .home-entry-section:has(.camp-path:hover) .entry-card-1 {
-        width: 33.333%; padding-right: 2.5rem;
-    }
-    .home-entry-section:has(.entry-thought-trigger:hover) .entry-card-2,
-    .home-entry-section:has(.camp-path:hover) .entry-card-2 {
-        width: 33.333%; padding-left: 2.5rem; padding-right: 2.5rem;
-    }
-    .home-entry-section:has(.entry-thought-trigger:hover) .camp-path,
-    .home-entry-section:has(.camp-path:hover) .camp-path {
-        width: 33.333%; padding-left: 2.5rem; opacity: 1; pointer-events: auto;
+    .entry-card.camp-path:hover .entry-card-inner {
+        opacity: 1;
+        filter: blur(0);
     }
 }
-.home-entry-section.is-expanded .entry-card {
-    transition-delay: 0s !important; /* Safely override entry stagger */
+
+/* Hint-Overlay „Ich weiß noch gar nicht genau" — zentral auf der Card,
+   scharf auch wenn Card blurry ist (steht außerhalb der blur-Hierarchie).
+   Fadet auf Hover aus, damit Content klar lesbar wird. */
+.camp-path-hint {
+    display: none; /* Default: unsichtbar — nur auf Hover-fähigen Geräten zeigen */
 }
-.home-entry-section.is-expanded .entry-card-1 {
-    width: 33.333%; padding-right: 2.5rem;
-}
-.home-entry-section.is-expanded .entry-card-2 {
-    width: 33.333%; padding-left: 2.5rem; padding-right: 2.5rem;
-}
-.home-entry-section.is-expanded .camp-path {
-    width: 33.333%; padding-left: 2.5rem; opacity: 1; pointer-events: auto;
+@media (hover: hover) {
+    .camp-path-hint {
+        display: block;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-family: var(--font-secondary);
+        font-style: italic;
+        font-weight: 300;
+        font-size: clamp(1rem, 1.4vw, 1.2rem);
+        line-height: 1.3;
+        letter-spacing: -0.005em;
+        color: var(--text-primary);
+        white-space: nowrap;
+        text-align: center;
+        pointer-events: none;
+        opacity: 1;
+        z-index: 2;
+        transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .entry-card.camp-path:hover .camp-path-hint {
+        opacity: 0;
+    }
 }
 
 /* Visibility Triggers (Added by JS when user scrolls to section) */
@@ -514,7 +523,7 @@ html:has(#fullscreen-menu.open) .logo {
 /* Home Entry Responsive Info */
 @media (max-width: 992px) {
     .home-entry-section {
-        padding: var(--content-top) var(--edge) 4rem;
+        padding: var(--content-top) var(--edge) 8rem;
         height: auto;
         display: block; /* Disable 100vh center flex to allow natural scrolling if mobile cards get tall */
     }
@@ -550,19 +559,29 @@ html:has(#fullscreen-menu.open) .logo {
     position: relative; /* Restores document flow when active */
 }
 
-/* Fullscreen Menu */
+/* Fullscreen Menu — editorial redesign.
+   Weg vom uppercase/900-Bullig, rein in Canela-Kapitel mit Untertiteln.
+   Content startet auf X-Burger-Höhe (== navbar padding-top) und muss
+   immer in 100svh passen — kein Scrollen. */
 .fullscreen-menu {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
+    height: 100svh;
     background-color: var(--bg-primary);
     z-index: 150; /* below navbar 200 */
     display: flex;
     flex-direction: column;
-    justify-content: flex-start; /* Aligns content top instead of vertically centered */
-    padding-top: calc(2.5rem + 15px); /* Matches exact Y-axis of the cross toggle */
+    justify-content: flex-start;
+    padding-top: 2.5rem; /* == navbar padding-top → Kicker auf X-Höhe */
     align-items: center;
     opacity: 0;
     pointer-events: none;
+    overflow: hidden;
+}
+@media (max-width: 768px) {
+    .fullscreen-menu {
+        padding-top: 1.5rem; /* matcht Mobile-navbar */
+    }
 }
 .fullscreen-menu.open {
     pointer-events: all;
@@ -573,43 +592,88 @@ html:has(#fullscreen-menu.open) .logo {
     max-width: 1440px;
     padding: 0 var(--edge);
 }
+.menu-kicker {
+    margin-bottom: 3rem; /* editorial Luft zwischen Kicker und Kapitel-Liste */
+}
 .menu-links {
     list-style: none;
+    counter-reset: menu;
 }
 .menu-links li {
-    overflow: hidden; /* for staggered text reveal */
-    margin-bottom: 0.5rem;
+    overflow: hidden; /* für staggered text-reveal via GSAP */
+    margin-bottom: 1.25rem;
+    counter-increment: menu;
 }
 .menu-links a {
+    display: inline-grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 2rem;
+    align-items: baseline;
+    font-family: var(--font-secondary);
     font-size: clamp(2.5rem, 6vw, 4.5rem);
-    font-weight: 900;
+    font-weight: 400;
     color: var(--text-primary);
     text-decoration: none;
-    text-transform: uppercase;
+    text-transform: none;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    transition: color 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+/* Kapitelnummer (01, 02, …) als kleiner Kicker-Marginalwert */
+.menu-links a::before {
+    content: counter(menu, decimal-leading-zero);
+    font-family: var(--font-primary);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    color: var(--accent-color);
+    align-self: start;
+    padding-top: 1.35em; /* optisch auf die Grundlinie des Titels angleichen */
+    grid-column: 1;
+    grid-row: 1;
+}
+/* Untertitel unter jedem Kapitel — Canela italic, sekundär */
+.menu-links a em {
     display: block;
-    line-height: 1;
-    letter-spacing: -0.04em;
-    transition: color 0.3s;
+    grid-column: 2;
+    font-family: var(--font-secondary);
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(0.9rem, 1.4vw, 1.1rem);
+    line-height: 1.35;
+    letter-spacing: 0.005em;
+    color: var(--text-secondary);
+    margin-top: 0.35rem;
+    transition: color 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .menu-links a:hover {
     color: var(--accent-color);
+    transform: translateX(0.75rem);
 }
+.menu-links a:hover em {
+    color: var(--accent-color);
+}
+
 .menu-footer {
-    margin-top: 4rem;
+    margin-top: 5rem;
     display: flex;
     gap: 2rem;
     justify-content: flex-start;
     opacity: 0;
 }
 .small-link {
-    font-size: 1rem;
-    color: var(--text-primary);
+    font-family: var(--font-primary);
+    font-size: 13px;
+    color: var(--text-secondary);
     text-decoration: none;
-    font-weight: 700;
-    text-transform: uppercase;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    text-transform: none;
+    transition: color 0.3s ease;
 }
 .small-link:hover {
-    color: var(--accent-color);
+    color: var(--text-primary);
 }
 
 /* Base Page Styles */
@@ -1106,13 +1170,17 @@ html:has(#fullscreen-menu.open) .logo {
         padding: var(--content-top) var(--edge) 2rem;
     }
     .hero {
-        padding: var(--content-top) var(--edge) 4rem;
+        /* Mobile-Hero fest auf 100svh — Bild oben nach padding-top,
+           Text am unteren Rand vor padding-bottom, editorial Weißraum dazwischen. */
+        padding: 6rem var(--edge) 4rem;
         flex-direction: column;
-        justify-content: flex-start;
+        justify-content: space-between;
         align-items: center;
-        gap: 3rem;
-        height: auto;
+        gap: 2rem;
+        height: 100svh;
         min-height: 100svh;
+        max-height: 100svh;
+        overflow: hidden;
     }
     .hero-content {
         flex: none;
@@ -1727,94 +1795,12 @@ html:has(#fullscreen-menu.open) .logo {
 
 }
 
-/* Subtler Third Path Trigger (Ich weiß noch gar nicht) */
-.entry-thought-trigger {
-    position: absolute;
-    bottom: 2rem;
-    right: var(--edge); /* Aligns neatly to the right section edge */
-    display: flex;
-    align-items: center;
-    gap: 1rem; /* Connects line visual smoothly to text */
-    cursor: pointer;
-    z-index: 60;
-    text-align: right;
-    
-    /* Invisible hover-bridge preventing hover-loss when swiping mouse UP into the newly opened card */
-    padding-top: 5rem;
-    padding-left: 5rem;
-    
-    /* Reveal defaults */
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 1.5s ease-out, transform 1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s;
-}
-.home-entry-section.is-visible .entry-thought-trigger {
-    opacity: 0.45; /* Extends subtle presence */
-    transform: translateY(0);
-}
-.entry-thought-trigger:hover {
-    opacity: 0.8 !important; /* Never goes hyper bold */
-}
-.home-entry-section.is-expanded .entry-thought-trigger {
-    opacity: 0; /* Gracefully fades out forever once expansion handles the payload natively */
-    pointer-events: none;
-}
-.thought-text {
-    font-family: var(--font-secondary);
-    font-style: italic;
-    font-weight: 400;
-    font-size: 0.95rem;
-    color: var(--text-secondary);
-    transition: color 0.4s ease;
-}
-.entry-thought-trigger:hover .thought-text {
-    color: var(--text-primary); /* Brings text into full focus on hover instead of generic underline */
-}
-
-/* Horizontal Design Anchor Line (Mirrors the Headline Line) */
-.thought-line {
-    width: 60px; /* Small default stance */
-    height: 1px;
-    background-color: var(--text-secondary);
-    opacity: 0.4;
-    transition: width 0.7s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.4s ease, opacity 0.4s ease;
-}
-.entry-thought-trigger:hover .thought-line {
-    width: 120px; /* Sweeps natively to the left upon hover */
-    background-color: var(--text-primary);
-    opacity: 0.8;
-}
-
-/* Mobile: alle drei Karten gleichberechtigt untereinander.
-   Desktop-„versteckter dritter Weg"-Trick entfällt — auf Touch kann man
-   nicht hovern, und die Entdeckung würde nur im Weg stehen. */
+/* Mobile: 3 Karten untereinander via flex-column. Gap steuert den Abstand,
+   keine margin-Tricks mehr nötig. */
 @media (max-width: 992px) {
     .entry-grid {
         flex-direction: column;
-    }
-    .entry-card-1,
-    .entry-card-2,
-    .entry-card.camp-path {
-        width: 100%;
-        padding-left: 0;
-        padding-right: 0;
-    }
-    .entry-card-2,
-    .entry-card.camp-path {
-        margin-top: 4rem;
-    }
-    /* camp-path tritt als dritte Karte in den Reveal ein, statt versteckt zu bleiben. */
-    .entry-card.camp-path {
-        pointer-events: auto;
-        transition-delay: 0.45s;
-    }
-    .entry-card-inner {
-        width: 100%;
-        max-width: 100%;
-    }
-    /* Thought-Trigger gehört zum Desktop-Reveal — auf Mobile redundant. */
-    .entry-thought-trigger {
-        display: none;
+        gap: 4rem;
     }
 }
 .camp-image-col {
@@ -2533,8 +2519,12 @@ html:has(#fullscreen-menu.open) .logo {
     .entry-card:hover .entry-cta .arrow-icon { transform: none; }
 
     /* Menü / Small Links */
-    .menu-links a:hover { color: var(--text-primary); }
-    .small-link:hover { color: var(--text-primary); }
+    .menu-links a:hover {
+        color: var(--text-primary);
+        transform: none;
+    }
+    .menu-links a:hover em { color: var(--text-secondary); }
+    .small-link:hover { color: var(--text-secondary); }
 
     /* Generic Buttons */
     .cta-button:hover {
@@ -2591,14 +2581,8 @@ html:has(#fullscreen-menu.open) .logo {
     }
     .camp-cta:hover .arrow-icon { transform: none; }
 
-    /* Thought-Trigger (auf Mobile display:none, Reset als Sicherheit) */
-    .entry-thought-trigger:hover { opacity: 0.45 !important; }
-    .entry-thought-trigger:hover .thought-text { color: var(--text-secondary); }
-    .entry-thought-trigger:hover .thought-line {
-        width: 60px;
-        background-color: var(--text-secondary);
-        opacity: 0.4;
-    }
+    /* Songcamp-Karte: kein Reset nötig — blur/hint existieren nur im
+       @media (hover: hover) Scope, matchen auf Touch ohnehin nie. */
 
     /* Home-Camp Bildbereich */
     .home-camp-section:hover .camp-img {
