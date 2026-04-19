@@ -1,39 +1,131 @@
-# Kla & Bauter - Project Identity & Architecture
+# Kla & Bauter — Projekt-Kompass
 
-This project is a high-end, editorial, single-page application (SPA) for the music production duo "Kla & Bauter". The design philosophy favors minimalism, deliberate pacing, high-end typography, and subtle, physical-feeling micro-animations.
+Editoriale SPA für das Musikproduktions-Duo Kla & Bauter (Paul Köninger + Adrian Thessenvitz, GbR, Köln).
+Design-Philosophie: ruhig, noble, viel Weißraum, lange cinematic Easings. **Raum geben, nicht vollpacken.**
 
-## 1. Design System & Aesthetics
-- **Core Identity:** Editorial, calm, noble, high-end. "Hollywood-Gefühl". 
-- **Colors:** Deep, dark backgrounds with pure whites and a subtle accent color (`--accent-color`).
-- **Typography:** Uses premium, highly legible fonts (`var(--font-primary)`, `var(--font-secondary)`).
-- **Interactions:** Animations must use long durations (e.g. `0.6s` to `1.2s`) and cinematic easing curves (like `cubic-bezier(0.16, 1, 0.3, 1)` or GSAP's `power3.out`). **No sudden snapping or aggressive bouncing.**
-- **Layouts:** Uses `.snap-block` / `.sc-block` containers with `min-height: 100vh` for immersive, full-viewport pacing. CSS `scroll-snap` wurde bewusst entfernt — die Seite scrollt frei, das Pacing kommt allein durch die 100 vh-Blocks. Give the text room to breathe. Do not pack the screen.
+Live: https://www.klaundbauter-musikproduktion.com
 
-## 2. Technical Architecture & Rules
-- **SPA Only (DO NOT split files):** The entire website operates within `index.html`. Sections are shown/hidden dynamically.
-- **Routing Engine:** Navigation uses a custom implementation of the HTML5 History API (`pushState`/`popstate`). 
-  - Changing sections updates the URL logically (e.g., `/songcamps`) and fades out via GSAP timelines. 
-  - **Crucial:** There is a `try/catch` fallback in `script.js` to intercept `SecurityError` exceptions from the History API. This guarantees the site still animates perfectly if tested locally via desktop double-click (`file:///` protocol).
-- **Animation Stack:** Relies on **GSAP** for spatial transitions and complex timelines.
-- **Scroll Triggers:** Managed by a native `IntersectionObserver` (`klabauterObserver` in `script.js`). Elements start invisible (`opacity: 0; transform: translateY(16px);`) in CSS and trigger smoothly.
+---
 
-## 3. Notable Custom Mechanisms (Careful When Editing)
-- **Interactive Editorial Text Reveal (Songcamp "Das Versprechen"):** Utilizes a sophisticated 60-FPS `requestAnimationFrame` loop that calculates exact DOM span `getBoundingClientRect()` bounds to create a strict, gapless left-to-right reading experience. Contains an anti-skip mechanic.
-- **Immersive Teaser Background:** Uses an ultra-slow 45-second CSS `@keyframes` zoom loop (`slowZoom`) to give the image life without distracting the eye.
-- **Isolated Component Hovers:** Hover interactions (like the CTA arrow) use highly customized `cubic-bezier` timing functions. They only trigger when the user explicitly hovers the actual element, not generic containers.
+## 1. Stack & Deployment
 
-## 4. Current State & Known Considerations
-- The base routing and high-end animations are fully intact.
-- **Deployment Requirement:** Server configuration will eventually require rewrite rules (e.g., standard `.htaccess` or `_redirects` file mapping `/*` to `/index.html`) so the SPA routing flawlessly intercepts deep links in production.
+- **Frontend**: Vanilla HTML + CSS + JS. GSAP 3.12 (CDN) für Transitions + Parallax.
+- **Fonts**: Inter + Cormorant, **selbst gehostet** in `fonts/` (kein Google-CDN).
+- **Hosting**: Vercel (www als Primary Domain, non-www redirected).
+- **Build-Step**: `node build.js` generiert pre-rendered HTML pro Route vor jedem Deploy.
+- **Serverless Function**: `api/waitlist.js` (Vercel) → Resend API für Warteliste-Mails.
 
-**Developer Instruction:** When extending this project, prioritize elegant constraints over flashy chaos. Strictly reuse the existing `snap-block` HTML structure for scrolling content. Do not use generic utility frameworks. Use the semantic CSS variables and GSAP sequence parameters established in `style.css` and `script.js`.
+## 2. 3-File-Regel + Build-Output
 
-## 5. Vertiefende Dokumentation
-Schlanke, thematisch sortierte Markdown-Dateien unter [`docs/`](docs/). Bei Session-Start nur das laden, was zur Aufgabe passt:
-- [`docs/BRAND.md`](docs/BRAND.md) — Marke, Positionierung, Tonalität, Zielgruppe, Angebote (Destillat aus Visionsdokument).
-- [`docs/CONTENT.md`](docs/CONTENT.md) — Sitemap, Routes, alle aktuellen Copy-Blöcke, Asset-Inventar.
-- [`docs/TECH.md`](docs/TECH.md) — Architektur-Details (Routing, Animation-Stack, Custom Mechanisms, Deployment).
-- [`docs/DESIGN.md`](docs/DESIGN.md) — Tokens, Komponenten-Atlas, Animation-Easings, Responsive-Strategie.
-- [`docs/ROADMAP.md`](docs/ROADMAP.md) — Offene Fragen, Inkonsistenzen, Deployment-Checkliste, verworfene Ideen.
+| Datei | Rolle |
+|---|---|
+| `index.html` | Template mit allen Routen als `.page-section`. Home-Metas fest im `<head>`. |
+| `style.css` | Komplettes Styling, Tokens in `:root`. |
+| `script.js` | SPA-Routing, Promise-Reveal, Warteliste-Submit, Teaser-Parallax, IntersectionObserver. |
+| `build.js` | Liest `routeMeta` aus script.js + Template → schreibt `produktion.html`, `sessions.html`, etc. mit route-spezifischen Metas. Single Source of Truth: `routeMeta` in script.js. |
+| `vercel.json` | `buildCommand`, `outputDirectory: "."`, `rewrites` (`/produktion` → `/produktion.html` …). |
 
-**Source of Truth** für die Marke bleibt [`vision_vibe_language/kla-bauter-visionsdokument-v2.docx`](vision_vibe_language/kla-bauter-visionsdokument-v2.docx). `BRAND.md` ist das Schnellzugriffs-Destillat.
+**Regel**: Keine Komponenten-Splits, kein npm-Framework, kein Bundler. Alles editierbar in den drei Files.
+
+## 3. SPA-Routing
+
+- `data-route="…"` auf Links → delegiertes Click-Handling in script.js.
+- `navigateTo(route)` spielt GSAP-Timeline (Out-Slide → DOM-Swap → In-Slide, ~0.9 s).
+- URL via `history.pushState` aktualisiert, `popstate` hört auf Back/Forward.
+- **Navigation führt IMMER ans Top** — auch bei Same-Route-Klick.
+- `updateSEOMeta(route)` aktualisiert `<title>`, `<meta description>`, OG, Twitter, Canonical bei jedem Routenwechsel.
+- `validRoutes`: `home, produktion, sessions, songcamps, team, releases, kontakt, impressum, datenschutz`.
+- `try/catch` um History-API-Calls (für `file://`-Modus).
+
+## 4. Notable Custom Mechanisms (vorsichtig editieren)
+
+### Promise Text-Reveal (Songcamp „Das Versprechen")
+- Desktop: 60fps Mouse-Follow, Zipper-Logic, Wort-für-Wort, Anti-Skip.
+- Mobile: Auto-Reveal via IntersectionObserver beim Entry (80ms Stagger, ~3.2 s total, einmalig pro Page-View).
+
+### Songcamp-Karte Home („Wonach ist dir?")
+- Alle 3 Karten permanent sichtbar.
+- Songcamp-Card ist auf Desktop default blurry mit „Ich weiß noch gar nicht genau"-Hint → Hover schärft.
+- Gated via `@media (hover: hover) and (min-width: 993px)` — Touch + enger Browser sehen scharfe Card.
+
+### Home-Teaser Mouse-Follow Parallax
+- `translate:` Property auf `.teaser-bg` via JS, kombiniert sich mit dem 45s-`slowZoom`-Keyframe (`transform: scale`).
+
+### Lite YouTube-Embed (Releases)
+- Vorschau ist ein `<button class="video-wrapper" data-yt-id="…">` mit Thumbnail (`maxresdefault.jpg` + Fallback).
+- Click ersetzt Button durch echtes `<iframe>` mit `autoplay=1`. Keine YouTube-Cookies vor Klick.
+
+### Warteliste-Formular (Songcamp)
+- Client: Name + E-Mail + Submit → POST `/api/waitlist` (JSON).
+- Server (`api/waitlist.js`): Validierung → Resend API → Mail an `WAITLIST_TO`, Reply-To = User-Mail.
+- **Env-Vars in Vercel nötig**: `RESEND_API_KEY`, `WAITLIST_FROM`, `WAITLIST_TO`.
+
+### Hover-Reset auf Touch
+- Ein `@media (hover: none)` Block am Ende von style.css neutralisiert ~39 Hover-Regeln auf Base-State.
+- Eliminiert Sticky-Hover-Bug beim Tap auf Touch-Geräten.
+
+## 5. CSS-System (wichtigste Regeln)
+
+### Tokens (`:root` in style.css)
+- Farben: `--bg-primary`, `--bg-secondary`, `--text-primary`, `--text-secondary`, `--accent-color` (#8A8F6A Oliv).
+- Schrift: `--font-primary` (Inter), `--font-secondary` (Cormorant, Serif).
+- Body-Typo: `--body-font-size: 16px`, `--body-line-height: 1.75`, `--body-font-weight: 300`.
+- Spacing: `--edge` (4/2/1rem nach Breakpoint), `--content-top` (14/11rem).
+- Fluid Type Scale: `--text-sm` … `--text-hero` via `clamp()`.
+
+### Breakpoints
+- **992 px**: Tablet → Mobile-Layout.
+- **768 px**: Phone-Layout.
+- **480 px**: sehr kleine Phones.
+- *(Exoten 576/600/1200 sind migriert — nicht mehr nutzen.)*
+
+### Viewport-Units
+- Durchgängig `100svh` statt `100vh` (iOS-Safari-robust).
+
+### Editorial-Prinzipien
+1. Weißraum > Dichte. Lieber einen neuen `snap-block` als zwei Spalten packen.
+2. Eine Idee pro Bildschirm.
+3. Typografie ist Ornament — Serif/Sans-Kontrast (Canela italic vs Inter).
+4. Animation-Dauer **0.6–1.2 s**, Ease `cubic-bezier(0.16, 1, 0.3, 1)` oder GSAP `power3.out`. **Kein Snapping, Bouncing, Hype.**
+
+### Nicht-Regeln
+- Kein Tailwind/Bootstrap. Tokens + semantische Klassen.
+- Keine Emojis/Icons aus Libraries. Pfeile sind Unicode `⟶`.
+- Keine Auto-Play-Videos, kein Sound.
+- **Keine Inline-Styles mit relativen URLs** (`background-image: url('images/…')`). Immer in externer CSS setzen — sonst resolved pushState auf `/route/images/…` → 404.
+
+## 6. SEO
+
+- Title/Meta pro Route via `routeMeta` in script.js (Single Source of Truth).
+- `build.js` schreibt diese in die pre-rendered HTMLs — Social-Scraper und Google ohne JS-Wait.
+- JSON-LD Organization + 3 Services (Songcamp, Session, Produktion) im `<head>`.
+- `sitemap.xml` + `robots.txt` in Root, bei Google Search Console via DNS verifiziert.
+- Alle absoluten URLs auf `https://www.klaundbauter-musikproduktion.com` (www).
+
+## 7. Performance
+
+- Alle Content-Bilder als **WebP** (responsive Hero mit 800/1200/2048w srcset).
+- Hero mit `<link rel="preload" imagesrcset imagesizes fetchpriority="high">`.
+- `loading="lazy"` auf alle Below-Fold-Images (Hero + Navbar-Logo sind eager).
+- Navbar-Logo als 2.4 KB WebP (ursprünglich 236 KB PNG).
+
+**Lighthouse (Stand April 2026)**: Desktop 100/90/100/100 · Mobile 93–100/90/100/100.
+
+## 8. Rechtliches
+
+- **Betreiber**: Kla und Bauter Thessenvitz Köninger GbR, Heumarkt 42–44, 50667 Köln.
+- **Mail offiziell**: `hallo@klaundbauter-musikproduktion.com`.
+- Impressum DDG-konform (§ 5 DDG), Datenschutz DSGVO-konform (Verantwortlicher = GbR, Hosting Vercel DPF, YouTube Lite-Embed, Fonts selbst gehostet = keine Google-Übermittlung).
+
+## 9. Bekannte offene Tasks
+
+- **Resend Domain-Verifikation** (DKIM/SPF-Records bei Domain-Registrar) — nötig damit Warteliste-Mails als `hallo@…` raus gehen statt via `onboarding@resend.dev`.
+- **Vercel Env-Vars setzen**: `RESEND_API_KEY`, `WAITLIST_FROM`, `WAITLIST_TO`.
+- **Alumni-Quotes** (Songcamp): aktuell Platzhalter, durch echte Zitate ersetzen sobald vorhanden.
+
+## 10. Vertiefende Dokumentation
+
+- **Source of Truth** für die Marke: `vision_vibe_language/kla-bauter-visionsdokument-v2.docx`.
+- **Schnellzugriff**: `docs/BRAND.md` (Tonalität, Zielgruppe, Angebote) und `docs/DESIGN.md` (Token-Referenz, Komponenten-Atlas).
+
+**Developer-Instruction**: Elegant constraints > flashy chaos. Reuse bestehende `snap-block` / `sc-block` Strukturen. Tokens statt Magic Numbers. Animationen ruhig, nie aggressiv. Bei Textänderungen: `docs/BRAND.md` konsultieren für Tonalität.
