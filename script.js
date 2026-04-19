@@ -111,10 +111,22 @@ window.addEventListener('load', () => {
         }
 
         if (targetRoute === currentRoute) {
-            // Schon auf der Zielseite — nur zum Anker scrollen falls gesetzt
+            console.log('[nav] same-route click → scroll to top', { targetRoute, scrollTo, scrollY: window.scrollY });
+            // Schon auf der Zielseite — wenn Anker gesetzt, dorthin; sonst
+            // zum Seitenanfang (konsistent: Navigation führt IMMER ans Top).
             if (scrollTo) {
                 const target = document.getElementById(scrollTo);
                 if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } else {
+                // Alle bekannten Scroll-Methoden parallel — deckt Browser-Quirks ab.
+                document.documentElement.scrollTop = 0;
+                document.body.scrollTop = 0;
+                window.scrollTo(0, 0);
+                requestAnimationFrame(() => {
+                    document.documentElement.scrollTop = 0;
+                    window.scrollTo(0, 0);
+                });
+                setTimeout(() => window.scrollTo(0, 0), 20);
             }
             return;
         }
@@ -322,6 +334,99 @@ window.addEventListener('load', () => {
             if (revealStep >= maxStep) alumniMore.hidden = true;
         });
     }
+
+    // Songcamp-Teaser (Home): subtiler Mousefollow im Hintergrundbild.
+    // translate-Property greift parallel zum bestehenden scale-Zoom — beide
+    // werden vom Browser kombiniert. Max ±12px Offset, 1.2s transition macht
+    // das Lag cinematic.
+    const teaser = document.querySelector('.home-camp-section.teaser');
+    const teaserBg = teaser?.querySelector('.teaser-bg');
+    if (teaser && teaserBg && matchMedia('(hover: hover)').matches) {
+        let pending = null;
+        teaser.addEventListener('mousemove', (e) => {
+            const rect = teaser.getBoundingClientRect();
+            const xRatio = (e.clientX - rect.left) / rect.width - 0.5;  // -0.5 … 0.5
+            const yRatio = (e.clientY - rect.top) / rect.height - 0.5;
+            if (pending) return;
+            pending = requestAnimationFrame(() => {
+                teaserBg.style.translate = `${xRatio * 24}px ${yRatio * 24}px`;
+                pending = null;
+            });
+        });
+        teaser.addEventListener('mouseleave', () => {
+            teaserBg.style.translate = '0 0';
+        });
+    }
+
+    // Songcamp-Warteliste — Submit → /api/waitlist (Vercel Function) → Resend Mail.
+    document.querySelectorAll('.sc-waitlist-form').forEach(form => {
+        const submit = form.querySelector('.sc-waitlist-submit');
+        const feedback = form.querySelector('.sc-waitlist-feedback');
+        const nameInput = form.querySelector('input[name="name"]');
+        const emailInput = form.querySelector('input[name="email"]');
+        const originalLabel = submit.textContent;
+
+        const showFeedback = (msg, isError = false) => {
+            feedback.textContent = msg;
+            feedback.classList.toggle('is-error', isError);
+            feedback.classList.add('is-visible');
+        };
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            feedback.classList.remove('is-visible', 'is-error');
+
+            const name = nameInput.value.trim();
+            const email = emailInput.value.trim();
+            if (!name || !email) {
+                showFeedback('Bitte Name und E-Mail eintragen.', true);
+                return;
+            }
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                showFeedback('E-Mail-Adresse sieht nicht richtig aus.', true);
+                return;
+            }
+
+            submit.disabled = true;
+            submit.textContent = 'Wird gesendet…';
+
+            try {
+                const res = await fetch('/api/waitlist', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, camp: form.dataset.camp }),
+                });
+                const json = await res.json().catch(() => ({}));
+                if (!res.ok) throw new Error(json.error || 'Etwas ging schief.');
+
+                form.reset();
+                submit.textContent = 'Eingetragen ✓';
+                showFeedback('Danke — wir melden uns, sobald es losgeht.');
+            } catch (err) {
+                submit.disabled = false;
+                submit.textContent = originalLabel;
+                showFeedback(err.message || 'Versuch es gleich nochmal.', true);
+            }
+        });
+    });
+
+    // Releases — Lite-YouTube-Embed: Facade-Thumbnail wird bei Klick durch
+    // echten iframe ersetzt. Scharfe Previews, schneller Page-Load, keine
+    // YouTube-Cookies bis zur Interaktion.
+    document.querySelectorAll('.video-wrapper[data-yt-id]').forEach(wrapper => {
+        wrapper.addEventListener('click', () => {
+            const id = wrapper.dataset.ytId;
+            if (!id) return;
+            const iframe = document.createElement('iframe');
+            iframe.src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
+            iframe.title = 'YouTube Release';
+            iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+            iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+            iframe.allowFullscreen = true;
+            wrapper.innerHTML = '';
+            wrapper.appendChild(iframe);
+        });
+    });
 
     // Extremely sluggish cinematic GSAP Mouse Parallax
     const campSection = document.querySelector('.home-camp-section');
