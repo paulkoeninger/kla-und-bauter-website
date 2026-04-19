@@ -1471,6 +1471,9 @@ html:has(#fullscreen-menu.open) .logo {
                 color 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+@media (max-width: 768px) {
+    .teaser-cta { color: rgba(255, 255, 255, 1); }
+}
 @media (max-width: 480px) {
     .teaser-kicker { margin-bottom: 1.8rem; }
     .teaser-cta { margin-top: 2rem; }
