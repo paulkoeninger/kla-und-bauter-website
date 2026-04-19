@@ -674,6 +674,10 @@ window.addEventListener('load', () => {
                     setTimeout(() => {
                         if (closingLine) closingLine.classList.add('revealed');
                     }, words.length * STAGGER + 400);
+                    // Blurred-Text-Layer ausfaden sobald alle Wörter sichtbar sind
+                    setTimeout(() => {
+                        if (blurredText) blurredText.classList.add('faded');
+                    }, words.length * STAGGER + 200);
                 }, 250);
             });
         }, { threshold: 0.5 });
