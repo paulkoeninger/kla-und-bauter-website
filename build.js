@@ -13,7 +13,7 @@
 
 import fs from 'node:fs';
 
-const BASE_URL = 'https://klaundbauter-musikproduktion.com';
+const BASE_URL = 'https://www.klaundbauter-musikproduktion.com';
 const TEMPLATE_PATH = 'index.html';
 const SCRIPT_PATH = 'script.js';
 

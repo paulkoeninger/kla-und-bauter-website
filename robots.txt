@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /api/
 
-Sitemap: https://klaundbauter-musikproduktion.com/sitemap.xml
+Sitemap: https://www.klaundbauter-musikproduktion.com/sitemap.xml

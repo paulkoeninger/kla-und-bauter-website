@@ -215,7 +215,7 @@ window.addEventListener('load', () => {
 
     function updateSEOMeta(route) {
         const meta = routeMeta[route] || routeMeta.home;
-        const base = 'https://klaundbauter-musikproduktion.com';
+        const base = 'https://www.klaundbauter-musikproduktion.com';
         const path = route === 'home' ? '/' : '/' + route;
 
         document.title = meta.title;
