@@ -180,7 +180,7 @@ window.addEventListener('load', () => {
             description: 'Songcamps, Songwriting-Sessions und Musikproduktion. Fünf Tage für die Musik, die längst in dir steckt — mit Paul und Adrian aus Köln.'
         },
         songcamps: {
-            title: 'Songcamp — Fünf Tage, ein Raum, dein Song | Kla & Bauter',
+            title: 'Songcamp — Fünf Tage, ein Haus, deine Musik | Kla & Bauter',
             description: 'Songwriting-Retreat in Deutschland: Sieben Tage, vier garantierte Sessions, ein Haus. Für Artists, die eigene Songs schreiben — nicht lernen.'
         },
         produktion: {
