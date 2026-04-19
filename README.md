@@ -1,17 +1,32 @@
-# Kla & Bauter Musikproduktion
-Willkommen zum Repository der neuen "Kla & Bauter Musikproduktion"-Website.
+# Kla & Bauter — Website
 
-## Übersicht
-Das Projekt ist eine moderne, minimalistische "Single Page Application" (SPA) im Magazine-Style. Es wurde vollständig in **Plain HTML, Vanilla CSS und Vanilla JavaScript (mit GSAP für nahtlose Animationen)** geschrieben. 
+Editoriale SPA für die Musikproduktion [Kla & Bauter](https://www.klaundbauter-musikproduktion.com) — Paul Köninger & Adrian Thessenvitz, Köln.
 
-Die Webseite beinhaltet fließende Seitenübergänge, performante Animationen und besticht durch ein hochwertiges, klares Design, inspiriert von Studio- und Lifestyle-Magazinen.
+## Stack
 
-## Struktur
-- `index.html`: Der Haupt-Einstiegspunkt. Hier befinden sich alle Unterseiten als HTML-Sections (`#home`, `#produktion`, `#sessions`, etc.).
-- `style.css`: Das gesamte Styling, angelegt in CSS Variables und optimiert via Media Queries.
-- `script.js`: Die gesamte Logik, inklusive der komplexen GSAP-Übergänge zwischen den virtuellen "Unterseiten" und Cursor-Effekten.
-- `images/`: Alle Bilder und Grafiken.
-- `Logo/`: Das vektorbasierte SVG/PNG-Branding.
+- Vanilla HTML + CSS + JS (kein Framework)
+- GSAP für Transitions und Parallax (CDN)
+- Selbst gehostete Fonts (Inter + Cormorant)
+- Vercel Hosting + Serverless Function für Warteliste-Mails (via Resend)
+- Pre-rendered HTML pro Route via `build.js`
 
-## Hosting (GitHub Pages)
-Die Seite verzichtet auf jegliche Backends, Server, Build-Steps (wie Webpack) oder Datenbanken (wie WordPress). Sie kann zu **100% statisch** auf jeder beliebigen Plattform gehostet werden (z.B. GitHub Pages, Vercel, Netlify oder klassische Webhoster).
+## Entwickeln
+
+```bash
+# Lokaler Server (Vercel CLI empfohlen, auch für Warteliste-Test)
+vercel dev
+
+# oder einfach
+python3 -m http.server 8000
+```
+
+## Deploy
+
+Push auf `main` → Vercel deployed automatisch (inkl. `node build.js` vor Ship).
+
+## Dokumentation
+
+- **[CLAUDE.md](CLAUDE.md)** — Projekt-Architektur, Konventionen, Custom Mechanisms, offene Tasks.
+- **[docs/BRAND.md](docs/BRAND.md)** — Tonalität, Zielgruppe, Angebote (für Text-Änderungen).
+- **[docs/DESIGN.md](docs/DESIGN.md)** — Token-Referenz, Komponenten-Atlas (für CSS-Änderungen).
+- **[vision_vibe_language/kla-bauter-visionsdokument-v2.docx](vision_vibe_language/)** — Marken-Bibel (Single Source of Truth).
