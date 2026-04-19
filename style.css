@@ -1039,6 +1039,7 @@ html:has(#fullscreen-menu.open) .logo {
 @media (max-width: 768px) {
     .prod-hero-nav {
         max-width: none;
+        margin-top: -1rem;
     }
 }
 .prod-hero-nav {
