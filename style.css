@@ -2218,7 +2218,8 @@ html:has(#fullscreen-menu.open) .logo {
     margin: 0;
 }
 .footer-nav li {
-    line-height: 1.7; /* matcht .footer-col p (Adressen) */
+    font-size: 14px; /* matcht .footer-col p — line-height 1.7 bezieht sich sonst auf die ererbten 16px */
+    line-height: 1.7;
 }
 .footer-nav a {
     font-size: 14px;
