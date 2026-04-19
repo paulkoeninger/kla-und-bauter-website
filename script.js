@@ -653,5 +653,31 @@ window.addEventListener('load', () => {
                 hintDismissed = true;
             }
         }, 6000);
+    } else if (promiseSection && sharpTextNode) {
+        // Mobile / Touch: Auto-Reveal wort-für-wort, sobald die Section
+        // ~50 % im Viewport ist. Einmal-Erlebnis (unobserve nach Trigger),
+        // passt zur „Musik ist ein Prozess — man schaut dabei zu"-Metapher.
+        const mobilePromiseObserver = new IntersectionObserver((entries, obs) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                obs.unobserve(entry.target);
+
+                const words = sharpTextNode.querySelectorAll('.reveal-word');
+                const STAGGER = 80; // ms pro Wort — ~3.2 s für 40 Wörter
+
+                // Kleiner Delay nach Entry, damit der Reveal bewusst startet
+                setTimeout(() => {
+                    words.forEach((word, i) => {
+                        setTimeout(() => word.classList.add('revealed'), i * STAGGER);
+                    });
+                    // Closing-Line kommt nach dem letzten Wort
+                    setTimeout(() => {
+                        if (closingLine) closingLine.classList.add('revealed');
+                    }, words.length * STAGGER + 400);
+                }, 250);
+            });
+        }, { threshold: 0.5 });
+
+        mobilePromiseObserver.observe(promiseSection);
     }
 });
