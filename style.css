@@ -1307,7 +1307,7 @@ html:has(#fullscreen-menu.open) .logo {
 .teaser-bg {
     position: absolute;
     inset: 0;
-    background-image: url('images/songcamp/sessionpaul.jpg');
+    background-image: url('images/songcamp/sessionpaul.webp');
     background-size: cover;
     background-position: center 40%;
     opacity: 0.35;
