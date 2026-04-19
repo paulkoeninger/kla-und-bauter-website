@@ -377,9 +377,11 @@ html:has(#fullscreen-menu.open) .logo {
     flex-direction: column;
 }
 
-/* Songcamp-Karte: auf Hover-fähigen Geräten default blurry + reduziert,
-   schärft beim Hover. Touch-Geräte sehen sie einfach scharf. */
-@media (hover: hover) {
+/* Songcamp-Karte: auf Hover-fähigen Desktop-Viewports default blurry +
+   reduziert, schärft beim Hover. Touch-Geräte UND Mobile-breite Fenster
+   (auch mit Maus) sehen sie einfach scharf — auf Mobile-Layout sind alle
+   drei Karten gestackt und gleichwertig. */
+@media (hover: hover) and (min-width: 993px) {
     .entry-card.camp-path .entry-card-inner {
         opacity: 0.35;
         filter: blur(6px);
@@ -393,12 +395,11 @@ html:has(#fullscreen-menu.open) .logo {
 }
 
 /* Hint-Overlay „Ich weiß noch gar nicht genau" — zentral auf der Card,
-   scharf auch wenn Card blurry ist (steht außerhalb der blur-Hierarchie).
-   Fadet auf Hover aus, damit Content klar lesbar wird. */
+   scharf auch wenn Card blurry ist. Nur Desktop-Layout + Hover. */
 .camp-path-hint {
-    display: none; /* Default: unsichtbar — nur auf Hover-fähigen Geräten zeigen */
+    display: none;
 }
-@media (hover: hover) {
+@media (hover: hover) and (min-width: 993px) {
     .camp-path-hint {
         display: block;
         position: absolute;
@@ -605,22 +606,21 @@ html:has(#fullscreen-menu.open) .logo {
     counter-increment: menu;
 }
 .menu-links a {
-    display: inline-grid;
-    grid-template-columns: auto 1fr;
-    column-gap: 2rem;
+    display: inline-flex;
     align-items: baseline;
+    column-gap: 1.25rem;
     font-family: var(--font-secondary);
-    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-size: clamp(1.75rem, 4vw, 3rem);
     font-weight: 400;
     color: var(--text-primary);
     text-decoration: none;
     text-transform: none;
-    line-height: 1.1;
+    line-height: 1.2;
     letter-spacing: -0.01em;
     transition: color 0.5s cubic-bezier(0.16, 1, 0.3, 1),
                 transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
-/* Kapitelnummer (01, 02, …) als kleiner Kicker-Marginalwert */
+/* Kapitelnummer (01, 02, …) — baseline-aligned mit dem Titel. */
 .menu-links a::before {
     content: counter(menu, decimal-leading-zero);
     font-family: var(--font-primary);
@@ -628,31 +628,10 @@ html:has(#fullscreen-menu.open) .logo {
     font-weight: 500;
     letter-spacing: 0.18em;
     color: var(--accent-color);
-    align-self: start;
-    padding-top: 1.35em; /* optisch auf die Grundlinie des Titels angleichen */
-    grid-column: 1;
-    grid-row: 1;
-}
-/* Untertitel unter jedem Kapitel — Canela italic, sekundär */
-.menu-links a em {
-    display: block;
-    grid-column: 2;
-    font-family: var(--font-secondary);
-    font-style: italic;
-    font-weight: 300;
-    font-size: clamp(0.9rem, 1.4vw, 1.1rem);
-    line-height: 1.35;
-    letter-spacing: 0.005em;
-    color: var(--text-secondary);
-    margin-top: 0.35rem;
-    transition: color 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .menu-links a:hover {
     color: var(--accent-color);
     transform: translateX(0.75rem);
-}
-.menu-links a:hover em {
-    color: var(--accent-color);
 }
 
 .menu-footer {
@@ -740,18 +719,70 @@ html:has(#fullscreen-menu.open) .logo {
 .video-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 2rem;
+    gap: 3rem;
 }
+/* Facade-Button bis zum Klick — danach wird iframe per JS eingesetzt. */
 .video-wrapper {
     aspect-ratio: 16/9;
     background-color: var(--text-primary);
     overflow: hidden;
+    position: relative;
+    padding: 0;
+    border: 0.5px solid rgba(0, 0, 0, 0.06);
+    cursor: pointer;
+    display: block;
+    width: 100%;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    font: inherit;
+    color: inherit;
 }
 .video-wrapper iframe {
     width: 100%;
     height: 100%;
     border: 0;
     display: block;
+}
+.video-thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: brightness(0.92) saturate(0.9);
+    transition: filter 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.video-play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: rgba(247, 247, 245, 0.95);
+    color: var(--accent-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+                background 0.3s ease;
+    z-index: 2;
+}
+.video-play svg { margin-left: 2px; } /* optisch zentriert */
+
+@media (hover: hover) {
+    .video-wrapper:hover {
+        transform: translateY(-2px);
+    }
+    .video-wrapper:hover .video-thumb {
+        filter: brightness(1) saturate(1);
+        transform: scale(1.02);
+    }
+    .video-wrapper:hover .video-play {
+        transform: translate(-50%, -50%) scale(1.08);
+    }
 }
 
 /* Contact Form */
@@ -806,6 +837,44 @@ html:has(#fullscreen-menu.open) .logo {
 .legal-text p {
     margin-bottom: 1.5rem;
     line-height: 1.6;
+}
+
+/* Editorial Legal-Pages (Impressum, Datenschutz) */
+.snap-block-inner.legal {
+    max-width: 760px;
+    margin: 0;
+}
+.legal-section-title {
+    font-family: var(--font-primary);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent-color);
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+}
+.snap-block-inner.legal > .legal-section-title:first-of-type {
+    margin-top: 0;
+}
+.snap-block-inner.legal p {
+    font-size: 15px;
+    line-height: 1.75;
+    font-weight: 300;
+    color: var(--text-primary);
+    margin-bottom: 0;
+    max-width: 680px;
+}
+.snap-block-inner.legal a {
+    color: var(--text-primary);
+    text-decoration: none;
+    border-bottom: 1px solid var(--accent-color);
+    transition: color 0.3s;
+}
+@media (hover: hover) {
+    .snap-block-inner.legal a:hover {
+        color: var(--accent-color);
+    }
 }
 
 /* Produktion Process Updates */
@@ -1084,6 +1153,7 @@ html:has(#fullscreen-menu.open) .logo {
 }
 .camp-finish-desc {
     font-size: 13px;
+    font-weight: 400; /* matcht Fünf-Tage-Desc (div ohne p-Override) */
     color: var(--text-secondary);
     line-height: 1.65;
     max-width: 54ch;
@@ -1095,8 +1165,6 @@ html:has(#fullscreen-menu.open) .logo {
     line-height: 1.55;
     font-weight: 400;
     color: var(--text-primary);
-    padding-top: 1.5rem;
-    border-top: 0.5px solid rgba(0, 0, 0, 0.1);
     max-width: none;
 }
 @media (max-width: 768px) {
@@ -1245,8 +1313,12 @@ html:has(#fullscreen-menu.open) .logo {
     opacity: 0.35;
     filter: saturate(0.7);
     transform: scale(1.0);
-    will-change: transform, opacity;
+    will-change: transform, opacity, translate;
     animation: slowZoom 45s linear infinite alternate;
+    /* Mousefollow-Lag: translate wird via JS gesetzt, transition macht das
+       smooth — subtile, verzögerte Parallax-Bewegung. */
+    translate: 0 0;
+    transition: translate 1.2s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .home-camp-section.teaser:hover .teaser-bg {
@@ -1383,7 +1455,12 @@ html:has(#fullscreen-menu.open) .logo {
     opacity: 1; transform: translateY(0); transition-delay: 0.4s;
 }
 .home-camp-section.teaser.is-visible .teaser-cta {
-    opacity: 1; transform: translateY(0); transition-delay: 0.6s;
+    opacity: 1;
+    transform: translateY(0);
+    /* Delay nur auf Reveal-Properties — color bleibt sofort reaktiv für Hover. */
+    transition: opacity 0.6s ease 0.6s,
+                transform 0.6s ease 0.6s,
+                color 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @media (max-width: 480px) {
@@ -1545,7 +1622,7 @@ html:has(#fullscreen-menu.open) .logo {
 .sc-fact-grid { display: flex; gap: 4rem; flex-wrap: wrap; }
 .sc-cta-box { display: flex; gap: 1rem; width: 100%; max-width: 500px; margin: 0 auto; }
 
-/* Songcamp Hero CTA-Row: Primary-Button + Text-Link nebeneinander. */
+/* Songcamp Hero CTA-Row: Desktop = Primary-Button + Text-Link nebeneinander. */
 .sc-hero-cta-row {
     display: flex;
     gap: 2rem;
@@ -1557,7 +1634,20 @@ html:has(#fullscreen-menu.open) .logo {
         flex-direction: column;
         align-items: flex-start;
         gap: 1.25rem;
-        margin-bottom: 2rem; /* zusätzlicher Puffer zum Meta-Block darunter */
+        margin-bottom: 2.5rem; /* Puffer zum Meta-Block darunter */
+    }
+    /* Primary verwandelt sich in einen Editorial-Link — gleicher Start-Punkt
+       wie „Wie es läuft", gleicher Rhythmus. Priorität durch Reihenfolge +
+       Oliv-Farbe statt durch Button-Body. */
+    .sc-hero-cta-row .kb-btn-primary {
+        background: transparent;
+        color: var(--accent-color);
+        padding: 0 0 0.5rem 0;
+        border-radius: 0;
+        border-bottom: 1px solid var(--accent-color);
+        font-size: 15px;
+        font-weight: 500;
+        gap: 0.6rem;
     }
 }
 
@@ -1655,6 +1745,80 @@ html:has(#fullscreen-menu.open) .logo {
 .sc-camp-card:hover {
     transform: translateY(-4px);
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+}
+/* Warteliste-Form — Typo + Felder + Submit + Feedback */
+.sc-camp-card-title {
+    font-family: var(--font-secondary);
+    font-size: 2rem;
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+}
+.sc-camp-card-meta {
+    font-size: 15px;
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+}
+.sc-waitlist-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+.sc-waitlist-form input {
+    width: 100%;
+    background: var(--bg-primary);
+    border: 0.5px solid rgba(0, 0, 0, 0.12);
+    color: var(--text-primary);
+    padding: 14px 18px;
+    font-size: 14px;
+    font-family: var(--font-primary);
+    font-weight: 300;
+    border-radius: 2px;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+.sc-waitlist-form input:focus {
+    border-color: var(--accent-color);
+}
+.sc-waitlist-form input:invalid:not(:placeholder-shown) {
+    border-color: rgba(180, 80, 80, 0.4);
+}
+.sc-waitlist-submit {
+    background: var(--accent-color);
+    color: var(--bg-primary);
+    padding: 14px 32px;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    border: none;
+    cursor: pointer;
+    border-radius: 2px;
+    font-family: var(--font-primary);
+    width: 100%;
+    transition: opacity 0.3s ease;
+}
+.sc-waitlist-submit:disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+.sc-waitlist-feedback {
+    font-family: var(--font-secondary);
+    font-style: italic;
+    font-size: 13px;
+    line-height: 1.4;
+    color: var(--text-secondary);
+    margin: 1rem 0 0;
+    min-height: 1.4em;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+.sc-waitlist-feedback.is-visible {
+    opacity: 1;
+}
+.sc-waitlist-feedback.is-error {
+    color: rgba(180, 80, 80, 0.85);
+    font-style: normal;
 }
 #songcamps .sc-block:nth-child(even) .sc-kicker {
     color: var(--bg-primary); 
@@ -1791,6 +1955,27 @@ html:has(#fullscreen-menu.open) .logo {
         padding-top: var(--content-top);
         padding-bottom: 8rem;
         min-height: 90svh;
+    }
+
+    /* Songcamp-Hero special: strikte 100svh — der Meta-Block wird aus der
+       ersten Bildschirmseite gepusht, damit „Wie es läuft" visuell die
+       letzte CTA ist und nichts darunter schon anreißt. */
+    .page-section > #sc-hero-block.sc-block:first-child {
+        min-height: 100svh;
+    }
+    #sc-hero-block .sc-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 3rem;
+    }
+    #sc-hero-block .sc-grid > div:first-child {
+        min-height: calc(100svh - 20rem);
+    }
+    /* Meta-Box braucht oben + unten deutlich mehr Luft zur col1 und zum
+       nächsten sc-block. Der gap des sc-grid reicht dafür nicht. */
+    #sc-hero-block .sc-grid > div:nth-child(2) {
+        margin-top: 4rem;
+        margin-bottom: 4rem;
     }
 
 }
@@ -2033,7 +2218,7 @@ html:has(#fullscreen-menu.open) .logo {
     margin: 0;
 }
 .footer-nav li {
-    line-height: 1.9;
+    line-height: 1.7; /* matcht .footer-col p (Adressen) */
 }
 .footer-nav a {
     font-size: 14px;
@@ -2090,19 +2275,42 @@ html:has(#fullscreen-menu.open) .logo {
     .footer-grid { grid-template-columns: 1fr 1fr; gap: 3rem; margin-bottom: 3rem; }
 }
 
-/* Phone (≤768px): Reduktion auf CTA oben + Klabautermann ganz unten.
-   Adressen, Navi und Copyright verschwinden bewusst — kommt alles in der
-   Hauptnavigation vor. margin-bottom: auto am CTA pusht das Logo ans
-   untere Ende der flex-column. */
+/* Phone (≤768px): CTA oben, Studio-Adressen als kleine zweispaltige
+   Info-Zeile darunter, Klabautermann am Fuß. Navigation + Copyright
+   bleiben hidden — Navi erreicht man über das Burger-Menü. */
 @media (max-width: 768px) {
     .footer-cta { margin-bottom: auto; }
-    .footer-grid,
     .footer-bottom { display: none; }
+    /* Adressen-Grid editorial-mini: 2 Spalten, kleine Typo, viel Atem */
+    .footer-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        margin: 0 0 2.5rem 0;
+    }
+    .footer-grid .footer-col:last-child {
+        display: none; /* Navigation-Col auf Mobile aus */
+    }
+    .footer-col h4 {
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.18em;
+        color: var(--accent-color);
+        text-transform: uppercase;
+        margin-bottom: 0.75rem;
+    }
+    .footer-col p {
+        font-size: 12px;
+        line-height: 1.65;
+        font-weight: 300;
+        color: var(--text-secondary);
+        margin-bottom: 0;
+    }
     .footer-logo-mobile {
         display: block;
         width: 42px;
         height: auto;
-        margin: 2rem auto 0;
+        margin: 2rem 0 0;
         opacity: 1;
     }
 }
@@ -2359,16 +2567,23 @@ html:has(#fullscreen-menu.open) .logo {
         gap: 2rem;
         align-items: center !important;
     }
-    .prod-hero-img, .prod-img {
+    /* Step-Bilder (Produktion-Schritte) — kompakt, letter-boxed, stehen
+       allein in ihren Sections. */
+    .prod-img {
         height: auto;
         width: 100%;
         max-height: 45vh;
         object-fit: contain;
     }
-    /* Erste Hero-Bilder (Sessions + Produktion) brauchen mehr Luft zum
-       Text-Block darüber — Step-Bilder (.prod-img) stehen alleine in ihrer
-       Section, brauchen das nicht. */
+    /* Hero-Bilder (Sessions + Produktion) — prominenter, gecroppt,
+       füllen die Card-Breite ohne Letterboxing. */
     .prod-hero-img {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 4/5;
+        max-height: 70vh;
+        object-fit: cover;
+        object-position: center;
         margin-top: 3rem;
     }
     .editorial-quote .editorial-title {
@@ -2376,8 +2591,12 @@ html:has(#fullscreen-menu.open) .logo {
     }
 }
 @media (max-width: 480px) {
-    .prod-hero-img, .prod-img {
-        max-height: 35vh; /* heavily constrain image on small screens to fit text inside 100vh */
+    .prod-img {
+        max-height: 35vh; /* heavily constrain step images on small screens */
+    }
+    /* Hero bleibt groß via aspect-ratio; max-height großzügiger als Sicherheits-Cap. */
+    .prod-hero-img {
+        max-height: 80vh;
     }
     .editorial-quote .editorial-title {
         font-size: 1.7rem;
@@ -2523,7 +2742,6 @@ html:has(#fullscreen-menu.open) .logo {
         color: var(--text-primary);
         transform: none;
     }
-    .menu-links a:hover em { color: var(--text-secondary); }
     .small-link:hover { color: var(--text-secondary); }
 
     /* Generic Buttons */
