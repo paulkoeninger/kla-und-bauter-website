@@ -12,7 +12,7 @@ Desktop.ini
 # Temporary and Parsing Files (generated during development)
 parse.py
 parse_legal.py
-*.xml
+# keine pauschale *.xml-Regel — sitemap.xml muss gepushed werden
 
 # Editor directories and files
 .idea
