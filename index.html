@@ -4,12 +4,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kla & Bauter - Musikproduktion</title>
-    <meta name="description" content="Kla & Bauter - High-End Musikproduktion, Composition, Mixing & Mastering.">
+    <title>Kla & Bauter — Songcamp, Sessions & Musikproduktion</title>
+    <meta name="description" content="Songcamps, Songwriting-Sessions und Musikproduktion. Fünf Tage für die Musik, die längst in dir steckt — mit Paul und Adrian aus Köln.">
+    <meta name="author" content="Kla und Bauter Thessenvitz Köninger GbR">
+    <link rel="canonical" href="https://klaundbauter-musikproduktion.com/">
+
+    <!-- Open Graph (Facebook, LinkedIn, iMessage, WhatsApp) -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Kla & Bauter">
+    <meta property="og:locale" content="de_DE">
+    <meta property="og:title" content="Kla & Bauter — Songcamp, Sessions & Musikproduktion">
+    <meta property="og:description" content="Songcamps, Songwriting-Sessions und Musikproduktion. Fünf Tage für die Musik, die längst in dir steckt — mit Paul und Adrian aus Köln.">
+    <meta property="og:url" content="https://klaundbauter-musikproduktion.com/">
+    <meta property="og:image" content="https://klaundbauter-musikproduktion.com/images/hero_home.jpg">
+    <meta property="og:image:alt" content="Paul Köninger und Adrian Thessenvitz — Kla & Bauter">
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Kla & Bauter — Songcamp, Sessions & Musikproduktion">
+    <meta name="twitter:description" content="Songcamps, Songwriting-Sessions und Musikproduktion. Fünf Tage für die Musik, die längst in dir steckt.">
+    <meta name="twitter:image" content="https://klaundbauter-musikproduktion.com/images/hero_home.jpg">
+
     <!-- Favicon: Klabautermann. Automatische Schwarz/Weiß-Umschaltung je nach Browser-Theme. -->
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" media="(prefers-color-scheme: light)">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32-dark.png" media="(prefers-color-scheme: dark)">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+    <!-- JSON-LD: Organisation + Angebote. Hilft Google den Kontext zu verstehen. -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Kla und Bauter Thessenvitz Köninger GbR",
+      "alternateName": "Kla & Bauter",
+      "legalName": "Kla und Bauter Thessenvitz Köninger GbR",
+      "url": "https://klaundbauter-musikproduktion.com",
+      "logo": "https://klaundbauter-musikproduktion.com/Logo/K%26B_Klabautermann_vektor.png",
+      "image": "https://klaundbauter-musikproduktion.com/images/hero_home.jpg",
+      "description": "Songcamp, Songwriting-Sessions und Musikproduktion mit Paul Köninger und Adrian Thessenvitz.",
+      "email": "hallo@klaundbauter-musikproduktion.com",
+      "telephone": "+49-173-6984873",
+      "vatID": "DE325676110",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Heumarkt 42-44",
+        "postalCode": "50667",
+        "addressLocality": "Köln",
+        "addressRegion": "NRW",
+        "addressCountry": "DE"
+      },
+      "founder": [
+        { "@type": "Person", "name": "Paul Köninger", "jobTitle": "Songwriting, Gesang, Mixing" },
+        { "@type": "Person", "name": "Adrian Thessenvitz", "jobTitle": "Songwriting, Produktion, Gitarre" }
+      ],
+      "knowsAbout": ["Songwriting", "Musikproduktion", "Songcamp", "Songwriting-Retreat", "Co-Produktion"],
+      "makesOffer": [
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Songcamp",
+            "description": "Siebentägiges Songwriting-Retreat in Deutschland. Sechs Teilnehmer, vier garantierte Sessions pro Person.",
+            "url": "https://klaundbauter-musikproduktion.com/songcamps"
+          },
+          "price": "1200",
+          "priceCurrency": "EUR"
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Songwriting-Session",
+            "description": "Einzelsession: von einer Idee zum Song in wenigen Stunden.",
+            "url": "https://klaundbauter-musikproduktion.com/sessions"
+          },
+          "price": "500",
+          "priceCurrency": "EUR"
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Musikproduktion",
+            "description": "Vollproduktion: Arrangement, Recording, Mix und Mastering.",
+            "url": "https://klaundbauter-musikproduktion.com/produktion"
+          },
+          "price": "1785",
+          "priceCurrency": "EUR"
+        }
+      ]
+    }
+    </script>
+
     <!-- Typography: Söhne (Inter) & Canela (Cormorant) — selbstgehostet, kein Google-CDN -->
     <link rel="stylesheet" href="fonts/fonts.css">
     <link rel="stylesheet" href="style.css">
@@ -17,7 +103,7 @@
 
 <body>
     <div class="loader">
-        <img src="Logo/K%26B_Klabautermann_vektor.png" alt="Loading" class="loader-logo">
+        <img src="Logo/K%26B_Klabautermann_vektor.png" alt="" aria-hidden="true" class="loader-logo">
     </div>
 
     <header class="navbar">
@@ -60,7 +146,7 @@
                 </div>
                 <div class="hero-images">
                     <div class="image-wrapper">
-                        <img src="images/hero_home.jpg" alt="Kla & Bauter" class="portrait-img">
+                        <img src="images/hero_home.jpg" alt="Paul Köninger und Adrian Thessenvitz — Kla & Bauter Musikproduktion" class="portrait-img">
                     </div>
                 </div>
             </section>
@@ -77,7 +163,7 @@
                         <a href="#" class="entry-card entry-card-1" data-route="sessions">
                             <div class="entry-card-inner">
                                 <div class="entry-image-wrapper">
-                                    <img src="images/songcamp/session_home.webp" alt="Einfach anfangen" class="entry-img">
+                                    <img src="images/songcamp/session_home.webp" alt="Songwriting-Session bei Kla & Bauter" class="entry-img">
                                 </div>
                                 <div class="entry-content">
                                     <h3 class="entry-title">Einen Song anfangen.</h3>
@@ -91,7 +177,7 @@
                         <a href="#" class="entry-card entry-card-2" data-route="produktion">
                             <div class="entry-card-inner">
                                 <div class="entry-image-wrapper">
-                                    <img src="images/produktion_1.jpg" alt="Fertig machen" class="entry-img">
+                                    <img src="images/produktion_1.jpg" alt="Musikproduktion — Song fertig machen" class="entry-img">
                                 </div>
                                 <div class="entry-content">
                                     <h3 class="entry-title">Einen Song fertig machen.</h3>
@@ -106,7 +192,7 @@
                             <span class="camp-path-hint">Ich weiß noch gar nicht genau</span>
                             <div class="entry-card-inner">
                                 <div class="entry-image-wrapper">
-                                    <img src="images/songcamp/camp_home.jpg" alt="Unser Songcamp" class="entry-img">
+                                    <img src="images/songcamp/camp_home.jpg" alt="Songcamp — sieben Tage Songwriting-Retreat" class="entry-img">
                                 </div>
                                 <div class="entry-content">
                                     <h3 class="entry-title">Auf die Suche gehen.</h3>
@@ -167,7 +253,7 @@
                         </nav>
                     </div>
                     <div class="editorial-split-img">
-                        <img src="images/produktion_1.jpg" alt="Musikproduktion" class="editorial-img prod-hero-img">
+                        <img src="images/produktion_1.jpg" alt="Musikproduktion bei Kla & Bauter — Song fertig machen" class="editorial-img prod-hero-img">
                     </div>
                 </div>
             </div>
@@ -193,7 +279,7 @@
                         <p class="editorial-desc" style="margin-top: 0.35rem;">Struktur, Dynamik, Entscheidungen.<br>Damit aus einer Idee ein Song wird.</p>
                     </div>
                     <div class="editorial-split-img" style="text-align: center;">
-                        <img src="images/produktion_1.jpg" alt="Arrangement" class="editorial-img prod-img">
+                        <img src="images/produktion_1.jpg" alt="Arrangement — Musikproduktion bei Kla & Bauter" class="editorial-img prod-img">
                     </div>
                 </div>
             </div>
@@ -208,7 +294,7 @@
                         <p class="editorial-desc" style="margin-top: 0.35rem;">Instrumente, Texturen, Atmosphäre —<br>alles entsteht aus dem, was dein Song braucht.</p>
                     </div>
                     <div class="editorial-split-img" style="text-align: center;">
-                        <img src="images/produktion.jpg" alt="Klangwelt" class="editorial-img prod-img">
+                        <img src="images/produktion.jpg" alt="Klangwelt — Sounds für deinen Song" class="editorial-img prod-img">
                     </div>
                 </div>
             </div>
@@ -216,7 +302,7 @@
             <!-- 4. VISUELLE EBENE -->
             <div class="snap-block no-pad">
                 <div class="snap-block-inner full-bleed" style="margin-top: 0;">
-                    <img src="images/produktion_2.jpg" alt="Produktion Details" class="cinematic-img">
+                    <img src="images/produktion_2.jpg" alt="Musikproduktion im Detail" class="cinematic-img">
                 </div>
             </div>
 
@@ -230,7 +316,7 @@
                         <p class="editorial-desc" style="margin-top: 0.35rem;">Du nimmst bei uns auf —<br>und wir holen gemeinsam das Beste raus.</p>
                     </div>
                     <div class="editorial-split-img" style="text-align: center;">
-                        <img src="images/recording.jpg" alt="Recording" class="editorial-img prod-img">
+                        <img src="images/recording.jpg" alt="Vocals-Recording bei Kla & Bauter" class="editorial-img prod-img">
                     </div>
                 </div>
             </div>
@@ -245,7 +331,7 @@
                         <p class="editorial-desc" style="margin-top: 0.35rem;">Balance, Tiefe, Details —<br>bis dein Song genau so klingt, wie er soll.</p>
                     </div>
                     <div class="editorial-split-img" style="text-align: center;">
-                        <img src="images/mix.jpg" alt="Mix und Master" class="editorial-img prod-img">
+                        <img src="images/mix.jpg" alt="Mix und Mastering — Song-Finishing" class="editorial-img prod-img">
                     </div>
                 </div>
             </div>
@@ -268,7 +354,7 @@
             <!-- 5c. VISUELLE PAUSE -->
             <div class="snap-block no-pad">
                 <div class="snap-block-inner full-bleed" style="margin-top: 0;">
-                    <img src="images/recording2.jpeg" alt="Recording-Stimmung" class="cinematic-img">
+                    <img src="images/recording2.jpeg" alt="Recording-Session im Studio" class="cinematic-img">
                 </div>
             </div>
 
@@ -297,7 +383,7 @@
                         <p class="editorial-lead">Komm mit einer Idee — einer Akkordfolge, einem Text-Fragment, einem Gefühl. In ein paar Stunden steht dein Song. Der schnellste Weg, wirklich etwas mitzunehmen.</p>
                     </div>
                     <div class="editorial-split-img">
-                        <img src="images/Kla & Bauter Studio-100.jpg" alt="Songwriting Session" class="editorial-img prod-hero-img">
+                        <img src="images/Kla & Bauter Studio-100.jpg" alt="Songwriting-Session bei Kla & Bauter" class="editorial-img prod-hero-img">
                     </div>
                 </div>
             </div>
@@ -314,7 +400,7 @@
             <!-- 3. VISUELLE PAUSE -->
             <div class="snap-block no-pad">
                 <div class="snap-block-inner full-bleed" style="margin-top: 0;">
-                    <img src="images/produktion_1.jpg" alt="Studio-Stimmung" class="cinematic-img">
+                    <img src="images/produktion_1.jpg" alt="Musikproduktion bei Kla & Bauter" class="cinematic-img">
                 </div>
             </div>
 
@@ -352,7 +438,7 @@
             <!-- 7. VISUELLE PAUSE -->
             <div class="snap-block no-pad">
                 <div class="snap-block-inner full-bleed" style="margin-top: 0;">
-                    <img src="images/produktion_3.jpg" alt="Studio-Stimmung" class="cinematic-img">
+                    <img src="images/produktion_3.jpg" alt="Musikproduktion bei Kla & Bauter" class="cinematic-img">
                 </div>
             </div>
         </section>
@@ -390,7 +476,7 @@
             <!-- 2a. FÜR-WEN INTRO (Full-bleed Bild) -->
             <div class="snap-block no-pad">
                 <div class="snap-block-inner full-bleed" style="margin-top: 0;">
-                    <img src="images/songcamp/sc_mood4.webp" alt="Songcamp-Stimmung" class="cinematic-img">
+                    <img src="images/songcamp/sc_mood4.webp" alt="Songcamp-Haus in NRW — Songwriting-Retreat" class="cinematic-img">
                 </div>
             </div>
 
@@ -826,7 +912,7 @@
                         <p class="team-bio">1996 München · Jazzgitarre Köln, Magna Cum Laude 2019 · Mitglied bei Ad Infinitum.</p>
                     </div>
                     <div class="editorial-split-img">
-                        <img src="images/produktion_2.jpg" alt="Adrian Thessenvitz" class="editorial-img team-portrait">
+                        <img src="images/produktion_2.jpg" alt="Adrian Thessenvitz — Songwriting und Musikproduktion" class="editorial-img team-portrait">
                     </div>
                 </div>
             </div>
@@ -841,7 +927,7 @@
                         <p class="team-bio">1997 Heidelberg · Jazz/Pop-Gesang Köln 2022 · Eigenes Projekt KETZBERG.</p>
                     </div>
                     <div class="editorial-split-img">
-                        <img src="images/paul.jpg" alt="Paul Köninger" class="editorial-img team-portrait">
+                        <img src="images/paul.jpg" alt="Paul Köninger — Songwriting, Gesang und Mixing" class="editorial-img team-portrait">
                     </div>
                 </div>
             </div>
