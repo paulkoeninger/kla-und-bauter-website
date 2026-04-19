@@ -840,9 +840,16 @@ html:has(#fullscreen-menu.open) .logo {
 }
 
 /* Editorial Legal-Pages (Impressum, Datenschutz) */
+.snap-block:has(.snap-block-inner.legal) {
+    justify-content: flex-start;
+    padding-top: var(--content-top);
+    padding-bottom: 6rem;
+}
 .snap-block-inner.legal {
     max-width: 760px;
     margin: 0;
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 .legal-section-title {
     font-family: var(--font-primary);
@@ -1036,12 +1043,6 @@ html:has(#fullscreen-menu.open) .logo {
 }
 
 /* Produktion Hero — Quick-Nav zu den 4 Schritten */
-@media (max-width: 768px) {
-    .prod-hero-nav {
-        max-width: none;
-        margin-top: -1rem;
-    }
-}
 .prod-hero-nav {
     display: flex;
     flex-direction: column;
@@ -1050,6 +1051,12 @@ html:has(#fullscreen-menu.open) .logo {
     padding-top: 1.5rem;
     border-top: 0.5px solid rgba(0, 0, 0, 0.1);
     max-width: 340px;
+}
+@media (max-width: 768px) {
+    .prod-hero-nav {
+        max-width: none;
+        margin-top: -1rem;
+    }
 }
 .prod-hero-nav-item {
     display: inline-grid;
@@ -1506,6 +1513,14 @@ html:has(#fullscreen-menu.open) .logo {
 }
 .sc-format-grid { display: grid; grid-template-columns: repeat(5, 1fr); }
 .sc-day-card { padding: 2.5rem 1.5rem; }
+@media (max-width: 768px) {
+    .sc-day-grid {
+        grid-template-columns: 1fr !important;
+    }
+    .sc-stats-row {
+        flex-direction: column !important;
+    }
+}
 .sc-alumni-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
 
 /* Alumni-Pager — horizontaler Slider mit sichtbarem Gap zwischen Seiten */
@@ -1952,6 +1967,9 @@ html:has(#fullscreen-menu.open) .logo {
         justify-content: center;
         padding: 6rem var(--edge);
     }
+    .sc-block--full {
+        min-height: 100svh;
+    }
     .page-section > .sc-block:first-child {
         padding-top: var(--content-top);
         padding-bottom: 8rem;
@@ -2293,6 +2311,12 @@ html:has(#fullscreen-menu.open) .logo {
     .footer-grid .footer-col:last-child {
         display: none; /* Navigation-Col auf Mobile aus */
     }
+    .footer-col--desktop-only {
+        display: none;
+    }
+    .releases-cta-block {
+        display: none;
+    }
     .footer-col h3 {
         font-size: 10px;
         font-weight: 600;
@@ -2486,11 +2510,18 @@ html:has(#fullscreen-menu.open) .logo {
     .editorial-split .editorial-split-text {
         display: contents;
     }
+    /* Zwei aufeinanderfolgende .editorial-desc werden durch display:contents
+       zu direkten Grid-Items — der 2rem-Gap reißt sie auseinander.
+       Wir canceln den Gap und halten den originalen 0.35rem-Abstand. */
+    .editorial-split .editorial-desc + .editorial-desc {
+        margin-top: -1.65rem !important;
+    }
     .editorial-split .editorial-split-img {
         order: 1;
     }
     .editorial-split .team-bio {
         order: 2;
+        margin-top: 0.5rem;
     }
     .editorial-item {
         grid-template-columns: 1fr;
@@ -2565,9 +2596,15 @@ html:has(#fullscreen-menu.open) .logo {
         padding-bottom: 8rem;
         min-height: 90svh;
     }
+    .snap-block--full {
+        min-height: 100svh;
+    }
     .snap-block-inner.editorial-split {
-        gap: 2rem;
+        gap: 1rem;
         align-items: center !important;
+    }
+    .snap-block-inner.editorial-split .editorial-title {
+        margin-bottom: 0.25rem;
     }
     /* Step-Bilder (Produktion-Schritte) — kompakt, letter-boxed, stehen
        allein in ihren Sections. */

@@ -53,9 +53,13 @@ window.addEventListener('load', () => {
         if (isMenuOpen) {
             menuOverlay.classList.add('open');
             menuOverlay.style.opacity = 1;
+            document.body.style.overflow = 'hidden';
+            document.documentElement.style.overflow = 'hidden';
         } else {
             menuOverlay.classList.remove('open');
             menuOverlay.style.opacity = 0;
+            document.body.style.overflow = '';
+            document.documentElement.style.overflow = '';
             // Clean up any stray GSAP transforms from the hover effect
             gsap.set(bars, { clearProps: "x" });
         }
