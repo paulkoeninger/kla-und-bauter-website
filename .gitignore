@@ -22,3 +22,10 @@ parse_legal.py
 *.njsproj
 *.sln
 *.sw?
+
+# Node / Vercel
+node_modules/
+.vercel
+.env
+.env.local
+.env.*.local
