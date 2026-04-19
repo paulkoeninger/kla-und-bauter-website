@@ -2733,17 +2733,10 @@ html:has(#fullscreen-menu.open) .logo {
     opacity: 0;
 }
 @media (hover: none), (max-width: 992px) {
-    .blurred-text {
-        filter: none !important;
-        opacity: 1 !important;
-    }
-    .sharp-mask-text {
-        display: none !important;
-    }
-    .closing-line {
-        opacity: 1 !important;
-        transform: none !important;
-    }
+    /* Mobile: Auto-Reveal wort-für-wort (kein Mouse-Follow).
+       Blur bleibt aktiv, sharp-mask bleibt overlayed — JS setzt `.revealed`
+       sequenziell, wenn die Section in Sicht kommt.
+       Nur Maus-spezifische Elemente ausblenden. */
     .light-cursor, .hint {
         display: none !important;
     }
