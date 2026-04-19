@@ -1473,6 +1473,16 @@ html:has(#fullscreen-menu.open) .logo {
 
 @media (max-width: 768px) {
     .teaser-cta { color: rgba(255, 255, 255, 1); }
+    .home-camp-section.teaser.is-visible .teaser-kicker {
+        transition-delay: 0s;
+    }
+    .home-camp-section.teaser.is-visible .teaser-headline {
+        transition-delay: 0s;
+    }
+    .home-camp-section.teaser.is-visible .teaser-cta {
+        transition: opacity 0.4s ease 0s, transform 0.4s ease 0s,
+                    color 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
 }
 @media (max-width: 480px) {
     .teaser-kicker { margin-bottom: 1.8rem; }
@@ -1517,6 +1527,9 @@ html:has(#fullscreen-menu.open) .logo {
 .sc-format-grid { display: grid; grid-template-columns: repeat(5, 1fr); }
 .sc-day-card { padding: 2.5rem 1.5rem; }
 @media (max-width: 768px) {
+    .sc-list-item--light {
+        color: var(--text-primary);
+    }
     .sc-day-grid {
         grid-template-columns: 1fr !important;
     }
@@ -2513,11 +2526,14 @@ html:has(#fullscreen-menu.open) .logo {
     .editorial-split .editorial-split-text {
         display: contents;
     }
-    /* Zwei aufeinanderfolgende .editorial-desc werden durch display:contents
-       zu direkten Grid-Items — der 2rem-Gap reißt sie auseinander.
-       Wir canceln den Gap und halten den originalen 0.35rem-Abstand. */
+    /* display:contents macht alle Kinder zu direkten Grid-Items mit gap: 1rem.
+       Inline-Margins der Elemente addieren sich dazu — wir normalisieren sie
+       damit der Textfluss natürlich wirkt. */
+    .editorial-split .editorial-num {
+        margin-bottom: 0 !important; /* inline 1.5rem → sonst 2.5rem vor der Headline */
+    }
     .editorial-split .editorial-desc + .editorial-desc {
-        margin-top: -1.65rem !important;
+        margin-top: -0.65rem !important; /* gap 1rem − gewünschte 0.35rem = -0.65rem */
     }
     .editorial-split .editorial-split-img {
         order: 1;
@@ -2535,6 +2551,9 @@ html:has(#fullscreen-menu.open) .logo {
     }
     .cinematic-img {
         height: 40vh;
+    }
+    #kontakt .cinematic-img {
+        height: 28vh;
     }
 }
 
@@ -2602,6 +2621,11 @@ html:has(#fullscreen-menu.open) .logo {
     .snap-block--full {
         min-height: 100svh;
     }
+    .snap-block-inner.editorial-prices {
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+    }
     .snap-block-inner.editorial-split {
         gap: 1rem;
         align-items: center !important;
@@ -2616,6 +2640,10 @@ html:has(#fullscreen-menu.open) .logo {
         width: 100%;
         max-height: 45vh;
         object-fit: contain;
+    }
+    .prod-img--lg {
+        max-height: 62vh;
+        margin-top: -0.5rem;
     }
     /* Hero-Bilder (Sessions + Produktion) — prominenter, gecroppt,
        füllen die Card-Breite ohne Letterboxing. */
@@ -2667,6 +2695,10 @@ html:has(#fullscreen-menu.open) .logo {
     opacity: 0.55;
     transition: filter 1.5s ease, opacity 1.5s ease;
     user-select: none;
+}
+.blurred-text.faded {
+    opacity: 0;
+    filter: blur(0);
 }
 .sharp-mask-text {
     opacity: 1; 
