@@ -1,4 +1,6 @@
 {
+  "buildCommand": "node build.js",
+  "outputDirectory": ".",
   "rewrites": [
     { "source": "/produktion", "destination": "/produktion.html" },
     { "source": "/sessions", "destination": "/sessions.html" },
