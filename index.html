@@ -25,6 +25,9 @@
     <meta name="twitter:description" content="Songcamps, Songwriting-Sessions und Musikproduktion. Fünf Tage für die Musik, die längst in dir steckt.">
     <meta name="twitter:image" content="https://www.klaundbauter-musikproduktion.com/images/hero_home.webp">
 
+    <!-- Preload Hero-Bild (LCP-Kandidat auf Home) — Browser lädt es parallel zum CSS-Parse. -->
+    <link rel="preload" as="image" href="/images/hero_home.webp" fetchpriority="high">
+
     <!-- Favicon: Klabautermann. Automatische Schwarz/Weiß-Umschaltung je nach Browser-Theme. -->
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" media="(prefers-color-scheme: light)">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32-dark.png" media="(prefers-color-scheme: dark)">
@@ -146,7 +149,7 @@
                 </div>
                 <div class="hero-images">
                     <div class="image-wrapper">
-                        <img src="images/hero_home.webp" alt="Paul Köninger und Adrian Thessenvitz — Kla & Bauter Musikproduktion" class="portrait-img">
+                        <img src="images/hero_home.webp" alt="Paul Köninger und Adrian Thessenvitz — Kla & Bauter Musikproduktion" class="portrait-img" fetchpriority="high" decoding="async">
                     </div>
                 </div>
             </section>
