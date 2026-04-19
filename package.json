@@ -1,0 +1,10 @@
+{
+  "name": "kla-und-bauter-website",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Website von Kla und Bauter Thessenvitz Köninger GbR.",
+  "type": "module",
+  "engines": {
+    "node": "20.x"
+  }
+}
