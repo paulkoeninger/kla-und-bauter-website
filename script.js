@@ -171,6 +171,69 @@ window.addEventListener('load', () => {
         }
     }
 
+    // Route-spezifische SEO-Metadaten. Werden bei jedem Route-Wechsel in den
+    // <head> geschrieben, damit Google/Social-Shares pro Pfad einen eigenen
+    // Titel + Description sehen (sonst wäre bei SPA alles identisch).
+    const routeMeta = {
+        home: {
+            title: 'Kla & Bauter — Songcamp, Sessions & Musikproduktion',
+            description: 'Songcamps, Songwriting-Sessions und Musikproduktion. Fünf Tage für die Musik, die längst in dir steckt — mit Paul und Adrian aus Köln.'
+        },
+        songcamps: {
+            title: 'Songcamp — Fünf Tage, ein Raum, dein Song | Kla & Bauter',
+            description: 'Songwriting-Retreat in Deutschland: Sieben Tage, vier garantierte Sessions, ein Haus. Für Artists, die eigene Songs schreiben — nicht lernen.'
+        },
+        produktion: {
+            title: 'Musikproduktion — Dein Song, wie du ihn meinst | Kla & Bauter',
+            description: 'Vollproduktion für Artists: Arrangement, Klangwelt, Recording, Mix & Mastering. Wir produzieren nicht für dich, sondern mit dir.'
+        },
+        sessions: {
+            title: 'Songwriting-Sessions — Eine Idee, ein Song | Kla & Bauter',
+            description: 'Komm mit einer Idee. In ein paar Stunden steht dein Song. Kein Kurs, kein Workshop — nur der Song.'
+        },
+        team: {
+            title: 'Das Team — Adrian & Paul | Kla & Bauter',
+            description: 'Zwei Musiker, die gelernt haben zuzuhören. Jazz-Hintergrund, Köln, seit 2019 gemeinsam als Kla & Bauter Musikproduktion.'
+        },
+        releases: {
+            title: 'Releases — Was aus den Songs geworden ist | Kla & Bauter',
+            description: 'Eine Auswahl der Tracks, an denen wir mitgeschrieben oder produziert haben. Jeder steht für eine Woche, ein Gegenüber, einen Moment.'
+        },
+        kontakt: {
+            title: 'Kontakt — Kla & Bauter Musikproduktion',
+            description: 'Schick uns deine Idee — ein Satz zu dir, ein Satz zu dem, was du machst. Wir melden uns persönlich.'
+        },
+        impressum: {
+            title: 'Impressum — Kla & Bauter',
+            description: 'Rechtliche Angaben gemäß § 5 DDG.'
+        },
+        datenschutz: {
+            title: 'Datenschutzerklärung — Kla & Bauter',
+            description: 'Datenschutzerklärung nach DSGVO. Wie wir mit deinen Daten umgehen.'
+        }
+    };
+
+    function updateSEOMeta(route) {
+        const meta = routeMeta[route] || routeMeta.home;
+        const base = 'https://klaundbauter-musikproduktion.com';
+        const path = route === 'home' ? '/' : '/' + route;
+
+        document.title = meta.title;
+        const setMeta = (selector, value) => {
+            const el = document.querySelector(selector);
+            if (el) el.setAttribute('content', value);
+        };
+        setMeta('meta[name="description"]', meta.description);
+        setMeta('meta[property="og:title"]', meta.title);
+        setMeta('meta[property="og:description"]', meta.description);
+        setMeta('meta[property="og:url"]', base + path);
+        setMeta('meta[name="twitter:title"]', meta.title);
+        setMeta('meta[name="twitter:description"]', meta.description);
+
+        const canonical = document.querySelector('link[rel="canonical"]');
+        if (canonical) canonical.setAttribute('href', base + path);
+    }
+
     function navigateTo(targetRoute, instant = false, skipHistory = false) {
         if (!skipHistory) {
             const urlPath = targetRoute === 'home' ? '/' : '/' + targetRoute;
@@ -180,6 +243,8 @@ window.addEventListener('load', () => {
                 // Silently ignore file:// execution errors
             }
         }
+
+        updateSEOMeta(targetRoute);
 
         const incomingSection = document.getElementById(targetRoute);
         if(!incomingSection) return;
