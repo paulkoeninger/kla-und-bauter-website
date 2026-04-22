@@ -1765,11 +1765,11 @@ html:has(#fullscreen-menu.open) .logo {
 }
 .kb-link .arrow-icon {
     font-size: var(--text-lead);
-    transform: translateY(1px);
+    transform: translateY(-2px);
     transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .kb-link:hover .arrow-icon {
-    transform: translate(6px, 1px);
+    transform: translate(6px, -2px);
 }
 
 /* Fluid Scroll Wrappers */
@@ -1905,10 +1905,10 @@ html:has(#fullscreen-menu.open) .logo {
 }
 .sc-anfrage-feedback,
 .kontakt-form-feedback {
-    font-family: var(--font-secondary);
-    font-style: italic;
+    font-family: var(--font-primary);
     font-size: var(--text-sm);
-    line-height: var(--lh-snug);
+    line-height: var(--lh-base);
+    font-weight: 300;
     color: var(--text-secondary);
     margin: var(--space-xs) 0 0;
     min-height: 1.4em;
@@ -1922,7 +1922,6 @@ html:has(#fullscreen-menu.open) .logo {
 .sc-anfrage-feedback.is-error,
 .kontakt-form-feedback.is-error {
     color: rgba(180, 80, 80, 0.85);
-    font-style: normal;
 }
 
 /* Kontakt-Formular — zusätzliche Felder (Fields-Row, Interest-Chips, Textarea, Alt-Link) */
@@ -2042,11 +2041,11 @@ html:has(#fullscreen-menu.open) .logo {
 }
 .kb-btn-primary .arrow-icon {
     font-size: var(--text-lead);
-    transform: translateY(1px);
+    transform: translateY(-2px);
     transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .kb-btn-primary:hover .arrow-icon {
-    transform: translate(6px, 1px);
+    transform: translate(6px, -2px);
 }
 
 /* Base Coordinates (Desktop) */
@@ -2660,6 +2659,97 @@ html:has(#fullscreen-menu.open) .logo {
     transform: translateY(0);
 }
 
+/* =========================================================================
+   SUBTILE MOTION-LAYER (einmalig, scroll-triggered via IntersectionObserver)
+   =========================================================================
+   1) Cinematic Image Reveal: full-bleed Pausen-Bilder enthüllen sich per
+      clip-path wipe von unten — 800 ms, cinematic easing.
+   2) Section-Enter Stagger: Kicker → Headline → Lead fadet in ~500ms
+      gestaffelt hoch, wenn snap-block / sc-block in den Viewport kommt.
+   3) Magnetic Buttons: siehe .kb-btn-primary transition-Update.
+   Alle Effekte respektieren prefers-reduced-motion (siehe ganz unten).
+   ========================================================================= */
+
+/* 1. Cinematic Image Reveal */
+.cinematic-img {
+    clip-path: inset(100% 0 0 0);
+    -webkit-clip-path: inset(100% 0 0 0);
+    transition: clip-path 800ms cubic-bezier(0.16, 1, 0.3, 1),
+                -webkit-clip-path 800ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.cinematic-img.is-revealed {
+    clip-path: inset(0);
+    -webkit-clip-path: inset(0);
+}
+
+/* 2. Section-Enter Stagger — Kicker/Headline/Lead */
+.snap-block .sc-kicker,
+.snap-block .editorial-title,
+.snap-block .editorial-sub,
+.snap-block .editorial-lead,
+.sc-block .sc-kicker,
+.sc-block .editorial-title,
+.sc-block .editorial-sub,
+.sc-block .editorial-lead {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0);
+    transition: opacity 550ms cubic-bezier(0.16, 1, 0.3, 1),
+                transform 550ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.snap-block.is-revealed .sc-kicker,
+.sc-block.is-revealed .sc-kicker {
+    opacity: 1;
+    transform: none;
+    transition-delay: 0ms;
+}
+.snap-block.is-revealed .editorial-title,
+.sc-block.is-revealed .editorial-title,
+.snap-block.is-revealed .editorial-sub,
+.sc-block.is-revealed .editorial-sub {
+    opacity: 1;
+    transform: none;
+    transition-delay: 120ms;
+}
+.snap-block.is-revealed .editorial-lead,
+.sc-block.is-revealed .editorial-lead {
+    opacity: 1;
+    transform: none;
+    transition-delay: 220ms;
+}
+
+/* 3. Magnetic Button — KEINE translate-Transition!
+   JS lerpt die Position per rAF sanft Richtung Ziel. CSS-Transitions würden
+   mit ständig neuen Targets kollidieren und den „Nach-Effekt" erzeugen. */
+.kb-btn-primary {
+    transition: opacity 0.3s ease;
+    will-change: translate;
+}
+
+/* Reduced-Motion: alle Reveal-Effekte aus, sofort sichtbar. */
+@media (prefers-reduced-motion: reduce) {
+    .cinematic-img,
+    .cinematic-img.is-revealed {
+        clip-path: inset(0) !important;
+        -webkit-clip-path: inset(0) !important;
+        transition: none !important;
+    }
+    .snap-block .sc-kicker,
+    .snap-block .editorial-title,
+    .snap-block .editorial-sub,
+    .snap-block .editorial-lead,
+    .sc-block .sc-kicker,
+    .sc-block .editorial-title,
+    .sc-block .editorial-sub,
+    .sc-block .editorial-lead {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+    }
+    .kb-btn-primary {
+        translate: 0 0 !important;
+    }
+}
+
 /* Mobile Breakdowns */
 @media (max-width: 992px) {
     .editorial-container {
@@ -3031,13 +3121,13 @@ html:has(#fullscreen-menu.open) .logo {
         color: var(--text-primary);
         border-color: rgba(0, 0, 0, 0.15);
     }
-    .kb-link:hover .arrow-icon { transform: translateY(1px); }
+    .kb-link:hover .arrow-icon { transform: translateY(-2px); }
     .sc-camp-card:hover {
         transform: none;
         box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
     }
     .kb-btn-primary:hover { opacity: 1; }
-    .kb-btn-primary:hover .arrow-icon { transform: translateY(1px); }
+    .kb-btn-primary:hover .arrow-icon { transform: translateY(-2px); }
 
     /* MindMap-Wörter (Klabautermann-Section, auf Mobile eh abgeschaltet) */
     .mm-word:hover {
