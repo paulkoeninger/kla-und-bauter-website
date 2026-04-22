@@ -351,32 +351,17 @@ window.addEventListener('load', () => {
 
     // -----------------------------------------------------------------
     // Subtile Motion-Layer (2026-04):
-    //   A) Cinematic Image Reveal — clip-path wipe von unten
-    //   B) Section-Enter Stagger — Kicker → Headline → Lead
-    //   C) Magnetic Primary Buttons (nur hover:hover + !reduced-motion)
-    // Alle Reveals sind Einmal-Erlebnisse (unobserve nach Trigger) und
-    // respektieren prefers-reduced-motion.
+    //   A) Section-Enter Stagger — Kicker → Headline → Lead
+    //   B) Magnetic Primary Buttons (nur hover:hover + !reduced-motion)
+    // Einmal-Erlebnis (unobserve nach Trigger) und respektiert
+    // prefers-reduced-motion.
     // -----------------------------------------------------------------
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     if (!prefersReducedMotion) {
-        // A) Cinematic Image Reveal
-        // Beobachtet alle .cinematic-img; wenn ~20% sichtbar ist, wird der
-        // clip-path auf inset(0) animiert. Danach unobserve — einmal reicht.
-        const cinematicImgObserver = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('is-revealed');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.2, rootMargin: '0px 0px -10% 0px' });
+        // (Cinematic Image Reveal wurde entfernt — siehe CSS-Kommentar.)
 
-        document.querySelectorAll('.cinematic-img').forEach(img => {
-            cinematicImgObserver.observe(img);
-        });
-
-        // B) Section-Enter Stagger
+        // A) Section-Enter Stagger
         // Jeder snap-block / sc-block bekommt beim Entry den `.is-revealed`
         // Modifier — CSS staffelt die Kinder (kicker/title/lead) per transition-delay.
         const stagesObserver = new IntersectionObserver((entries, observer) => {
@@ -392,7 +377,7 @@ window.addEventListener('load', () => {
             stagesObserver.observe(block);
         });
 
-        // C) Magnetic Primary Buttons — nur auf echten Hover-Geräten (Desktop).
+        // B) Magnetic Primary Buttons — nur auf echten Hover-Geräten (Desktop).
         // Ansatz: kontinuierliche rAF-Loop. Jeder Frame lerpt die aktuelle
         // Button-Position sanft Richtung Ziel (cursor-nah → Pull, sonst → 0).
         // Niedriger LERP-Faktor = weicher, träger, natürlicher Nachlauf.
@@ -624,66 +609,9 @@ window.addEventListener('load', () => {
         });
     });
 
-    // Kontakt-Formular — Submit → /api/kontakt (Vercel Function) → Resend Mail.
-    document.querySelectorAll('.kontakt-form').forEach(form => {
-        const submit = form.querySelector('.kontakt-form-submit');
-        const feedback = form.querySelector('.kontakt-form-feedback');
-        const nameInput = form.querySelector('input[name="name"]');
-        const emailInput = form.querySelector('input[name="email"]');
-        const messageInput = form.querySelector('textarea[name="message"]');
-        const originalLabel = submit.textContent;
-
-        const showFeedback = (msg, isError = false) => {
-            feedback.textContent = msg;
-            feedback.classList.toggle('is-error', isError);
-            feedback.classList.add('is-visible');
-        };
-
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            feedback.classList.remove('is-visible', 'is-error');
-
-            const name = nameInput.value.trim();
-            const email = emailInput.value.trim();
-            const message = messageInput.value.trim();
-            const interestRadio = form.querySelector('input[name="interest"]:checked');
-            const interest = interestRadio ? interestRadio.value : '';
-
-            if (!name || !email || !message) {
-                showFeedback('Bitte alle Felder ausfüllen.', true);
-                return;
-            }
-            if (!interest) {
-                showFeedback('Bitte wähle aus, wofür du dich interessierst.', true);
-                return;
-            }
-            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                showFeedback('E-Mail-Adresse sieht nicht richtig aus.', true);
-                return;
-            }
-
-            submit.disabled = true;
-            submit.textContent = 'Wird gesendet…';
-
-            try {
-                const res = await fetch('/api/kontakt', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name, email, interest, message }),
-                });
-                const json = await res.json().catch(() => ({}));
-                if (!res.ok) throw new Error(json.error || 'Etwas ging schief.');
-
-                form.reset();
-                submit.textContent = 'Nachricht gesendet ✓';
-                showFeedback('Danke für deine Nachricht — wir melden uns so bald wie möglich.');
-            } catch (err) {
-                submit.disabled = false;
-                submit.textContent = originalLabel;
-                showFeedback(err.message || 'Versuch es gleich nochmal.', true);
-            }
-        });
-    });
+    // (Kontakt-Formular wurde entfernt — die Kontaktseite läuft jetzt
+    // Mail-First. Siehe index.html #kontakt. API-Endpoint api/kontakt.js
+    // bleibt im Repo für den Fall, dass das Formular zurückkommt.)
 
     // Releases — Lite-YouTube-Embed: Facade-Thumbnail wird bei Klick durch
     // echten iframe ersetzt. Scharfe Previews, schneller Page-Load, keine
