@@ -469,8 +469,8 @@ window.addEventListener('load', () => {
                 if (!res.ok) throw new Error(json.error || 'Etwas ging schief.');
 
                 form.reset();
-                submit.textContent = 'Eingetragen ✓';
-                showFeedback('Danke — wir melden uns, sobald es losgeht.');
+                submit.textContent = 'Anfrage gesendet ✓';
+                showFeedback('Danke, wir melden uns so bald wie möglich.');
             } catch (err) {
                 submit.disabled = false;
                 submit.textContent = originalLabel;
