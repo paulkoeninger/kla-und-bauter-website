@@ -1665,14 +1665,12 @@ html:has(#fullscreen-menu.open) .logo {
         flex: 0 0 auto;
         width: 100%;
     }
-    /* Page 2 und 3 default hidden auf Mobile */
+    /* Page 2 default hidden auf Mobile */
     .sc-alumni-pager-track > .sc-alumni-page:nth-child(n+2) {
         display: none;
     }
-    /* Step 1: Page 2 sichtbar */
-    .sc-alumni-pager[data-reveal="1"] .sc-alumni-pager-track > .sc-alumni-page:nth-child(2),
-    /* Step 2: Page 2 + 3 sichtbar */
-    .sc-alumni-pager[data-reveal="2"] .sc-alumni-pager-track > .sc-alumni-page:nth-child(-n+3) {
+    /* Step 1: Page 2 sichtbar (revealed via Mehr-Stimmen-Button) */
+    .sc-alumni-pager[data-reveal="1"] .sc-alumni-pager-track > .sc-alumni-page:nth-child(2) {
         display: block;
     }
     .sc-alumni-nav {
@@ -1857,9 +1855,7 @@ html:has(#fullscreen-menu.open) .logo {
     gap: var(--space-xs);
     margin-bottom: var(--space-xs);
 }
-.sc-anfrage-form input,
-.kontakt-form input,
-.kontakt-form textarea {
+.sc-anfrage-form input {
     width: 100%;
     background: var(--bg-primary);
     border: 0.5px solid rgba(0, 0, 0, 0.12);
@@ -1873,18 +1869,13 @@ html:has(#fullscreen-menu.open) .logo {
     box-sizing: border-box;
     transition: border-color 0.3s ease;
 }
-.sc-anfrage-form input:focus,
-.kontakt-form input:focus,
-.kontakt-form textarea:focus {
+.sc-anfrage-form input:focus {
     border-color: var(--accent-color);
 }
-.sc-anfrage-form input:invalid:not(:placeholder-shown),
-.kontakt-form input:invalid:not(:placeholder-shown),
-.kontakt-form textarea:invalid:not(:placeholder-shown) {
+.sc-anfrage-form input:invalid:not(:placeholder-shown) {
     border-color: rgba(180, 80, 80, 0.4);
 }
-.sc-anfrage-submit,
-.kontakt-form-submit {
+.sc-anfrage-submit {
     background: var(--accent-color);
     color: var(--bg-primary);
     padding: 14px 32px;
@@ -1898,13 +1889,11 @@ html:has(#fullscreen-menu.open) .logo {
     width: 100%;
     transition: opacity 0.3s ease;
 }
-.sc-anfrage-submit:disabled,
-.kontakt-form-submit:disabled {
+.sc-anfrage-submit:disabled {
     opacity: 0.5;
     cursor: default;
 }
-.sc-anfrage-feedback,
-.kontakt-form-feedback {
+.sc-anfrage-feedback {
     font-family: var(--font-primary);
     font-size: var(--text-sm);
     line-height: var(--lh-base);
@@ -1915,103 +1904,92 @@ html:has(#fullscreen-menu.open) .logo {
     opacity: 0;
     transition: opacity 0.4s ease;
 }
-.sc-anfrage-feedback.is-visible,
-.kontakt-form-feedback.is-visible {
+.sc-anfrage-feedback.is-visible {
     opacity: 1;
 }
-.sc-anfrage-feedback.is-error,
-.kontakt-form-feedback.is-error {
+.sc-anfrage-feedback.is-error {
     color: rgba(180, 80, 80, 0.85);
 }
 
-/* Kontakt-Formular — zusätzliche Felder (Fields-Row, Interest-Chips, Textarea, Alt-Link) */
-.kontakt-form-title {
-    font-family: var(--font-secondary);
-    font-size: var(--text-h3);
-    font-weight: 400;
-    line-height: var(--lh-snug);
-    color: var(--text-primary);
-    text-align: center;
-    margin: 0 0 var(--space-md) 0;
-}
-.kontakt-form-fields {
+/* Kontakt — Landing-Hero-Pattern übernommen: Text links, Bild rechts.
+   Strukturell 1:1 wie .hero auf der Home — deshalb funktioniert das Bild
+   hier exakt wie dort (450×600 Box, 50vw srcset → lädt 1200w/2048w und
+   rendert scharf, nicht kompression-verpixelt). */
+.kontakt-hero {
+    min-height: 100svh;
+    padding: 0 var(--edge);
+    padding-top: 80px;
     display: flex;
-    flex-direction: column;
-    gap: var(--space-xs);
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+}
+.kontakt-hero-content {
+    flex: 1;
+    max-width: 560px;
+}
+.kontakt-hero-content .kontakt-headline {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    line-height: 1.15;
     margin-bottom: var(--space-md);
 }
-.kontakt-form textarea {
-    resize: vertical;
-    min-height: 140px;
-    line-height: var(--lh-base);
-    margin-bottom: var(--space-md);
+.kontakt-hero-content .kontakt-lead {
+    line-height: 1.5;           /* tighter als --lh-base (1.75) für kurze Zeilen */
+    margin: 0 0 0.4rem 0;
+    max-width: 480px;
 }
-.kontakt-form-interest {
-    border: none;
-    padding: 0;
-    margin: 0 0 var(--space-md) 0;
+.kontakt-hero-content .kontakt-lead:last-of-type {
+    margin-bottom: 0;
 }
-.kontakt-form-interest legend {
-    font-size: var(--text-sm);
-    font-weight: 300;
-    color: var(--text-secondary);
-    margin-bottom: var(--space-sm);
-    padding: 0;
-    letter-spacing: var(--tracking-subtle);
+.kontakt-mail {
+    margin-top: var(--space-lg);
 }
-.kontakt-form-chips {
+.kontakt-hero-images {
+    flex: 1;
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
+    justify-content: flex-end;
 }
-.kontakt-form-chip {
-    position: relative;
-    cursor: pointer;
-}
-.kontakt-form-chip input {
-    position: absolute;
-    opacity: 0;
-    pointer-events: none;
-}
-.kontakt-form-chip span {
-    display: inline-block;
-    padding: 10px 18px;
-    border: 0.5px solid rgba(0, 0, 0, 0.15);
-    border-radius: 999px;
-    font-size: var(--text-sm);
-    font-weight: 300;
-    color: var(--text-primary);
-    background: var(--bg-primary);
-    transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
-}
-.kontakt-form-chip:hover span {
-    border-color: var(--accent-color);
-}
-.kontakt-form-chip input:checked + span {
-    border-color: var(--accent-color);
-    background: var(--accent-color);
-    color: var(--bg-primary);
-}
-.kontakt-form-chip input:focus-visible + span {
-    outline: 2px solid var(--accent-color);
-    outline-offset: 2px;
-}
-.kontakt-form-alt {
-    font-size: var(--text-sm);
-    color: var(--text-secondary);
-    text-align: center;
-    margin-top: var(--space-md);
-    font-weight: 300;
-}
-.kontakt-form-alt a {
-    color: var(--text-primary);
-    text-decoration: none;
-    border-bottom: 0.5px solid rgba(0, 0, 0, 0.2);
-    transition: color 0.3s ease, border-color 0.3s ease;
-}
-.kontakt-form-alt a:hover {
-    color: var(--accent-color);
-    border-bottom-color: var(--accent-color);
+
+/* Mobile — mirror der .hero-Mobile-Logik: Bild oben, Text drunter zentriert */
+@media (max-width: 992px) {
+    .kontakt-hero {
+        flex-direction: column;
+        justify-content: center;
+        padding-top: var(--content-top);
+        padding-bottom: var(--space-lg);
+        min-height: 100svh;
+        max-height: none;
+        overflow: visible;
+    }
+    .kontakt-hero-content {
+        flex: none;
+        width: 100%;
+        max-width: none;
+        order: 2;
+        text-align: center;
+        margin-top: var(--space-lg);
+    }
+    .kontakt-hero-content .kontakt-lead {
+        max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .kontakt-hero-images {
+        flex: none;
+        width: 100%;
+        justify-content: center;
+        order: 1;
+    }
+    .kontakt-hero .image-wrapper {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        aspect-ratio: 4/3;
+    }
+    .kontakt-hero .portrait-img {
+        object-position: center 30%;
+    }
 }
 #songcamp .sc-block:nth-child(even) .sc-kicker {
     color: var(--bg-primary); 
@@ -2538,6 +2516,47 @@ html:has(#fullscreen-menu.open) .logo {
     margin-bottom: var(--space-sm);
     letter-spacing: var(--tracking-tight);
 }
+
+/* Editorial CTA — zentrierter Text-Block (Kontakt-Hero, Footer-CTA etc.).
+   Als echte Klasse statt reiner Inline-Styles: robuster gegenüber GSAP
+   Page-Transitions, die .snap-block-inner direkt animieren. */
+.editorial-cta {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 720px;
+}
+.editorial-cta .editorial-title,
+.editorial-cta .editorial-lead,
+.editorial-cta .editorial-sub {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Editorial Prices — Preis-Sections auf Produktion / Session / Lab.
+   Gleiche Defensiv-Strategie wie .editorial-cta — keine Abhängigkeit von
+   Inline-Styles, stabil gegen Transitions. */
+.editorial-prices {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 600px;
+}
+.editorial-prices .editorial-title,
+.editorial-prices .editorial-lead,
+.editorial-prices .editorial-sub,
+.editorial-prices .editorial-desc {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Editorial Split Image — Image-Container in editorial-split Layout.
+   Inline-Style `text-align: center` hart als Klasse festgezurrt. */
+.editorial-split-img {
+    text-align: center;
+}
 .editorial-lead {
     font-family: var(--font-primary);
     font-size: var(--text-body);
@@ -2660,90 +2679,72 @@ html:has(#fullscreen-menu.open) .logo {
 }
 
 /* =========================================================================
-   SUBTILE MOTION-LAYER (einmalig, scroll-triggered via IntersectionObserver)
+   SUBTILE MOTION-LAYER — ANIMATION-FIRST (2026-04 Rewrite).
    =========================================================================
-   1) Cinematic Image Reveal: full-bleed Pausen-Bilder enthüllen sich per
-      clip-path wipe von unten — 800 ms, cinematic easing.
-   2) Section-Enter Stagger: Kicker → Headline → Lead fadet in ~500ms
-      gestaffelt hoch, wenn snap-block / sc-block in den Viewport kommt.
-   3) Magnetic Buttons: siehe .kb-btn-primary transition-Update.
-   Alle Effekte respektieren prefers-reduced-motion (siehe ganz unten).
+   WICHTIG: Elemente sind STANDARDMÄSSIG SICHTBAR. Die Reveal-Animationen
+   sind ADDITIV — sie werden durch `.is-revealed` getriggert und laufen
+   autonom über @keyframes. Wenn der IntersectionObserver aus irgendeinem
+   Grund nicht feuert (SPA-Section-Swaps, Browser-Race-Conditions), bleibt
+   der Content sichtbar. Kein „missing images"-Bug mehr möglich.
+
+   1) Section-Enter Stagger: Kicker → Headline → Lead, ~500 ms gestaffelt
+   2) Magnetic Buttons: siehe .kb-btn-primary update
+
+   (Cinematic Image Reveal via clip-path wurde entfernt — das visible→hidden→
+    reveal Zucken beim Animation-Start war nicht behebbar ohne inline-script
+    im <head>, und der Effekt wog den Aufwand nicht auf.)
    ========================================================================= */
 
-/* 1. Cinematic Image Reveal */
-.cinematic-img {
-    clip-path: inset(100% 0 0 0);
-    -webkit-clip-path: inset(100% 0 0 0);
-    transition: clip-path 800ms cubic-bezier(0.16, 1, 0.3, 1),
-                -webkit-clip-path 800ms cubic-bezier(0.16, 1, 0.3, 1);
-}
-.cinematic-img.is-revealed {
-    clip-path: inset(0);
-    -webkit-clip-path: inset(0);
-}
-
-/* 2. Section-Enter Stagger — Kicker/Headline/Lead */
-.snap-block .sc-kicker,
-.snap-block .editorial-title,
-.snap-block .editorial-sub,
-.snap-block .editorial-lead,
-.sc-block .sc-kicker,
-.sc-block .editorial-title,
-.sc-block .editorial-sub,
-.sc-block .editorial-lead {
-    opacity: 0;
-    transform: translate3d(0, 10px, 0);
-    transition: opacity 550ms cubic-bezier(0.16, 1, 0.3, 1),
-                transform 550ms cubic-bezier(0.16, 1, 0.3, 1);
+/* 1. Section-Enter Stagger — animation-first.
+   Kicker, Headline, Lead sind standardmäßig voll sichtbar.
+   `.is-revealed` triggert eine kurze Fade-Up-Animation. */
+@keyframes kb-stagger-reveal {
+    0% {
+        opacity: 0;
+        transform: translate3d(0, 10px, 0);
+    }
+    100% {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
 }
 .snap-block.is-revealed .sc-kicker,
 .sc-block.is-revealed .sc-kicker {
-    opacity: 1;
-    transform: none;
-    transition-delay: 0ms;
+    animation: kb-stagger-reveal 550ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: 0ms;
 }
 .snap-block.is-revealed .editorial-title,
 .sc-block.is-revealed .editorial-title,
 .snap-block.is-revealed .editorial-sub,
 .sc-block.is-revealed .editorial-sub {
-    opacity: 1;
-    transform: none;
-    transition-delay: 120ms;
+    animation: kb-stagger-reveal 550ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: 120ms;
 }
 .snap-block.is-revealed .editorial-lead,
 .sc-block.is-revealed .editorial-lead {
-    opacity: 1;
-    transform: none;
-    transition-delay: 220ms;
+    animation: kb-stagger-reveal 550ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: 220ms;
 }
 
 /* 3. Magnetic Button — KEINE translate-Transition!
-   JS lerpt die Position per rAF sanft Richtung Ziel. CSS-Transitions würden
-   mit ständig neuen Targets kollidieren und den „Nach-Effekt" erzeugen. */
+   JS lerpt die Position per rAF sanft Richtung Ziel. */
 .kb-btn-primary {
     transition: opacity 0.3s ease;
     will-change: translate;
 }
 
-/* Reduced-Motion: alle Reveal-Effekte aus, sofort sichtbar. */
+/* Reduced-Motion: Animationen aus — Content ist sowieso schon sichtbar. */
 @media (prefers-reduced-motion: reduce) {
-    .cinematic-img,
-    .cinematic-img.is-revealed {
-        clip-path: inset(0) !important;
-        -webkit-clip-path: inset(0) !important;
-        transition: none !important;
-    }
-    .snap-block .sc-kicker,
-    .snap-block .editorial-title,
-    .snap-block .editorial-sub,
-    .snap-block .editorial-lead,
-    .sc-block .sc-kicker,
-    .sc-block .editorial-title,
-    .sc-block .editorial-sub,
-    .sc-block .editorial-lead {
-        opacity: 1 !important;
-        transform: none !important;
-        transition: none !important;
+    .cinematic-img.is-revealed,
+    .snap-block.is-revealed .sc-kicker,
+    .sc-block.is-revealed .sc-kicker,
+    .snap-block.is-revealed .editorial-title,
+    .sc-block.is-revealed .editorial-title,
+    .snap-block.is-revealed .editorial-sub,
+    .sc-block.is-revealed .editorial-sub,
+    .snap-block.is-revealed .editorial-lead,
+    .sc-block.is-revealed .editorial-lead {
+        animation: none !important;
     }
     .kb-btn-primary {
         translate: 0 0 !important;
@@ -2804,9 +2805,6 @@ html:has(#fullscreen-menu.open) .logo {
     .cinematic-img {
         height: 40vh;
     }
-    #kontakt .cinematic-img {
-        height: 28vh;
-    }
 }
 
 /* 100vh-Pacing-Container (historisch „snap-block" — Scroll-Snap wurde entfernt, Name bleibt) */
@@ -2853,12 +2851,6 @@ html:has(#fullscreen-menu.open) .logo {
     height: 100svh;
 }
 
-/* Kontakt-Bild: zurückhaltender als 100svh-Full-Bleed (Produktion) —
-   60vh Desktop, Mobile bleibt via späterer Override kompakter. */
-#kontakt .snap-block-inner.full-bleed,
-#kontakt .snap-block-inner.full-bleed .cinematic-img {
-    height: 60vh;
-}
 
 /* Production Snap Imaging */
 .prod-hero-img {
