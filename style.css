@@ -1163,6 +1163,34 @@ html:has(#fullscreen-menu.open) .logo {
 }
 /* Analog zur Fünf-Tage-Aufzählung: Grid von Cards mit accent-Top-Strich.
    Titel 17px secondary + Preis inline, Desc 13px secondary-color. */
+/* Für-wen Section — Persona-Kacheln im etablierten Card-Pattern
+   (analog „Fünf Tage, ein Rhythmus" und „Nach dem Camp"): Canela-Titel +
+   kleine secondary-Desc, Accent-Top-Line. Grid auto-fit für 2–4 Spalten. */
+.fuer-wen-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: var(--space-md);
+    margin-top: var(--space-md);
+}
+.fuer-wen-item {
+    border-top: 1px solid var(--accent-color);
+    padding: var(--space-sm) var(--space-xs) 0 0;
+}
+.fuer-wen-title {
+    font-family: var(--font-secondary);
+    font-size: var(--text-body);
+    font-weight: 400;
+    line-height: var(--lh-snug);
+    margin-bottom: var(--space-2xs);
+    color: var(--text-primary);
+}
+.fuer-wen-desc {
+    font-size: var(--text-sm);
+    font-weight: 400;
+    color: var(--text-secondary);
+    line-height: var(--lh-base);
+}
+
 .camp-finish-stages {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
