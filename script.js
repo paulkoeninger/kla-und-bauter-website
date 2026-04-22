@@ -163,7 +163,7 @@ window.addEventListener('load', () => {
     });
 
     const initialPath = window.location.pathname.replace(/^\/|\/$/g, '');
-    const validRoutes = ['home', 'produktion', 'session', 'songcamp', 'team', 'releases', 'kontakt', 'impressum', 'datenschutz'];
+    const validRoutes = ['home', 'produktion', 'session', 'lab', 'songcamp', 'team', 'releases', 'kontakt', 'impressum', 'datenschutz'];
     
     if (initialPath && validRoutes.includes(initialPath)) {
         setTimeout(() => navigateTo(initialPath, true, true), 50);
@@ -194,6 +194,10 @@ window.addEventListener('load', () => {
         session: {
             title: 'Session — Eine Idee, ein Song | Kla & Bauter',
             description: 'Komm mit einer Idee. In ein paar Stunden steht dein Song. Kein Kurs, kein Workshop — nur der Song.'
+        },
+        lab: {
+            title: 'Lab — Dranbleiben. 90 Minuten für deine Musik | Kla & Bauter',
+            description: '90 Minuten, im Studio oder remote. Konzentrierte Zeit zu zweit an dem, woran du gerade arbeitest. Kein Unterricht, kein Curriculum — einfach dranbleiben.'
         },
         team: {
             title: 'Das Team — Adrian & Paul | Kla & Bauter',
@@ -471,6 +475,67 @@ window.addEventListener('load', () => {
                 form.reset();
                 submit.textContent = 'Anfrage gesendet ✓';
                 showFeedback('Danke, wir melden uns so bald wie möglich.');
+            } catch (err) {
+                submit.disabled = false;
+                submit.textContent = originalLabel;
+                showFeedback(err.message || 'Versuch es gleich nochmal.', true);
+            }
+        });
+    });
+
+    // Kontakt-Formular — Submit → /api/kontakt (Vercel Function) → Resend Mail.
+    document.querySelectorAll('.kontakt-form').forEach(form => {
+        const submit = form.querySelector('.kontakt-form-submit');
+        const feedback = form.querySelector('.kontakt-form-feedback');
+        const nameInput = form.querySelector('input[name="name"]');
+        const emailInput = form.querySelector('input[name="email"]');
+        const messageInput = form.querySelector('textarea[name="message"]');
+        const originalLabel = submit.textContent;
+
+        const showFeedback = (msg, isError = false) => {
+            feedback.textContent = msg;
+            feedback.classList.toggle('is-error', isError);
+            feedback.classList.add('is-visible');
+        };
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            feedback.classList.remove('is-visible', 'is-error');
+
+            const name = nameInput.value.trim();
+            const email = emailInput.value.trim();
+            const message = messageInput.value.trim();
+            const interestRadio = form.querySelector('input[name="interest"]:checked');
+            const interest = interestRadio ? interestRadio.value : '';
+
+            if (!name || !email || !message) {
+                showFeedback('Bitte alle Felder ausfüllen.', true);
+                return;
+            }
+            if (!interest) {
+                showFeedback('Bitte wähle aus, wofür du dich interessierst.', true);
+                return;
+            }
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                showFeedback('E-Mail-Adresse sieht nicht richtig aus.', true);
+                return;
+            }
+
+            submit.disabled = true;
+            submit.textContent = 'Wird gesendet…';
+
+            try {
+                const res = await fetch('/api/kontakt', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, interest, message }),
+                });
+                const json = await res.json().catch(() => ({}));
+                if (!res.ok) throw new Error(json.error || 'Etwas ging schief.');
+
+                form.reset();
+                submit.textContent = 'Nachricht gesendet ✓';
+                showFeedback('Danke für deine Nachricht — wir melden uns so bald wie möglich.');
             } catch (err) {
                 submit.disabled = false;
                 submit.textContent = originalLabel;
