@@ -1857,7 +1857,9 @@ html:has(#fullscreen-menu.open) .logo {
     gap: var(--space-xs);
     margin-bottom: var(--space-xs);
 }
-.sc-anfrage-form input {
+.sc-anfrage-form input,
+.kontakt-form input,
+.kontakt-form textarea {
     width: 100%;
     background: var(--bg-primary);
     border: 0.5px solid rgba(0, 0, 0, 0.12);
@@ -1871,13 +1873,18 @@ html:has(#fullscreen-menu.open) .logo {
     box-sizing: border-box;
     transition: border-color 0.3s ease;
 }
-.sc-anfrage-form input:focus {
+.sc-anfrage-form input:focus,
+.kontakt-form input:focus,
+.kontakt-form textarea:focus {
     border-color: var(--accent-color);
 }
-.sc-anfrage-form input:invalid:not(:placeholder-shown) {
+.sc-anfrage-form input:invalid:not(:placeholder-shown),
+.kontakt-form input:invalid:not(:placeholder-shown),
+.kontakt-form textarea:invalid:not(:placeholder-shown) {
     border-color: rgba(180, 80, 80, 0.4);
 }
-.sc-anfrage-submit {
+.sc-anfrage-submit,
+.kontakt-form-submit {
     background: var(--accent-color);
     color: var(--bg-primary);
     padding: 14px 32px;
@@ -1891,11 +1898,13 @@ html:has(#fullscreen-menu.open) .logo {
     width: 100%;
     transition: opacity 0.3s ease;
 }
-.sc-anfrage-submit:disabled {
+.sc-anfrage-submit:disabled,
+.kontakt-form-submit:disabled {
     opacity: 0.5;
     cursor: default;
 }
-.sc-anfrage-feedback {
+.sc-anfrage-feedback,
+.kontakt-form-feedback {
     font-family: var(--font-secondary);
     font-style: italic;
     font-size: var(--text-sm);
@@ -1906,12 +1915,104 @@ html:has(#fullscreen-menu.open) .logo {
     opacity: 0;
     transition: opacity 0.4s ease;
 }
-.sc-anfrage-feedback.is-visible {
+.sc-anfrage-feedback.is-visible,
+.kontakt-form-feedback.is-visible {
     opacity: 1;
 }
-.sc-anfrage-feedback.is-error {
+.sc-anfrage-feedback.is-error,
+.kontakt-form-feedback.is-error {
     color: rgba(180, 80, 80, 0.85);
     font-style: normal;
+}
+
+/* Kontakt-Formular — zusätzliche Felder (Fields-Row, Interest-Chips, Textarea, Alt-Link) */
+.kontakt-form-title {
+    font-family: var(--font-secondary);
+    font-size: var(--text-h3);
+    font-weight: 400;
+    line-height: var(--lh-snug);
+    color: var(--text-primary);
+    text-align: center;
+    margin: 0 0 var(--space-md) 0;
+}
+.kontakt-form-fields {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    margin-bottom: var(--space-md);
+}
+.kontakt-form textarea {
+    resize: vertical;
+    min-height: 140px;
+    line-height: var(--lh-base);
+    margin-bottom: var(--space-md);
+}
+.kontakt-form-interest {
+    border: none;
+    padding: 0;
+    margin: 0 0 var(--space-md) 0;
+}
+.kontakt-form-interest legend {
+    font-size: var(--text-sm);
+    font-weight: 300;
+    color: var(--text-secondary);
+    margin-bottom: var(--space-sm);
+    padding: 0;
+    letter-spacing: var(--tracking-subtle);
+}
+.kontakt-form-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+.kontakt-form-chip {
+    position: relative;
+    cursor: pointer;
+}
+.kontakt-form-chip input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+.kontakt-form-chip span {
+    display: inline-block;
+    padding: 10px 18px;
+    border: 0.5px solid rgba(0, 0, 0, 0.15);
+    border-radius: 999px;
+    font-size: var(--text-sm);
+    font-weight: 300;
+    color: var(--text-primary);
+    background: var(--bg-primary);
+    transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+}
+.kontakt-form-chip:hover span {
+    border-color: var(--accent-color);
+}
+.kontakt-form-chip input:checked + span {
+    border-color: var(--accent-color);
+    background: var(--accent-color);
+    color: var(--bg-primary);
+}
+.kontakt-form-chip input:focus-visible + span {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+}
+.kontakt-form-alt {
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    text-align: center;
+    margin-top: var(--space-md);
+    font-weight: 300;
+}
+.kontakt-form-alt a {
+    color: var(--text-primary);
+    text-decoration: none;
+    border-bottom: 0.5px solid rgba(0, 0, 0, 0.2);
+    transition: color 0.3s ease, border-color 0.3s ease;
+}
+.kontakt-form-alt a:hover {
+    color: var(--accent-color);
+    border-bottom-color: var(--accent-color);
 }
 #songcamp .sc-block:nth-child(even) .sc-kicker {
     color: var(--bg-primary); 
@@ -2309,6 +2410,8 @@ html:has(#fullscreen-menu.open) .logo {
     list-style: none;
     display: grid;
     grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(3, auto);
+    grid-auto-flow: column;
     row-gap: 0;
     column-gap: var(--space-md);
     padding: 0;

@@ -4,6 +4,7 @@
   "rewrites": [
     { "source": "/produktion", "destination": "/produktion.html" },
     { "source": "/session", "destination": "/session.html" },
+    { "source": "/lab", "destination": "/lab.html" },
     { "source": "/songcamp", "destination": "/songcamp.html" },
     { "source": "/team", "destination": "/team.html" },
     { "source": "/releases", "destination": "/releases.html" },
