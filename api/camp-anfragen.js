@@ -1,12 +1,12 @@
-// Vercel Serverless Function — Songcamp-Warteliste.
+// Vercel Serverless Function — Songcamp-Anfragen.
 // Nimmt { name, email, camp } per POST, sendet Mail via Resend API.
 //
 // Erforderliche Environment Variables (im Vercel Dashboard → Settings → Env):
-//   RESEND_API_KEY   — API-Key von resend.com
-//   WAITLIST_FROM    — Absender, z.B. "Kla & Bauter <hallo@klaundbauter-musikproduktion.com>"
-//                      (Domain muss in Resend verifiziert sein; sonst
-//                      "onboarding@resend.dev" zum Testen)
-//   WAITLIST_TO      — Empfänger, z.B. "hallo@klaundbauter-musikproduktion.com"
+//   RESEND_API_KEY        — API-Key von resend.com
+//   CAMP_ANFRAGEN_FROM    — Absender, z.B. "Kla & Bauter <hallo@klaundbauter-musikproduktion.com>"
+//                           (Domain muss in Resend verifiziert sein; sonst
+//                           "onboarding@resend.dev" zum Testen)
+//   CAMP_ANFRAGEN_TO      — Empfänger, z.B. "hallo@klaundbauter-musikproduktion.com"
 
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
@@ -31,17 +31,17 @@ export default async function handler(req, res) {
     }
 
     const apiKey = process.env.RESEND_API_KEY;
-    const from = process.env.WAITLIST_FROM;
-    const to = process.env.WAITLIST_TO;
+    const from = process.env.CAMP_ANFRAGEN_FROM;
+    const to = process.env.CAMP_ANFRAGEN_TO;
 
     if (!apiKey || !from || !to) {
-        console.error('Waitlist: Env-Vars fehlen (RESEND_API_KEY / WAITLIST_FROM / WAITLIST_TO)');
+        console.error('Camp-Anfragen: Env-Vars fehlen (RESEND_API_KEY / CAMP_ANFRAGEN_FROM / CAMP_ANFRAGEN_TO)');
         return res.status(500).json({ error: 'Mail-Service ist gerade nicht erreichbar.' });
     }
 
-    const subject = `Warteliste: ${cleanCamp}`;
+    const subject = `Camp-Anfrage: ${cleanCamp}`;
     const body = [
-        `Neue Anmeldung auf der Songcamp-Warteliste.`,
+        `Neue unverbindliche Anfrage zum Songcamp.`,
         ``,
         `Camp:  ${cleanCamp}`,
         `Name:  ${cleanName}`,
@@ -74,7 +74,7 @@ export default async function handler(req, res) {
 
         return res.status(200).json({ ok: true });
     } catch (err) {
-        console.error('Waitlist handler error:', err);
+        console.error('Camp-Anfragen handler error:', err);
         return res.status(500).json({ error: 'Unerwarteter Fehler.' });
     }
 }

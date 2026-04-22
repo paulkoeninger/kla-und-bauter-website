@@ -1119,11 +1119,11 @@ html:has(#fullscreen-menu.open) .logo {
 }
 
 /* Scroll-margin für die Step-Anchors, damit sie nicht unter der Navbar sitzen */
-#prod-step-01, #prod-step-02, #prod-step-03, #prod-step-04 {
+#arrangement, #klangwelt, #recording, #mix-master {
     scroll-margin-top: 0;
 }
 
-/* Camp-Fertigstellung (auf /songcamps, zwischen Alumni und Vision) */
+/* Camp-Fertigstellung (auf /songcamp, zwischen Alumni und Vision) */
 /* Typography + spacings mirror the other sc-blocks (Format, Für Wen) for visual parity. */
 /* Force 100vh Section-Höhe — Spacings kompakter, damit Typo nicht gequetscht wird. */
 .sc-block.camp-finish-section {
@@ -1782,7 +1782,7 @@ html:has(#fullscreen-menu.open) .logo {
     justify-content: center;
     flex-direction: column;
 }
-#songcamps .sc-block:nth-child(even) {
+#songcamp .sc-block:nth-child(even) {
     background-color: var(--bg-secondary);
 }
 .sc-block-inner { width: 100%; max-width: 1440px; margin: auto; }
@@ -1820,7 +1820,7 @@ html:has(#fullscreen-menu.open) .logo {
 }
 
 /* Songcamp Waitlist — darker section backdrop, lighter cards stand out as tiles */
-#sc-warteliste {
+#camp-anfragen {
     background-color: var(--bg-secondary);
 }
 .sc-camp-card {
@@ -1851,13 +1851,13 @@ html:has(#fullscreen-menu.open) .logo {
     color: var(--text-secondary);
     margin-bottom: var(--space-md);
 }
-.sc-waitlist-fields {
+.sc-anfrage-fields {
     display: flex;
     flex-direction: column;
     gap: var(--space-xs);
     margin-bottom: var(--space-xs);
 }
-.sc-waitlist-form input {
+.sc-anfrage-form input {
     width: 100%;
     background: var(--bg-primary);
     border: 0.5px solid rgba(0, 0, 0, 0.12);
@@ -1871,13 +1871,13 @@ html:has(#fullscreen-menu.open) .logo {
     box-sizing: border-box;
     transition: border-color 0.3s ease;
 }
-.sc-waitlist-form input:focus {
+.sc-anfrage-form input:focus {
     border-color: var(--accent-color);
 }
-.sc-waitlist-form input:invalid:not(:placeholder-shown) {
+.sc-anfrage-form input:invalid:not(:placeholder-shown) {
     border-color: rgba(180, 80, 80, 0.4);
 }
-.sc-waitlist-submit {
+.sc-anfrage-submit {
     background: var(--accent-color);
     color: var(--bg-primary);
     padding: 14px 32px;
@@ -1891,11 +1891,11 @@ html:has(#fullscreen-menu.open) .logo {
     width: 100%;
     transition: opacity 0.3s ease;
 }
-.sc-waitlist-submit:disabled {
+.sc-anfrage-submit:disabled {
     opacity: 0.5;
     cursor: default;
 }
-.sc-waitlist-feedback {
+.sc-anfrage-feedback {
     font-family: var(--font-secondary);
     font-style: italic;
     font-size: var(--text-sm);
@@ -1906,14 +1906,14 @@ html:has(#fullscreen-menu.open) .logo {
     opacity: 0;
     transition: opacity 0.4s ease;
 }
-.sc-waitlist-feedback.is-visible {
+.sc-anfrage-feedback.is-visible {
     opacity: 1;
 }
-.sc-waitlist-feedback.is-error {
+.sc-anfrage-feedback.is-error {
     color: rgba(180, 80, 80, 0.85);
     font-style: normal;
 }
-#songcamps .sc-block:nth-child(even) .sc-kicker {
+#songcamp .sc-block:nth-child(even) .sc-kicker {
     color: var(--bg-primary); 
     background: var(--accent-color); 
     border: none;
@@ -2392,9 +2392,6 @@ html:has(#fullscreen-menu.open) .logo {
     .footer-col--desktop-only {
         display: none;
     }
-    .releases-cta-block {
-        display: none;
-    }
     .footer-col h3 {
         font-size: var(--text-micro);
         font-weight: 600;
@@ -2644,8 +2641,30 @@ html:has(#fullscreen-menu.open) .logo {
     max-width: none;
     height: 100svh;
 }
+
+/* Zitat- und Preis-Sections kompakter — kurze Textblöcke füllen die volle
+   Höhe sonst zu luftig. */
+#team-quote.snap-block,
+#prod-quote.snap-block {
+    min-height: 70svh;
+}
+#session-price.snap-block {
+    min-height: 80svh;
+}
+/* Sessions-Haltung „Kein Kurs. Kein Workshop. Nur der Song." noch kompakter —
+   kurzer Zweizeiler + Lead sitzt optisch mittiger auf 60svh. */
+#session-quote.snap-block {
+    min-height: 60svh;
+}
 .snap-block-inner.full-bleed .cinematic-img {
     height: 100svh;
+}
+
+/* Kontakt-Bild: zurückhaltender als 100svh-Full-Bleed (Produktion) —
+   60vh Desktop, Mobile bleibt via späterer Override kompakter. */
+#kontakt .snap-block-inner.full-bleed,
+#kontakt .snap-block-inner.full-bleed .cinematic-img {
+    height: 60vh;
 }
 
 /* Production Snap Imaging */
@@ -2705,7 +2724,11 @@ html:has(#fullscreen-menu.open) .logo {
     }
     .prod-img--lg {
         max-height: 62vh;
-        margin-top: -0.5rem;
+        /* Das Mix-Bild ist portrait — füllt den 4:5-Container vertikal fast
+           komplett, ohne Letterbox oben wie bei den landscape-Step-Bildern.
+           Dieser Offset simuliert den fehlenden Letterbox, damit die
+           obere Kante auf gleicher Höhe sitzt wie bei Step 01–03. */
+        margin-top: 3rem;
     }
     /* Hero-Bilder (Sessions + Produktion) — prominenter, gecroppt,
        füllen die Card-Breite ohne Letterboxing. */

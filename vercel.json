@@ -3,8 +3,8 @@
   "outputDirectory": ".",
   "rewrites": [
     { "source": "/produktion", "destination": "/produktion.html" },
-    { "source": "/sessions", "destination": "/sessions.html" },
-    { "source": "/songcamps", "destination": "/songcamps.html" },
+    { "source": "/session", "destination": "/session.html" },
+    { "source": "/songcamp", "destination": "/songcamp.html" },
     { "source": "/team", "destination": "/team.html" },
     { "source": "/releases", "destination": "/releases.html" },
     { "source": "/kontakt", "destination": "/kontakt.html" },

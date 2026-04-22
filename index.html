@@ -72,7 +72,7 @@
             "@type": "Service",
             "name": "Songcamp",
             "description": "Siebentägiges Songwriting-Retreat in Deutschland. Sechs Teilnehmer, vier garantierte Sessions pro Person.",
-            "url": "https://www.klaundbauter-musikproduktion.com/songcamps"
+            "url": "https://www.klaundbauter-musikproduktion.com/songcamp"
           },
           "price": "1200",
           "priceCurrency": "EUR"
@@ -83,7 +83,7 @@
             "@type": "Service",
             "name": "Songwriting-Session",
             "description": "Einzelsession: von einer Idee zum Song in wenigen Stunden.",
-            "url": "https://www.klaundbauter-musikproduktion.com/sessions"
+            "url": "https://www.klaundbauter-musikproduktion.com/session"
           },
           "price": "500",
           "priceCurrency": "EUR"
@@ -129,9 +129,9 @@
             <span class="sc-kicker menu-kicker">Navigation</span>
             <ul class="menu-links">
                 <li><a href="#" data-route="home">Home</a></li>
+                <li><a href="#" data-route="songcamp">Songcamp</a></li>
                 <li><a href="#" data-route="produktion">Produktion</a></li>
-                <li><a href="#" data-route="sessions">Sessions</a></li>
-                <li><a href="#" data-route="songcamps">Songcamps</a></li>
+                <li><a href="#" data-route="session">Session</a></li>
                 <li><a href="#" data-route="team">Team</a></li>
                 <li><a href="#" data-route="releases">Releases</a></li>
                 <li><a href="#" data-route="kontakt">Kontakt</a></li>
@@ -173,7 +173,7 @@
 
                     <div class="entry-grid">
                         <!-- Path 1: Sessions -->
-                        <a href="#" class="entry-card entry-card-1" data-route="sessions">
+                        <a href="#" class="entry-card entry-card-1" data-route="session">
                             <div class="entry-card-inner">
                                 <div class="entry-image-wrapper">
                                     <img loading="lazy" src="images/songcamp/session_home.webp" alt="Songwriting-Session bei Kla & Bauter" class="entry-img">
@@ -201,7 +201,7 @@
                         </a>
 
                         <!-- Path 3: Songcamp — permanent sichtbar, default blurry auf Desktop mit Hint -->
-                        <a href="#" class="entry-card camp-path" data-route="songcamps">
+                        <a href="#" class="entry-card camp-path" data-route="songcamp">
                             <span class="camp-path-hint">Ich weiß noch gar nicht genau</span>
                             <div class="entry-card-inner">
                                 <div class="entry-image-wrapper">
@@ -220,7 +220,7 @@
             </section>
 
             <!-- HOME: SONGCAMP IMMERSIVE TEASER SECTION -->
-            <section class="home-camp-section teaser" id="home-camp" data-route="songcamps">
+            <section class="home-camp-section teaser" id="home-camp" data-route="songcamp">
                 <div class="teaser-bg"></div>
                 <div class="teaser-overlay"></div>
                 <div class="teaser-content">
@@ -247,19 +247,19 @@
                             Bis der Song klingt,<br><em>wie du ihn meinst</em>.
                         </h2>
                         <nav class="prod-hero-nav">
-                            <a href="#prod-step-01" class="prod-hero-nav-item">
+                            <a href="#arrangement" class="prod-hero-nav-item">
                                 <span class="prod-hero-nav-num">01</span>
                                 <span class="prod-hero-nav-label">Arrangement</span>
                             </a>
-                            <a href="#prod-step-02" class="prod-hero-nav-item">
+                            <a href="#klangwelt" class="prod-hero-nav-item">
                                 <span class="prod-hero-nav-num">02</span>
                                 <span class="prod-hero-nav-label">Klangwelt</span>
                             </a>
-                            <a href="#prod-step-03" class="prod-hero-nav-item">
+                            <a href="#recording" class="prod-hero-nav-item">
                                 <span class="prod-hero-nav-num">03</span>
                                 <span class="prod-hero-nav-label">Recording</span>
                             </a>
-                            <a href="#prod-step-04" class="prod-hero-nav-item">
+                            <a href="#mix-master" class="prod-hero-nav-item">
                                 <span class="prod-hero-nav-num">04</span>
                                 <span class="prod-hero-nav-label">Mix &amp; Master</span>
                             </a>
@@ -272,7 +272,7 @@
             </div>
 
             <!-- 2. HALTUNG / POSITIONIERUNG -->
-            <div class="snap-block">
+            <div class="snap-block" id="prod-quote">
                 <div class="snap-block-inner editorial-quote" style="max-width: 720px;">
                     <h2 class="editorial-title" style="margin-bottom: 0.25rem;"><em>Mit dir.</em></h2>
                     <h2 class="editorial-title" style="margin-bottom: 2rem;">Nicht für dich.</h2>
@@ -283,7 +283,7 @@
             <!-- 3. PROZESS ALS ERLEBNIS -->
             
             <!-- Step 01 -->
-            <div class="snap-block" id="prod-step-01">
+            <div class="snap-block" id="arrangement">
                 <div class="snap-block-inner editorial-split reverse" style="margin-top: 0; align-items: center;">
                     <div class="editorial-split-text">
                         <span class="editorial-num" style="display: block; margin-bottom: 1.5rem;">01</span>
@@ -298,8 +298,8 @@
             </div>
 
             <!-- Step 02 -->
-            <div class="snap-block" id="prod-step-02">
-                <div class="snap-block-inner editorial-split" style="margin-top: 0; align-items: center;">
+            <div class="snap-block" id="klangwelt">
+                <div class="snap-block-inner editorial-split reverse" style="margin-top: 0; align-items: center;">
                     <div class="editorial-split-text">
                         <span class="editorial-num" style="display: block; margin-bottom: 1.5rem;">02</span>
                         <h3 class="editorial-title">Klangwelt</h3>
@@ -320,7 +320,7 @@
             </div>
 
             <!-- Step 03 -->
-            <div class="snap-block" id="prod-step-03">
+            <div class="snap-block" id="recording">
                 <div class="snap-block-inner editorial-split reverse" style="margin-top: 0; align-items: center;">
                     <div class="editorial-split-text">
                         <span class="editorial-num" style="display: block; margin-bottom: 1.5rem;">03</span>
@@ -335,8 +335,8 @@
             </div>
 
             <!-- Step 04 -->
-            <div class="snap-block" id="prod-step-04">
-                <div class="snap-block-inner editorial-split" style="margin-top: 0; align-items: center;">
+            <div class="snap-block" id="mix-master">
+                <div class="snap-block-inner editorial-split reverse" style="margin-top: 0; align-items: center;">
                     <div class="editorial-split-text">
                         <span class="editorial-num" style="display: block; margin-bottom: 1.5rem;">04</span>
                         <h3 class="editorial-title">Mix & Master</h3>
@@ -358,8 +358,8 @@
                     <p class="editorial-desc" style="margin: 0 auto 2.5rem auto;">Songwriting, Produktion, Recording, Mix & Mastering —<br>alles in einem gemeinsamen Prozess.</p>
 
                     <div class="camp-pointer">
-                        <p class="camp-pointer-text">Song aus einem Camp?</p>
-                        <a href="#" data-route="songcamps" data-scroll-to="camp-fertigstellung" class="camp-pointer-link">Eigene Stufen dafür <span class="arrow-icon">⟶</span></a>
+                        <p class="camp-pointer-text">EP oder Album?</p>
+                        <a href="#" data-route="kontakt" class="camp-pointer-link">Paketpreise auf Anfrage <span class="arrow-icon">⟶</span></a>
                     </div>
                 </div>
             </div>
@@ -374,7 +374,7 @@
         </section>
 
         <!-- SESSIONS -->
-        <section id="sessions" class="page-section" style="padding: 0;">
+        <section id="session" class="page-section" style="padding: 0;">
 
             <!-- 1. HERO -->
             <div class="snap-block snap-block--full">
@@ -393,7 +393,7 @@
             </div>
 
             <!-- 2. HALTUNG -->
-            <div class="snap-block">
+            <div class="snap-block" id="session-quote">
                 <div class="snap-block-inner editorial-quote" style="max-width: 720px;">
                     <h2 class="editorial-title" style="margin-bottom: 0.25rem;">Kein Kurs. Kein Workshop.</h2>
                     <h2 class="editorial-title" style="margin-bottom: 2rem;"><em>Nur der Song.</em></h2>
@@ -409,22 +409,12 @@
             </div>
 
             <!-- 4. PREIS -->
-            <div class="snap-block snap-block--full">
+            <div class="snap-block snap-block--full" id="session-price">
                 <div class="snap-block-inner editorial-prices" style="text-align: center; max-width: 600px; margin: 0 auto;">
                     <h3 class="editorial-sub">Session</h3>
                     <h2 class="editorial-title" style="font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 300; margin-bottom: 0.35rem;">500 €</h2>
                     <p class="price-tax-note" style="margin-bottom: 2rem;">inkl. 19 % MwSt.</p>
                     <p class="editorial-desc" style="margin: 0 auto;">Songwriting, Rohproduktion, Rohmix. Alles in einem gemeinsamen Termin.</p>
-                </div>
-            </div>
-
-            <!-- 6. SONGCAMP-VERWEIS -->
-            <div class="snap-block">
-                <div class="snap-block-inner" style="max-width: 600px; margin: 0 auto; text-align: center;">
-                    <div class="camp-pointer camp-pointer-standalone">
-                        <p class="camp-pointer-text">Eine Woche lang Sessions. Ein Haus in der Ruhe. Mit Garten und Kaffee.</p>
-                        <a href="#" data-route="songcamps" class="camp-pointer-link">Das Songcamp <span class="arrow-icon">⟶</span></a>
-                    </div>
                 </div>
             </div>
 
@@ -436,13 +426,13 @@
             </div>
         </section>
 
-        <!-- SONGCAMPS -->
-        <section id="songcamps" class="page-section" style="padding: 0; background-color: var(--bg-primary);">
+        <!-- SONGCAMP -->
+        <section id="songcamp" class="page-section" style="padding: 0; background-color: var(--bg-primary);">
             
             <!-- 1. HERO -->
             <div id="sc-hero-block" class="sc-block">
                 <div class="sc-block-inner sc-hero">
-                    <span class="sc-kicker">Songcamp · Ein Format von Kla & Bauter</span>
+                    <span class="sc-kicker">Songcamp</span>
                     <h2 class="editorial-title" style="font-family: var(--font-secondary); font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 400; line-height: 1.2; margin-bottom: 1.5rem;">
                         Fünf Tage.<br>Für die Musik, die<br><em>längst</em> in dir steckt.
                     </h2>
@@ -452,8 +442,8 @@
                                 Du machst seit Jahren Musik. Du hast Ideen, Fragmente, halbfertige Sachen. Beim Songcamp werden daraus echte Songs – nicht einer, sondern mehrere. In einem Raum, den wir gemeinsam schaffen.
                             </p>
                             <div class="sc-hero-cta-row">
-                                <a class="kb-btn-primary" href="#sc-warteliste">Auf Warteliste setzen <span class="arrow-icon">⟶</span></a>
-                                <a class="kb-link" href="#sc-format">Wie es läuft <span class="arrow-icon">⟶</span></a>
+                                <a class="kb-btn-primary" href="#camp-anfragen">Unverbindlich anfragen <span class="arrow-icon">⟶</span></a>
+                                <a class="kb-link" href="#format">Wie es läuft <span class="arrow-icon">⟶</span></a>
                             </div>
                         </div>
                         <div style="text-align: right; display: flex; flex-direction: column; gap: 1.25rem; align-items: flex-end;">
@@ -480,20 +470,20 @@
                     <h2 class="editorial-title">Du bist kein Anfänger.<br>Aber noch nicht da,<br>wo du sein willst.</h2>
                     <div class="fuer-wen-grid">
                         <div class="fuer-wen-item">
-                            <div class="fuer-wen-title">Du spürst, dass da etwas in dir ist.</div>
-                            <div class="fuer-wen-desc">Und suchst den Ort, an dem das okay ist.</div>
+                            <div class="fuer-wen-title">Etwas in dir.</div>
+                            <div class="fuer-wen-desc">Du spürst, dass da etwas ist — und suchst den Ort, wo es wachsen darf.</div>
                         </div>
                         <div class="fuer-wen-item">
-                            <div class="fuer-wen-title">Du schreibst seit Jahren für die Schublade.</div>
-                            <div class="fuer-wen-desc">Und willst endlich mal hören, was daraus wird.</div>
+                            <div class="fuer-wen-title">Aus der Schublade.</div>
+                            <div class="fuer-wen-desc">Du schreibst seit Jahren für die Schublade und willst endlich hören, was da wirklich drin steckt.</div>
                         </div>
                         <div class="fuer-wen-item">
-                            <div class="fuer-wen-title">Du willst nicht unterrichtet werden.</div>
-                            <div class="fuer-wen-desc">Du willst arbeiten — direkt am Song, nicht in Theorie.</div>
+                            <div class="fuer-wen-title">Kein Unterricht.</div>
+                            <div class="fuer-wen-desc">Du willst nicht unterrichtet werden, sondern arbeiten. Direkt am Song — mit Menschen, die wissen, wie das geht.</div>
                         </div>
                         <div class="fuer-wen-item">
-                            <div class="fuer-wen-title">Du suchst andere mit ähnlichem Drang.</div>
-                            <div class="fuer-wen-desc">Alter, Level, Genre — egal.</div>
+                            <div class="fuer-wen-title">Auf Augenhöhe.</div>
+                            <div class="fuer-wen-desc">Du willst mit anderen schreiben, die das Gefühl teilen. Alter, Level, Genre — egal.</div>
                         </div>
                     </div>
                 </div>
@@ -509,7 +499,7 @@
             </div>
 
             <!-- 3. DAS FORMAT -->
-            <div class="sc-block" id="sc-format">
+            <div class="sc-block" id="format">
                 <div class="sc-block-inner">
                     <span class="sc-kicker">Wie eine Woche aussieht</span>
                     <h2 style="font-family: var(--font-secondary); font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 400; line-height: 1.2; margin-bottom: 1.5rem;">Fünf Tage, ein Rhythmus.</h2>
@@ -530,14 +520,14 @@
                         </div>
                         <div class="sc-day-card" style="border-top: 1px solid var(--accent-color); border-radius: 0; padding: 1.5rem 1rem 0 0; background: transparent;">
                             <div style="font-family: var(--font-secondary); font-size: 17px; margin-bottom: 0.75rem;">Themenabende.</div>
-                            <div style="font-size: 13px; color: var(--text-secondary); line-height: 1.65;">Drei Abende drehen sich um ein Thema — Releases, KI in der Musik, wie der Markt funktioniert. Kein Vortrag. Ein Gespräch, zu dem jeder etwas mitbringt.</div>
+                            <div style="font-size: 13px; color: var(--text-secondary); line-height: 1.65;">Drei Abende drehen sich um das, was euch beschäftigt — Releases, KI, der Markt, oder was ihr mitbringt. Kein Vortrag. Ein Gespräch, zu dem jeder etwas beiträgt.</div>
                         </div>
                     </div>
                     
                     <div class="sc-stats-row" style="display: flex; gap: 2rem; flex-wrap: wrap; margin-top: 2.5rem; padding-top: 2.5rem;">
                         <div>
                             <span style="font-family: var(--font-secondary); font-size: 2.5rem; color: var(--accent-color); display: block; line-height: 1;">10–18</span>
-                            <span style="font-size: 12px; color: var(--text-secondary); margin-top: 0.5rem; display: block;">Uhr täglich, Mittagspause inklusive</span>
+                            <span style="font-size: 12px; color: var(--text-secondary); margin-top: 0.5rem; display: block;">Uhr Sessions, Mittagspause inklusive</span>
                         </div>
                         <div>
                             <span style="font-family: var(--font-secondary); font-size: 2.5rem; color: var(--accent-color); display: block; line-height: 1;">4</span>
@@ -750,32 +740,32 @@
             </div>
 
             <!-- 7. WARTELISTE CTA -->
-            <div class="sc-block" id="sc-warteliste">
+            <div class="sc-block" id="camp-anfragen">
                 <div class="sc-block-inner" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
                     <h2 style="font-family: var(--font-secondary); font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 400; line-height: 1.2; margin-bottom: 2.5rem;">Das nächste Camp. Mit dir?</h2>
 
                     <div style="display: flex; gap: 3rem; justify-content: center; flex-wrap: wrap; margin-bottom: 4rem; width: 100%;">
 
-                        <form class="sc-camp-card sc-waitlist-form" data-camp="Sommercamp 2026" novalidate>
+                        <form class="sc-camp-card sc-anfrage-form" data-camp="Sommercamp 2026" novalidate>
                             <h3 class="sc-camp-card-title">Sommercamp 2026</h3>
                             <div class="sc-camp-card-meta">31. August – 6. September · NRW</div>
-                            <div class="sc-waitlist-fields">
+                            <div class="sc-anfrage-fields">
                                 <input type="text" name="name" placeholder="Dein Name" required autocomplete="name" aria-label="Dein Name">
                                 <input type="email" name="email" placeholder="Deine E-Mail-Adresse" required autocomplete="email" aria-label="Deine E-Mail-Adresse">
                             </div>
-                            <button type="submit" class="sc-waitlist-submit">Auf Warteliste setzen</button>
-                            <p class="sc-waitlist-feedback" aria-live="polite"></p>
+                            <button type="submit" class="sc-anfrage-submit">Unverbindlich anfragen</button>
+                            <p class="sc-anfrage-feedback" aria-live="polite"></p>
                         </form>
 
-                        <form class="sc-camp-card sc-waitlist-form" data-camp="Wintercamp 2027" novalidate>
+                        <form class="sc-camp-card sc-anfrage-form" data-camp="Wintercamp 2027" novalidate>
                             <h3 class="sc-camp-card-title">Wintercamp 2027</h3>
                             <div class="sc-camp-card-meta">15.–21. Februar · NRW</div>
-                            <div class="sc-waitlist-fields">
+                            <div class="sc-anfrage-fields">
                                 <input type="text" name="name" placeholder="Dein Name" required autocomplete="name" aria-label="Dein Name">
                                 <input type="email" name="email" placeholder="Deine E-Mail-Adresse" required autocomplete="email" aria-label="Deine E-Mail-Adresse">
                             </div>
-                            <button type="submit" class="sc-waitlist-submit">Auf Warteliste setzen</button>
-                            <p class="sc-waitlist-feedback" aria-live="polite"></p>
+                            <button type="submit" class="sc-anfrage-submit">Unverbindlich anfragen</button>
+                            <p class="sc-anfrage-feedback" aria-live="polite"></p>
                         </form>
 
                     </div>
@@ -794,20 +784,19 @@
                     <div class="camp-finish-stages">
                         <div class="camp-finish-stage">
                             <h3 class="camp-finish-title">Finishing <span class="camp-finish-price">— 500 €</span></h3>
-                            <p class="camp-finish-desc">Dein Song steht. Wir schleifen: Mix, Mastering, letzter Schliff.</p>
+                            <p class="camp-finish-desc">Dein Song steht. Wir feilen: Mix, Mastering, letzter Schliff.</p>
                         </div>
                         <div class="camp-finish-stage">
                             <h3 class="camp-finish-title">Completion <span class="camp-finish-price">— 900 €</span></h3>
-                            <p class="camp-finish-desc">Eine Seite steht, die andere nicht. Vocals neu aufgenommen — oder Produktion neu gebaut.</p>
+                            <p class="camp-finish-desc">Was schon passt, bleibt. Was noch nicht sitzt, machen wir neu — Vocals oder Produktion.</p>
                         </div>
                         <div class="camp-finish-stage">
                             <h3 class="camp-finish-title">Full Production <span class="camp-finish-price">— 1.500 €</span></h3>
-                            <p class="camp-finish-desc">Nochmal von null. De facto eine Vollproduktion — als Camp-Rabatt, sonst 1.785 €.</p>
+                            <p class="camp-finish-desc">Das Grundgerüst steht — Akkorde, Melodie. Die Produktion bauen wir komplett neu drumherum. De facto eine Vollproduktion, zum Camp-Rabatt (sonst 1.785 €).</p>
                         </div>
                     </div>
 
-                    <p class="price-tax-note" style="margin-top: -0.5rem; margin-bottom: 1.5rem;">inkl. 19 % MwSt.</p>
-                    <p class="camp-finish-closing" style="margin-top: 2rem;">Welche Stufe für deinen Song stimmt, entscheiden wir gemeinsam.<br>Keine Black Box.</p>
+                    <p class="price-tax-note" style="margin-top: -0.5rem;">inkl. 19 % MwSt.</p>
                 </div>
             </div>
         </section>
@@ -883,14 +872,6 @@
                 </div>
             </div>
 
-            <!-- 3. EDITORIAL CTA -->
-            <div class="snap-block releases-cta-block">
-                <div class="snap-block-inner editorial-cta" style="text-align: center; margin: 0 auto;">
-                    <h2 class="editorial-title" style="margin-bottom: 0.25rem;">Und jetzt deiner.</h2>
-                    <h2 class="editorial-title" style="margin-bottom: 2.5rem;"><em>Wenn du willst.</em></h2>
-                    <a href="#" data-route="kontakt" class="editorial-link">Schreib uns <span class="arrow-icon">⟶</span></a>
-                </div>
-            </div>
         </section>
 
         <!-- TEAM -->
@@ -938,7 +919,7 @@
             </div>
 
             <!-- 4. WIR (Zitat) -->
-            <div class="snap-block snap-block--full">
+            <div class="snap-block snap-block--full" id="team-quote">
                 <div class="snap-block-inner" style="max-width: 900px; margin: auto;">
                     <blockquote style="font-family: var(--font-secondary); font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 400; font-style: italic; line-height: 1.2; color: var(--text-primary); text-align: center;">„Wir sind keine Lehrer. Keine Coaches. Keine Instanz über jemandem. Wir sind Musiker, die gelernt haben, zuzuhören."</blockquote>
                 </div>
@@ -963,7 +944,7 @@
             <!-- 2. BILD -->
             <div class="snap-block no-pad">
                 <div class="snap-block-inner full-bleed" style="margin-top: 0;">
-                    <img loading="lazy" src="images/hero_home_red.webp" alt="Kla & Bauter Studio" class="cinematic-img">
+                    <img loading="lazy" src="images/recording2.webp" alt="Kla & Bauter Studio" class="cinematic-img">
                 </div>
             </div>
 
@@ -1034,8 +1015,8 @@
                     <h3 class="legal-section-title">Kontaktaufnahme per E-Mail</h3>
                     <p>Wenn du uns per E-Mail schreibst, verarbeiten wir deine Angaben (E-Mail-Adresse, Name falls genannt, Inhalt der Nachricht) zur Bearbeitung deiner Anfrage und für mögliche Anschlussfragen. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO (Vertragsanbahnung) bzw. lit. f DSGVO (berechtigtes Interesse an der Beantwortung). Die Daten werden gelöscht, sobald sie nicht mehr erforderlich sind — spätestens nach Ablauf gesetzlicher Aufbewahrungsfristen.</p>
 
-                    <h3 class="legal-section-title">Songcamp-Warteliste</h3>
-                    <p>Auf der Songcamps-Seite kannst du dich mit deiner E-Mail-Adresse auf die Warteliste eines Camps setzen lassen. Wir verarbeiten deine E-Mail ausschließlich, um dich zu kontaktieren, sobald ein Camp öffnet oder ein Platz frei wird. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO (Vorvertragliche Maßnahme auf deine Anfrage). Es findet kein Versand von Newslettern oder Werbung statt. Du kannst jederzeit formlos per E-Mail widerrufen — wir löschen deine Daten dann umgehend.</p>
+                    <h3 class="legal-section-title">Songcamp-Anfragen</h3>
+                    <p>Auf der Songcamp-Seite kannst du unverbindlich für ein konkretes Camp anfragen — mit Name und E-Mail-Adresse. Wir verarbeiten diese Daten ausschließlich, um dich persönlich zu kontaktieren, mehr Infos zum Camp zu schicken und bei Interesse ein Gespräch zu vereinbaren. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO (Vorvertragliche Maßnahme auf deine Anfrage). Es findet kein Versand von Newslettern oder Werbung statt. Du kannst jederzeit formlos per E-Mail widerrufen — wir löschen deine Daten dann umgehend.</p>
 
                     <h3 class="legal-section-title">Eingebettete YouTube-Videos</h3>
                     <p>Auf der Seite „Releases" zeigen wir Vorschaubilder unserer Videos, die bei YouTube (YouTube LLC, 901 Cherry Ave., San Bruno, CA 94066, USA — Teil von Google) gehostet sind. Solange du ein Vorschaubild nicht anklickst, wird <strong>keine</strong> Verbindung zu YouTube oder Google aufgebaut. Erst wenn du ein Video startest, übermittelt dein Browser deine IP-Adresse und weitere Daten an Google, wobei auch Cookies gesetzt werden können. Rechtsgrundlage für diese Übermittlung ist deine Einwilligung durch den Klick (Art. 6 Abs. 1 lit. a DSGVO). Google ist unter dem EU-U.S. Data Privacy Framework zertifiziert. Details: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">policies.google.com/privacy</a>.</p>
@@ -1082,12 +1063,12 @@
                     <div class="footer-col">
                         <h3>NAVIGATION</h3>
                         <ul class="footer-nav">
+                            <li><a href="#" data-route="songcamp">Songcamp</a></li>
                             <li><a href="#" data-route="produktion">Produktion</a></li>
+                            <li><a href="#" data-route="session">Session</a></li>
                             <li><a href="#" data-route="team">Team</a></li>
-                            <li><a href="#" data-route="songcamps">Songcamps</a></li>
-                            <li><a href="#" data-route="kontakt">Kontakt</a></li>
-                            <li><a href="#" data-route="sessions">Sessions</a></li>
                             <li><a href="#" data-route="releases">Releases</a></li>
+                            <li><a href="#" data-route="kontakt">Kontakt</a></li>
                         </ul>
                     </div>
                 </div>
