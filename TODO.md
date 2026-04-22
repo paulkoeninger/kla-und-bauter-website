@@ -1,78 +1,59 @@
 # TODO / Task List
 
-## ✅ Completed (diese Session)
+## ✅ Completed (Session 3 — Performance & Code-Cleanup, commits `f3e5fc6` → `63dbe73`)
 
-### Design-System
-- [x] 6-stufige Spacing-Skala in :root + Mobile-Overrides
-- [x] 8-stufige Typografie-Skala (font-size, line-height, letter-spacing)
-- [x] Font-Weights von 6 auf 4 reduziert (Faux-Bold eliminiert)
-- [x] Akzentfarbe-Audit (opacity: 0.85 auf .cta-accent-line entfernt)
-- [x] em-Akzent-System (font-weight: inherit, h1-h6 em color rule, inline-styles raus)
+### Phase 3.1 — Quick Wins
+- [x] ScrollTrigger-CDN-Script aus index.html entfernt (0 Usages in script.js)
+- [x] 8 Legacy-Testimonial-Files gelöscht (7 JPEGs + Michael_Baechle.webp, 1.6 MB)
+- [x] Dead JS vars (`revealCanvas`, `revealShapes`) aus script.js raus
+- [x] `slideSelectors` von 20 auf 6 Selektoren reduziert (14 tote Klassen raus)
+- [x] `api/kontakt.js` gelöscht (unused seit Mail-First-Redesign)
+- [x] Datenschutz-Text: „Kontaktformular"-Eintrag entfernt, „Formulare" → „Songcamp-Anfragen"
 
-### Hero
-- [x] Hero-Title weight 600 als Ausnahme (kein Faux-Bold)
-- [x] Desktop overflow-hidden + max-height für flache Viewports
-- [x] Mobile: justify-center, padding-top 6rem
+### Phase 3.2 — CSS Cleanup & Inline-Styles
+- [x] 60 orphaned CSS-Klassen identifiziert via Diff `style.css` vs `index.html+script.js`
+- [x] 118 Rule-Blöcke entfernt (~13 KB), Script-basierter Cleanup mit Brace-Balance-Check
+- [x] 165 → 81 Inline-Styles (-51%) durch neue semantische Klassen
+- [x] `.testimonial-card/quote/footer/avatar/name/role` extrahiert
+- [x] `.sc-day-grid/card/card-title/card-desc` extrahiert
+- [x] `.sc-stat-num/label` extrahiert
+- [x] `.editorial-title--hero-size` und `--price` Modifier
+- [x] `fonts/fonts.css` von 18 auf 6 @font-face-Deklarationen reduziert (-59%)
 
-### Layout
-- [x] Produktion: alle 4 Steps `editorial-split reverse` (Bild links, Text rechts)
-- [x] Mix-Bild Mobile margin-top 3rem
-- [x] Quote-Sections (Team, Produktion) auf 70svh
-- [x] Sessions-Quote auf 60svh
-- [x] Sessions-Preis auf 80svh
-- [x] Sessions: Songcamp-Verweis-Section gelöscht
-- [x] Songcamp-Hero Mobile padding-top 7rem + Meta-Box zentriert
-- [x] Releases: „Und jetzt deiner"-CTA gelöscht
-- [x] Kontakt-Bild fix (broken link → recording2.webp, 60vh)
+### Phase 3.3 — Build Pipeline
+- [x] HTML-Minifier in build.js integriert (~50 Zeilen, kein npm-Dep)
+- [x] `<script>`/`<style>`/`<pre>`/`<textarea>` byte-exact protected
+- [x] Pre-rendered Routes 701 KB → 499 KB (-28.8 %)
 
-### Songcamp Content
-- [x] „Für wen"-Section als Card-Grid (Titel + Desc) analog camp-finish
-- [x] Persona-Texte überarbeitet (warmer, weniger pathologisch)
-- [x] Themenabende-Text geöffnet
-- [x] „10–18" Label klarer („Sessions" statt „täglich")
-- [x] Camp-Finish-Stages neu formuliert (Wortdopplung weg, „von null" → „Grundgerüst")
-- [x] Closing-Satz nach Stages entfernt
-
-### URL/Routing
-- [x] `/songcamps` → `/songcamp` (überall: HTML, JS, CSS, vercel, sitemap, .gitignore, CLAUDE.md)
-- [x] `/sessions` → `/session` (überall)
-- [x] Anchor-URLs sprechend: arrangement/klangwelt/recording/mix-master, format
-- [x] Hero-Kicker Songcamp gekürzt
-- [x] Alte HTMLs (songcamps.html, sessions.html) aus Filesystem gelöscht
-
-### Camp-Anfragen (war Warteliste)
-- [x] User-Texte: „Auf Warteliste setzen" → „Unverbindlich anfragen"
-- [x] API-File: waitlist.js → camp-anfragen.js
-- [x] API-Endpoint, Env-Vars, CSS-Klassen umbenannt
-- [x] Datenschutz-Eintrag aktualisiert
-- [x] Bestätigungstext: „Danke, wir melden uns so bald wie möglich."
-- [x] Vercel Env-Vars (CAMP_ANFRAGEN_FROM/TO) gesetzt — Mails kommen an
-
-### Navigation
-- [x] Footer-Nav + Burger-Menu Reihenfolge: Songcamp zuerst
-- [x] Label „Songcamp" (Singular) überall in Nav
-- [x] Fullscreen-Menu height: 100dvh fix für Mobile-URL-Leiste
-
-### Diverses
-- [x] EP/Album-Hinweis im Camp-Pointer-Style auf Produktions-Preis-Section
+## ✅ Completed (Session 2 — commits bis `7994246 f8`)
+_Komplette Feature-Expansion — siehe git log oder PROJECT.md._
 
 ## 🔄 In Progress
-- [ ] `script.js` letzte Änderung (Form-Bestätigungstext) committen — uncommitted change
+*— nichts gerade aktiv. Session 3 sauber abgeschlossen.*
 
 ## ⏳ Backlog (Priority Order)
 
-### Hoch
-- [ ] **Resend Domain-Verifikation**: DKIM/SPF-Records bei Domain-Registrar setzen, dann `CAMP_ANFRAGEN_FROM` auf `hallo@klaundbauter-musikproduktion.com` umstellen
-- [ ] **301-Redirects** für alte URLs (`/songcamps`, `/sessions`) in `vercel.json` — falls Backlinks erhalten werden sollen
+### Messung & Verifikation (höchste Prio, unmittelbar nach Deploy)
+- [ ] **Lighthouse-Audit** auf allen 9 Routen (Desktop + Mobile) — Ausgangspunkt: Desktop 100/90/100/100, Mobile 93/90/100/100
+- [ ] **LCP / CLS / INP** pro Route messen (Web Vitals)
+- [ ] A11y-Detail-Audit: warum Mobile nur 90? Kontrast-Ratios oder fehlende ARIA-Labels checken
+- [ ] Visuelle Smoke-Tests: alle 9 Routen durchklicken, insbesondere Testimonial-Cards (neue Klassen), Songcamp „Wie es läuft"-Grid (neue Klassen), Preis-Sections (editorial-title--price Modifier)
 
-### Mittel
-- [ ] **Alumni-Quotes** auf Songcamp durch echte Zitate ersetzen (sind aktuell Platzhalter)
-- [ ] **Lighthouse-Audit** nach allen Refactor-Änderungen erneut prüfen
-- [ ] **Cross-Browser-Test** — `100dvh` im Fullscreen-Menu auf iOS Safari verifizieren
+### Brand-Maintenance
+- [ ] Photo-Credits für Marco Olbert / Daniel Dominguez / Elena Kovacs einbauen (User reicht nach)
+- [ ] **Resend Domain-Verifikation**: DKIM/SPF bei Domain-Registrar, dann `CAMP_ANFRAGEN_FROM` auf `hallo@klaundbauter-musikproduktion.com`
 
-### Niedrig / Nice-to-have
-- [ ] Falls `hero_home_red.webp` als Custom-Bild geplant: hochladen + Kontakt-Bild-Source zurückstellen
-- [ ] Edge-Case Hero auf sehr breiten flachen Viewports (Mobile-Layout-Zone) — nur fixen wenn relevant
+### Bild-Optimierung (medium prio)
+- [ ] Responsive srcsets für `sc_mood4.webp` (315 KB), `produktion.webp` (265 KB), `produktion_2.webp` (285 KB), `camp_home.webp` (224 KB), `mix.webp` (212 KB) — Mobile lädt aktuell Desktop-Auflösung
+- [ ] Check ob `images/Kla & Bauter Studio-100.webp` und `images/produktion_2.webp` noch gebraucht werden
+
+### Optional / Nice-to-have
+- [ ] JS-Minification via esbuild/terser in build.js (~30 % Einsparung erwartet)
+- [ ] `<link rel="preload" as="font" crossorigin>` für kritische WOFF2 (Inter latin + Cormorant latin)
+- [ ] 301-Redirects für `/songcamps`, `/sessions` in `vercel.json` (falls Backlinks)
+- [ ] Cross-Browser-Test `100dvh` auf iOS Safari verifizieren
+- [ ] Weitere Inline-Styles extrahieren wenn Muster 3+× auftauchen
+- [ ] Restliche 9 „Orphan"-Klassen (`.camp-cta`, `.camp-img`, `.contact-grid`, `.editorial-cta`, `.editorial-item`, `.page-content-grid`, `.quote`, `.w3`) — alle in Compound-Selektoren mit benutzten Parents; entweder Selektoren umformulieren oder so lassen
 
 ## Blocked / On Hold
-- _Nichts aktuell._
+*— nichts.*
