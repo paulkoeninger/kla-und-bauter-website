@@ -9,31 +9,36 @@
     --font-primary: 'Söhne', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     --font-secondary: 'Canela', 'Cormorant', 'Iowan Old Style', serif;
     
-    /* Fluid Font Sizes */
-    --text-sm: clamp(0.875rem, 1.2vw, 1rem);
-    --text-base: clamp(1.125rem, 1.5vw, 1.25rem);
-    --text-lg: clamp(1.25rem, 2vw, 1.5rem);
-    --text-xl: clamp(1.5rem, 3vw, 2rem);
-    --text-2xl: clamp(2rem, 4vw, 2.5rem);
-    --text-3xl: clamp(2.5rem, 6vw, 3.5rem);
-    --text-4xl: clamp(3rem, 8vw, 4.5rem);
-    --text-hero: clamp(4.5rem, 12vw, 9rem);
-    
-    /* Metrics */
-    --lh-tight: 1.05;
-    --lh-base: 1.5;
-    --lh-relaxed: 1.7;
-    --tracking-tight: -0.02em;
-    --tracking-tighter: -0.04em;
-    --tracking-normal: 0em;
-    --tracking-wide: 0.05em;
-    --tracking-wider: 0.1em;
+    /* Type Scale — 8 semantische Stufen. Single Source of Truth für alle
+       font-size-Werte. Clamp-Formeln sind nur in den Tokens, nie in Elementen. */
+    --text-micro: 11px;                          /* Labels, Kicker, Meta-Overline */
+    --text-sm:    14px;                          /* Small Body, Captions, Footer-Nav */
+    --text-body:  16px;                          /* Fließtext — fester Wert */
+    --text-lead:  clamp(1.05rem, 1.4vw, 1.2rem); /* Lead-Text, Quotes */
+    --text-h3:    clamp(1.25rem, 2.2vw, 1.9rem); /* Kleine Headlines, Card-Titel */
+    --text-h2:    clamp(2rem, 4vw, 3.2rem);      /* Standard Editorial Headline */
+    --text-h1:    clamp(2.5rem, 5vw, 4rem);      /* Subpage Hero Headline */
+    --text-hero:  clamp(4.5rem, 12vw, 9rem);     /* Home Hero „KLA & BAUTER" */
+
+    /* Line-Heights — 3 Stufen. tight für Display, snug für Headlines, base für Body. */
+    --lh-tight: 1.15;
+    --lh-snug:  1.3;
+    --lh-base:  1.75;
+
+    /* Letter-Spacing — 5 Stufen. tighter/tight für Headlines,
+       normal default, subtle für Links/CTAs, wide für uppercase Kicker. */
+    --tracking-tighter: -0.02em;
+    --tracking-tight:   -0.01em;
+    --tracking-normal:   0;
+    --tracking-subtle:   0.02em;
+    --tracking-wide:     0.18em;
+
     --max-width-text: 65ch;
 
     /* Global Body Text — single source of truth for paragraph typography.
        Matches the Songcamp reference (Fünf Tage, ein Rhythmus. body). */
-    --body-font-size: 16px;
-    --body-line-height: 1.75;
+    --body-font-size: var(--text-body);
+    --body-line-height: var(--lh-base);
     --body-font-weight: 300;
     --body-color: var(--text-primary);
     --body-max-width: 680px;
@@ -47,6 +52,17 @@
        Editorial-luftig: Content darf nie direkt unter der Navbar kleben. */
     --content-top: 14rem;
 
+    /* Spacing Scale — 6-stufig, editorial. Single Source of Truth für alle
+       margin/padding/gap-Werte. Pairing-Regel: kleinere Einheit → kleinerer
+       Abstand. 2xs/xs bindet, md trennt Elemente einer Gruppe, lg/xl trennt
+       Gruppen voneinander. Mobile-Overrides unten. */
+    --space-2xs: 0.5rem;   /* Inline-Luft (Label, Arrow, Icon-Text) */
+    --space-xs:  1rem;     /* Paragraph zu Paragraph, enge Pairings */
+    --space-sm:  1.5rem;   /* Kicker → Headline, CTA-Abstand */
+    --space-md:  2.5rem;   /* Headline → Body, Gruppen-Trennung */
+    --space-lg:  4rem;     /* Content-Block → Content-Block */
+    --space-xl:  8rem;     /* Section → Section, Große Trennung */
+
     /* Breakpoint-Referenz (Media Queries können keine Custom Properties):
        --bp-tablet: 992px  — Tablet → Mobile-Layout
        --bp-mobile: 768px  — Phone-Layout
@@ -58,6 +74,10 @@
     :root {
         --edge: 2rem;
         --content-top: 11rem;
+        /* Mobile: große Stufen werden enger, damit 100svh-Sections atmen.
+           Kleine Stufen (2xs/xs/sm) bleiben — Editorial-Rhythmus. */
+        --space-lg: 3rem;
+        --space-xl: 5rem;
     }
 }
 @media (max-width: 480px) {
@@ -93,17 +113,22 @@ p {
 em, i {
     font-family: var(--font-secondary);
     font-style: italic;
-    font-weight: 300;
+    font-weight: inherit; /* Erbt Parent-Weight — em in 400er-Headline bleibt 400, im 300er-Body bleibt 300. Verhindert dass em in Headlines optisch „dünner" wirkt. */
+}
+
+/* em in Headlines ist Konvention = Akzentfarbe. Ersetzt verstreute inline-styles. */
+h1 em, h2 em, h3 em, h4 em, h5 em, h6 em {
+    color: var(--accent-color);
 }
 
 blockquote, .quote {
     font-family: var(--font-secondary);
-    font-size: var(--text-2xl);
+    font-size: var(--text-h2);
     font-weight: 300;
     font-style: italic;
     line-height: var(--lh-base);
-    margin: 3rem 0;
-    padding-left: 2rem;
+    margin: var(--space-md) 0;
+    padding-left: var(--space-md);
     border-left: 2px solid var(--accent-color);
 }
 
@@ -163,7 +188,7 @@ blockquote, .quote {
 .navbar {
     position: absolute;
     top: 0; left: 0; width: 100%;
-    padding: 2.5rem var(--edge);
+    padding: var(--space-md) var(--edge);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -172,8 +197,8 @@ blockquote, .quote {
 }
 @media (max-width: 768px) {
     .navbar {
-        padding-top: 1.5rem;
-        padding-bottom: 1.5rem;
+        padding-top: var(--space-sm);
+        padding-bottom: var(--space-sm);
     }
 }
 .navbar > * {
@@ -182,7 +207,7 @@ blockquote, .quote {
 .logo {
     font-family: var(--font-primary);
     font-weight: 400;
-    font-size: var(--text-base);
+    font-size: var(--text-lead);
     letter-spacing: var(--tracking-normal);
     transition: opacity 0.25s ease, transform 1s cubic-bezier(0.68, -0.6, 0.32, 1.6);
     display: inline-block;
@@ -203,18 +228,18 @@ html:has(#fullscreen-menu.open) .logo {
     gap: 8px;
     position: fixed;
     right: var(--edge);
-    top: 2.5rem; /* == .navbar padding-top */
+    top: var(--space-md); /* == .navbar padding-top */
     z-index: 200;
     height: 45px; /* == .nav-logo-img height, via justify-content mittig */
     box-sizing: content-box; /* Padding extern → Content-Area bleibt Logo-gross */
-    padding: 1rem; /* unsichtbarer Touch-Target-Vergrößerer */
-    margin: -1rem -1rem -1rem 0; /* hebt Padding visuell wieder auf */
+    padding: var(--space-xs); /* unsichtbarer Touch-Target-Vergrößerer */
+    margin: calc(var(--space-xs) * -1) calc(var(--space-xs) * -1) calc(var(--space-xs) * -1) 0; /* hebt Padding visuell wieder auf */
 }
 @media (max-width: 768px) {
     .menu-toggle {
-        top: 1.5rem; /* == .navbar padding-top auf Mobile */
+        top: var(--space-sm); /* == .navbar padding-top auf Mobile */
         height: 42px; /* == .nav-logo-img width auf Mobile */
-        margin: -1rem;
+        margin: calc(var(--space-xs) * -1);
     }
 }
 .menu-toggle .bar {
@@ -248,28 +273,25 @@ html:has(#fullscreen-menu.open) .logo {
 .hero-title {
     font-family: var(--font-primary);
     font-size: var(--text-hero);
-    font-weight: 900;
+    font-weight: 600; /* Ausnahme: Hero braucht mehr Präsenz als andere Sans-Headlines. 600 ist geladen (kein Faux-Bold). */
     line-height: var(--lh-tight);
     letter-spacing: var(--tracking-tighter);
-    margin-bottom: 2rem;
+    margin-bottom: var(--space-md);
     text-transform: uppercase;
 }
 .hero-subtitle {
     font-family: var(--font-secondary);
     font-weight: 400;
-    font-size: clamp(1.5rem, 2.5vw, 2.2rem);
-    line-height: 1.3;
-    letter-spacing: -0.01em;
+    font-size: var(--text-h3);
+    line-height: var(--lh-snug);
+    letter-spacing: var(--tracking-tight);
     color: var(--text-primary);
     text-transform: none;
     display: block;
     max-width: none;
-    margin-top: 1rem;
+    margin-top: var(--space-xs);
 }
 .hero-subtitle em {
-    font-family: var(--font-secondary);
-    font-style: italic;
-    font-weight: 300;
     color: var(--accent-color);
 }
 
@@ -312,15 +334,15 @@ html:has(#fullscreen-menu.open) .logo {
 .entry-header-wrap {
     display: flex;
     align-items: center;
-    gap: 2.5rem;
-    margin-bottom: 3.5rem;
+    gap: var(--space-md);
+    margin-bottom: var(--space-lg);
 }
 .entry-headline {
     font-family: var(--font-secondary);
-    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-size: var(--text-h2);
     font-weight: 400;
-    line-height: 1.2;
-    letter-spacing: -0.01em;
+    line-height: var(--lh-tight);
+    letter-spacing: var(--tracking-tight);
     margin-bottom: 0; /* Margin moved to wrapper */
     color: var(--text-primary);
     white-space: nowrap;
@@ -347,7 +369,7 @@ html:has(#fullscreen-menu.open) .logo {
 .entry-grid {
     display: flex;
     flex-wrap: nowrap;
-    gap: 4rem;
+    gap: var(--space-lg);
     width: 100%;
 }
 .entry-card {
@@ -409,9 +431,9 @@ html:has(#fullscreen-menu.open) .logo {
         font-family: var(--font-secondary);
         font-style: italic;
         font-weight: 300;
-        font-size: clamp(1rem, 1.4vw, 1.2rem);
-        line-height: 1.3;
-        letter-spacing: -0.005em;
+        font-size: var(--text-lead);
+        line-height: var(--lh-snug);
+        letter-spacing: var(--tracking-tight);
         color: var(--text-primary);
         white-space: nowrap;
         text-align: center;
@@ -438,7 +460,7 @@ html:has(#fullscreen-menu.open) .logo {
     width: 100%;
     max-width: 44vh; /* Allows the entire block to occupy a smaller footprint inside the 100vh height */
     aspect-ratio: 1 / 1; /* Perfect 1x1 Square */
-    margin: 0 0 1.25rem 0; /* Tighter gap */
+    margin: 0 0 var(--space-sm) 0;
     overflow: hidden;
     background-color: var(--bg-secondary);
 }
@@ -459,11 +481,11 @@ html:has(#fullscreen-menu.open) .logo {
 }
 .entry-title {
     font-family: var(--font-secondary);
-    font-size: clamp(1.4rem, 2.2vw, 1.9rem);
+    font-size: var(--text-h3);
     font-weight: 400;
-    line-height: 1.3;
-    letter-spacing: -0.01em;
-    margin-bottom: 1rem;
+    line-height: var(--lh-snug);
+    letter-spacing: var(--tracking-tight);
+    margin-bottom: var(--space-xs);
     color: var(--text-primary);
     transition: color 0.3s ease;
     text-transform: none;
@@ -477,20 +499,20 @@ html:has(#fullscreen-menu.open) .logo {
     line-height: var(--body-line-height);
     font-weight: var(--body-font-weight);
     color: var(--body-color);
-    margin-bottom: 1.5rem; /* Reduced to bring CTA closer */
+    margin-bottom: var(--space-sm);
     max-width: 100%; /* Card-internal: use full card width, not global body max */
 }
 .entry-cta {
     font-family: var(--font-primary);
-    font-size: 1rem;
+    font-size: var(--text-body);
     font-weight: 500;
-    letter-spacing: 0.02em;
+    letter-spacing: var(--tracking-subtle);
     color: var(--text-primary);
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
     align-self: flex-start;
-    padding: 0.5rem 0;
+    padding: var(--space-2xs) 0;
     min-height: 44px; /* Touch-Target */
     border-bottom: 1px solid var(--accent-color);
     text-transform: none;
@@ -500,7 +522,7 @@ html:has(#fullscreen-menu.open) .logo {
     border-bottom-color: var(--text-primary);
 }
 .entry-cta .arrow-icon {
-    font-size: 1rem;
+    font-size: var(--text-body);
     line-height: 1;
     display: inline-block;
     transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
@@ -512,11 +534,11 @@ html:has(#fullscreen-menu.open) .logo {
 /* Base Section Title used on other pages */
 .section-title {
     font-family: var(--font-primary);
-    font-size: var(--text-4xl);
-    font-weight: 900;
-    margin-bottom: 4rem;
+    font-size: var(--text-h1);
+    font-weight: 400;
+    margin-bottom: var(--space-lg);
     border-bottom: 1px solid var(--bg-secondary);
-    padding-bottom: 1.5rem;
+    padding-bottom: var(--space-sm);
     letter-spacing: var(--tracking-tight);
     text-transform: uppercase;
 }
@@ -524,17 +546,17 @@ html:has(#fullscreen-menu.open) .logo {
 /* Home Entry Responsive Info */
 @media (max-width: 992px) {
     .home-entry-section {
-        padding: var(--content-top) var(--edge) 8rem;
+        padding: var(--content-top) var(--edge) var(--space-xl);
         height: auto;
         display: block; /* Disable 100vh center flex to allow natural scrolling if mobile cards get tall */
     }
     .entry-grid {
         grid-template-columns: 1fr;
-        gap: 4rem;
+        gap: var(--space-lg);
     }
     .entry-headline {
-        margin-bottom: 3rem;
-        font-size: 2.2rem;
+        margin-bottom: var(--space-lg);
+        font-size: var(--text-h2);
     }
 }
 
@@ -563,17 +585,20 @@ html:has(#fullscreen-menu.open) .logo {
 /* Fullscreen Menu — editorial redesign.
    Weg vom uppercase/900-Bullig, rein in Canela-Kapitel mit Untertiteln.
    Content startet auf X-Burger-Höhe (== navbar padding-top) und muss
-   immer in 100svh passen — kein Scrollen. */
+   immer den sichtbaren Bildschirm füllen — auch wenn die Mobile-Browser-
+   Chrome (URL-Leiste) dynamisch ein-/ausgeklappt ist. dvh = dynamic
+   viewport height, passt sich live an. svh = Fallback für ältere Browser. */
 .fullscreen-menu {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
     height: 100svh;
+    height: 100dvh;
     background-color: var(--bg-primary);
     z-index: 150; /* below navbar 200 */
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    padding-top: 2.5rem; /* == navbar padding-top → Kicker auf X-Höhe */
+    padding-top: var(--space-md); /* == navbar padding-top → Kicker auf X-Höhe */
     align-items: center;
     opacity: 0;
     pointer-events: none;
@@ -581,7 +606,7 @@ html:has(#fullscreen-menu.open) .logo {
 }
 @media (max-width: 768px) {
     .fullscreen-menu {
-        padding-top: 1.5rem; /* matcht Mobile-navbar */
+        padding-top: var(--space-sm); /* matcht Mobile-navbar */
     }
 }
 .fullscreen-menu.open {
@@ -594,7 +619,7 @@ html:has(#fullscreen-menu.open) .logo {
     padding: 0 var(--edge);
 }
 .menu-kicker {
-    margin-bottom: 3rem; /* editorial Luft zwischen Kicker und Kapitel-Liste */
+    margin-bottom: var(--space-md); /* editorial Luft zwischen Kicker und Kapitel-Liste */
 }
 .menu-links {
     list-style: none;
@@ -602,21 +627,21 @@ html:has(#fullscreen-menu.open) .logo {
 }
 .menu-links li {
     overflow: hidden; /* für staggered text-reveal via GSAP */
-    margin-bottom: 1.25rem;
+    margin-bottom: var(--space-sm);
     counter-increment: menu;
 }
 .menu-links a {
     display: inline-flex;
     align-items: baseline;
-    column-gap: 1.25rem;
+    column-gap: var(--space-sm);
     font-family: var(--font-secondary);
-    font-size: clamp(1.75rem, 4vw, 3rem);
+    font-size: var(--text-h2);
     font-weight: 400;
     color: var(--text-primary);
     text-decoration: none;
     text-transform: none;
-    line-height: 1.2;
-    letter-spacing: -0.01em;
+    line-height: var(--lh-tight);
+    letter-spacing: var(--tracking-tight);
     transition: color 0.5s cubic-bezier(0.16, 1, 0.3, 1),
                 transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -624,9 +649,9 @@ html:has(#fullscreen-menu.open) .logo {
 .menu-links a::before {
     content: counter(menu, decimal-leading-zero);
     font-family: var(--font-primary);
-    font-size: 11px;
+    font-size: var(--text-micro);
     font-weight: 500;
-    letter-spacing: 0.18em;
+    letter-spacing: var(--tracking-wide);
     color: var(--accent-color);
 }
 .menu-links a:hover {
@@ -635,19 +660,19 @@ html:has(#fullscreen-menu.open) .logo {
 }
 
 .menu-footer {
-    margin-top: 5rem;
+    margin-top: var(--space-lg);
     display: flex;
-    gap: 2rem;
+    gap: var(--space-md);
     justify-content: flex-start;
     opacity: 0;
 }
 .small-link {
     font-family: var(--font-primary);
-    font-size: 13px;
+    font-size: var(--text-sm);
     color: var(--text-secondary);
     text-decoration: none;
     font-weight: 400;
-    letter-spacing: 0.01em;
+    letter-spacing: var(--tracking-subtle);
     text-transform: none;
     transition: color 0.3s ease;
 }
@@ -657,38 +682,38 @@ html:has(#fullscreen-menu.open) .logo {
 
 /* Base Page Styles */
 .page-container {
-    padding: var(--content-top) var(--edge) 4rem;
+    padding: var(--content-top) var(--edge) var(--space-lg);
     max-width: 1440px;
     margin: 0 auto;
 }
 .page-title {
     font-family: var(--font-primary);
-    font-size: var(--text-4xl);
-    font-weight: 900;
+    font-size: var(--text-h1);
+    font-weight: 400;
     letter-spacing: var(--tracking-tighter);
-    margin-bottom: 4rem;
+    margin-bottom: var(--space-lg);
     border-bottom: 1px solid var(--bg-secondary);
-    padding-bottom: 1.5rem;
+    padding-bottom: var(--space-sm);
     text-transform: uppercase;
 }
 .page-content-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 4rem;
+    gap: var(--space-lg);
     align-items: center;
 }
 .text-content h2 {
     font-family: var(--font-primary);
-    font-size: var(--text-3xl);
-    font-weight: 900;
-    margin-bottom: 2rem;
+    font-size: var(--text-h2);
+    font-weight: 400;
+    margin-bottom: var(--space-md);
     letter-spacing: var(--tracking-tight);
     text-transform: uppercase;
 }
 .text-content p {
-    font-size: var(--text-base);
+    font-size: var(--text-lead);
     /* line-height and max-width defined globally via p */
-    margin-bottom: 2rem;
+    margin-bottom: var(--space-md);
 }
 .content-img {
     width: 100%;
@@ -698,13 +723,13 @@ html:has(#fullscreen-menu.open) .logo {
 }
 .cta-button {
     display: inline-block;
-    padding: 1.25rem 2.5rem;
+    padding: var(--space-sm) var(--space-md);
     background-color: var(--text-primary);
     color: var(--bg-primary);
     text-decoration: none;
-    font-weight: 700;
-    font-size: 1rem;
-    letter-spacing: 0.1em;
+    font-weight: 400;
+    font-size: var(--text-body);
+    letter-spacing: var(--tracking-wide);
     border: none;
     cursor: pointer;
     text-transform: uppercase;
@@ -719,7 +744,7 @@ html:has(#fullscreen-menu.open) .logo {
 .video-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 3rem;
+    gap: var(--space-lg);
 }
 /* Facade-Button bis zum Klick — danach wird iframe per JS eingesetzt. */
 .video-wrapper {
@@ -789,35 +814,35 @@ html:has(#fullscreen-menu.open) .logo {
 .contact-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 6rem;
+    gap: var(--space-lg);
 }
 .contact-info h2 {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-    font-weight: 900;
+    font-size: var(--text-h2);
+    margin-bottom: var(--space-xs);
+    font-weight: 400;
 }
 .contact-info p {
-    font-size: 1.5rem;
-    line-height: 1.4;
+    font-size: var(--text-h3);
+    line-height: var(--lh-snug);
 }
 .email-link {
     color: var(--accent-color);
     text-decoration: none;
-    font-weight: 700;
+    font-weight: 400;
 }
 .contact-form {
     display: flex;
     flex-direction: column;
-    gap: 2.5rem;
+    gap: var(--space-md);
 }
 .contact-form input, .contact-form textarea {
     width: 100%;
-    padding: 1rem 0;
+    padding: var(--space-xs) 0;
     background: transparent;
     border: none;
     border-bottom: 2px solid var(--bg-secondary);
     font-family: var(--font-primary);
-    font-size: 1.25rem;
+    font-size: var(--text-h3);
     outline: none;
     color: var(--text-primary);
     transition: border-color 0.3s;
@@ -827,7 +852,7 @@ html:has(#fullscreen-menu.open) .logo {
 }
 .contact-form .submit-btn {
     align-self: flex-start;
-    margin-top: 1rem;
+    margin-top: var(--space-xs);
 }
 
 /* Legal Pages */
@@ -835,15 +860,15 @@ html:has(#fullscreen-menu.open) .logo {
     max-width: 800px;
 }
 .legal-text p {
-    margin-bottom: 1.5rem;
-    line-height: 1.6;
+    margin-bottom: var(--space-sm);
+    line-height: var(--lh-base);
 }
 
 /* Editorial Legal-Pages (Impressum, Datenschutz) */
 .snap-block:has(.snap-block-inner.legal) {
     justify-content: flex-start;
     padding-top: var(--content-top);
-    padding-bottom: 6rem;
+    padding-bottom: var(--space-lg);
 }
 .snap-block-inner.legal {
     max-width: 760px;
@@ -853,20 +878,20 @@ html:has(#fullscreen-menu.open) .logo {
 }
 .legal-section-title {
     font-family: var(--font-primary);
-    font-size: 11px;
+    font-size: var(--text-micro);
     font-weight: 500;
-    letter-spacing: 0.18em;
+    letter-spacing: var(--tracking-wide);
     text-transform: uppercase;
     color: var(--accent-color);
-    margin-top: 3rem;
-    margin-bottom: 1rem;
+    margin-top: var(--space-lg);
+    margin-bottom: var(--space-xs);
 }
 .snap-block-inner.legal > .legal-section-title:first-of-type {
     margin-top: 0;
 }
 .snap-block-inner.legal p {
-    font-size: 15px;
-    line-height: 1.75;
+    font-size: var(--text-sm);
+    line-height: var(--lh-base);
     font-weight: 300;
     color: var(--text-primary);
     margin-bottom: 0;
@@ -886,23 +911,23 @@ html:has(#fullscreen-menu.open) .logo {
 
 /* Produktion Process Updates */
 .produktion-intro {
-    font-size: 2rem;
-    line-height: 1.4;
-    font-weight: 700;
+    font-size: var(--text-h2);
+    line-height: var(--lh-snug);
+    font-weight: 400;
     max-width: 900px;
-    margin-bottom: 5rem;
+    margin-bottom: var(--space-lg);
 }
 .process-overview {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 2rem;
-    margin-bottom: 8rem;
+    gap: var(--space-md);
+    margin-bottom: var(--space-xl);
 }
 .process-step {
     cursor: pointer;
     text-align: center;
-    padding: 2rem;
-    border: 2px solid transparent; 
+    padding: var(--space-md);
+    border: 2px solid transparent;
     transition: transform 0.3s;
 }
 .process-step:hover {
@@ -911,27 +936,27 @@ html:has(#fullscreen-menu.open) .logo {
 .step-icon {
     width: 60px;
     height: 60px;
-    margin: 0 auto 1.5rem auto;
+    margin: 0 auto var(--space-sm) auto;
 }
 .step-icon svg {
     width: 100%;
     height: 100%;
 }
 .process-step h3 {
-    font-size: 1.25rem;
-    font-weight: 700;
+    font-size: var(--text-h3);
+    font-weight: 400;
     text-transform: uppercase;
 }
 .step-subtext {
-    font-size: 0.9rem;
-    margin-top: 0.75rem;
+    font-size: var(--text-sm);
+    margin-top: var(--space-xs);
     opacity: 0.7;
-    line-height: 1.4;
+    line-height: var(--lh-snug);
 }
 .process-details {
     display: flex;
     flex-direction: column;
-    gap: 8rem;
+    gap: var(--space-xl);
 }
 .detail-text, .detail-image {
     flex: 1;
@@ -942,36 +967,36 @@ html:has(#fullscreen-menu.open) .logo {
 }
 .detail-section {
     display: flex;
-    gap: 4rem;
+    gap: var(--space-lg);
     align-items: flex-start;
     scroll-margin-top: 150px;
 }
 .detail-number {
-    font-size: 6rem;
-    font-weight: 900;
+    font-size: var(--text-hero);
+    font-weight: 400;
     color: var(--accent-color);
     line-height: 0.8;
     width: 100px;
     flex-shrink: 0;
 }
 .detail-text h2 {
-    font-size: 3rem;
-    font-weight: 900;
-    margin-bottom: 1.5rem;
+    font-size: var(--text-h2);
+    font-weight: 400;
+    margin-bottom: var(--space-sm);
     text-transform: uppercase;
 }
 .detail-text p {
-    font-size: 1.5rem;
-    line-height: 1.6;
+    font-size: var(--text-h3);
+    line-height: var(--lh-base);
     max-width: 800px;
 }
 
 /* Preis-Fußnote — „inkl. 19 % MwSt." dezent unter Preisen */
 .price-tax-note {
     font-family: var(--font-primary);
-    font-size: 11px;
+    font-size: var(--text-micro);
     font-weight: 300;
-    letter-spacing: 0.05em;
+    letter-spacing: var(--tracking-subtle);
     color: var(--text-secondary);
     opacity: 0.7;
     margin: 0;
@@ -983,13 +1008,12 @@ html:has(#fullscreen-menu.open) .logo {
     width: 64px;
     height: 1px;
     background-color: var(--accent-color);
-    margin: 0 auto 2.5rem auto;
-    opacity: 0.85;
+    margin: 0 auto var(--space-md) auto;
 }
 @media (max-width: 768px) {
     .cta-accent-line {
         width: 48px;
-        margin-bottom: 2rem;
+        margin-bottom: var(--space-md);
     }
 }
 
@@ -997,17 +1021,17 @@ html:has(#fullscreen-menu.open) .logo {
 .contact-studios-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 4rem;
+    gap: var(--space-lg);
     max-width: 760px;
 }
 .studio-label {
     font-family: var(--font-primary);
-    font-size: 11px;
+    font-size: var(--text-micro);
     font-weight: 600;
-    letter-spacing: 0.18em;
+    letter-spacing: var(--tracking-wide);
     text-transform: uppercase;
     color: var(--accent-color);
-    margin-bottom: 1rem;
+    margin-bottom: var(--space-xs);
 }
 .studio-address {
     font-family: var(--font-primary);
@@ -1021,18 +1045,18 @@ html:has(#fullscreen-menu.open) .logo {
 @media (max-width: 768px) {
     .contact-studios-grid {
         grid-template-columns: 1fr;
-        gap: 2.5rem;
+        gap: var(--space-md);
     }
 }
 
 /* Team-Page — Bio-Meta-Zeile unter Portrait */
 .team-bio {
     font-family: var(--font-primary);
-    font-size: 13px;
-    line-height: 1.7;
+    font-size: var(--text-sm);
+    line-height: var(--lh-base);
     font-weight: 300;
     color: var(--text-secondary);
-    margin-top: 2rem;
+    margin-top: var(--space-md);
     max-width: 680px;
 }
 .team-portrait {
@@ -1047,23 +1071,23 @@ html:has(#fullscreen-menu.open) .logo {
     display: flex;
     flex-direction: column;
     gap: 0.35rem;
-    margin-top: 2.25rem;
-    padding-top: 1.5rem;
+    margin-top: var(--space-md);
+    padding-top: var(--space-sm);
     border-top: 0.5px solid rgba(0, 0, 0, 0.1);
     max-width: 340px;
 }
 @media (max-width: 768px) {
     .prod-hero-nav {
         max-width: none;
-        margin-top: -1rem;
+        margin-top: calc(var(--space-xs) * -1);
     }
 }
 .prod-hero-nav-item {
     display: inline-grid;
     grid-template-columns: 2.5rem 1fr;
     align-items: baseline;
-    gap: 0.5rem;
-    padding: 0.5rem 0;
+    gap: var(--space-2xs);
+    padding: var(--space-2xs) 0;
     text-decoration: none;
     color: var(--text-primary);
     transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s ease;
@@ -1074,16 +1098,16 @@ html:has(#fullscreen-menu.open) .logo {
 }
 .prod-hero-nav-num {
     font-family: var(--font-primary);
-    font-size: 11px;
+    font-size: var(--text-micro);
     font-weight: 500;
-    letter-spacing: 0.18em;
+    letter-spacing: var(--tracking-wide);
     color: var(--accent-color);
 }
 .prod-hero-nav-label {
     font-family: var(--font-secondary);
-    font-size: 1.05rem;
+    font-size: var(--text-lead);
     font-weight: 400;
-    line-height: 1.2;
+    line-height: var(--lh-tight);
 }
 
 /* Scroll-margin für die Step-Anchors, damit sie nicht unter der Navbar sitzen */
@@ -1114,19 +1138,19 @@ html:has(#fullscreen-menu.open) .logo {
 }
 .camp-finish-headline {
     font-family: var(--font-secondary);
-    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-size: var(--text-h2);
     font-weight: 400;
-    line-height: 1.2;
-    margin-bottom: 1.25rem;
+    line-height: var(--lh-tight);
+    margin-bottom: var(--space-sm);
     color: var(--text-primary);
 }
 .camp-finish-lead {
     font-family: var(--font-primary);
-    font-size: 16px;
-    line-height: 1.7;
+    font-size: var(--text-body);
+    line-height: var(--lh-base);
     font-weight: 300;
     color: var(--text-primary);
-    margin-bottom: 1.5rem;
+    margin-bottom: var(--space-sm);
     max-width: 680px;
 }
 /* Analog zur Fünf-Tage-Aufzählung: Grid von Cards mit accent-Top-Strich.
@@ -1134,43 +1158,43 @@ html:has(#fullscreen-menu.open) .logo {
 .camp-finish-stages {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 2rem;
-    margin-bottom: 1.5rem;
+    gap: var(--space-md);
+    margin-bottom: var(--space-sm);
 }
 .camp-finish-stage {
     border-top: 1px solid var(--accent-color);
-    padding: 1.5rem 1rem 0 0;
+    padding: var(--space-sm) var(--space-xs) 0 0;
     background: transparent;
 }
 .camp-finish-title {
     font-family: var(--font-secondary);
-    font-size: 17px;
+    font-size: var(--text-body);
     font-weight: 400;
-    line-height: 1.3;
-    margin-bottom: 0.75rem;
+    line-height: var(--lh-snug);
+    margin-bottom: var(--space-2xs);
     color: var(--text-primary);
 }
 .camp-finish-price {
     font-family: var(--font-primary);
-    font-size: 13px;
+    font-size: var(--text-sm);
     font-weight: 300;
-    letter-spacing: 0.02em;
+    letter-spacing: var(--tracking-subtle);
     color: var(--text-secondary);
     white-space: nowrap;
     margin-left: 0.25rem;
 }
 .camp-finish-desc {
-    font-size: 13px;
+    font-size: var(--text-sm);
     font-weight: 400; /* matcht Fünf-Tage-Desc (div ohne p-Override) */
     color: var(--text-secondary);
-    line-height: 1.65;
+    line-height: var(--lh-base);
     max-width: 54ch;
 }
 .camp-finish-closing {
     font-family: var(--font-secondary);
     font-style: italic;
-    font-size: 16px;
-    line-height: 1.55;
+    font-size: var(--text-body);
+    line-height: var(--lh-base);
     font-weight: 400;
     color: var(--text-primary);
     max-width: none;
@@ -1185,13 +1209,13 @@ html:has(#fullscreen-menu.open) .logo {
     }
 }
 .camp-pointer {
-    margin-top: 3rem;
-    padding-top: 2rem;
+    margin-top: var(--space-lg);
+    padding-top: var(--space-md);
     border-top: 0.5px solid rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.85rem;
+    gap: var(--space-xs);
 }
 /* Standalone-Variante (eigene Section, z. B. Sessions Songcamp-Verweis) — kein Top-Trenner. */
 .camp-pointer-standalone {
@@ -1201,8 +1225,8 @@ html:has(#fullscreen-menu.open) .logo {
 }
 .camp-pointer-text {
     font-family: var(--font-primary);
-    font-size: 14px;
-    line-height: 1.6;
+    font-size: var(--text-sm);
+    line-height: var(--lh-base);
     font-weight: 300;
     color: var(--text-secondary);
     margin: 0;
@@ -1212,11 +1236,11 @@ html:has(#fullscreen-menu.open) .logo {
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
-    padding-bottom: 0.5rem;
+    padding-bottom: var(--space-2xs);
     font-family: var(--font-primary);
-    font-size: 15px;
+    font-size: var(--text-sm);
     font-weight: 500;
-    letter-spacing: 0.02em;
+    letter-spacing: var(--tracking-subtle);
     color: var(--text-primary);
     text-decoration: none;
     border-bottom: 1px solid var(--accent-color);
@@ -1243,16 +1267,17 @@ html:has(#fullscreen-menu.open) .logo {
         order: -1;
     }
     .page-container {
-        padding: var(--content-top) var(--edge) 2rem;
+        padding: var(--content-top) var(--edge) var(--space-md);
     }
     .hero {
-        /* Mobile-Hero fest auf 100svh — Bild oben nach padding-top,
-           Text am unteren Rand vor padding-bottom, editorial Weißraum dazwischen. */
-        padding: 6rem var(--edge) 4rem;
+        /* Mobile-Hero fest auf 100svh — Bild + Text vertikal zentriert.
+           justify-content: center statt space-between, damit Bild nicht direkt
+           unter der Navbar klebt. gap kontrolliert den Abstand zwischen Bild und Text. */
+        padding: var(--space-xl) var(--edge) var(--space-lg);
         flex-direction: column;
-        justify-content: space-between;
+        justify-content: center;
         align-items: center;
-        gap: 2rem;
+        gap: var(--space-lg);
         height: 100svh;
         min-height: 100svh;
         max-height: 100svh;
@@ -1265,7 +1290,7 @@ html:has(#fullscreen-menu.open) .logo {
         text-align: center; /* Centered text balances perfectly with centered logo above */
     }
     .hero-title {
-        font-size: clamp(3rem, 12vw, 4.5rem);
+        font-size: var(--text-h1);
     }
     .hero-images {
         flex: none;
@@ -1287,7 +1312,7 @@ html:has(#fullscreen-menu.open) .logo {
     }
     .detail-section {
         flex-direction: column;
-        gap: 1.5rem;
+        gap: var(--space-sm);
     }
 }
 @media (max-width: 768px) {
@@ -1365,22 +1390,22 @@ html:has(#fullscreen-menu.open) .logo {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 2rem;
+    padding: var(--space-md);
     text-align: center;
 }
 
 .teaser-kicker {
     font-family: var(--font-primary);
     font-weight: 600;
-    font-size: 10px;
-    letter-spacing: 0.18em;
+    font-size: var(--text-micro);
+    letter-spacing: var(--tracking-wide);
     text-transform: uppercase;
     color: var(--text-primary); /* dunkel auf oliv — Kontrast 4.86:1, WCAG AA ✓ */
     background: var(--accent-color);
     border-radius: 2px;
     padding: 6px 12px;
     display: inline-block;
-    margin-bottom: 2rem;
+    margin-bottom: var(--space-md);
     opacity: 0;
     transform: translateY(16px);
     transition: opacity 0.6s ease, transform 0.6s ease;
@@ -1389,8 +1414,8 @@ html:has(#fullscreen-menu.open) .logo {
 .teaser-headline {
     font-family: var(--font-secondary);
     font-weight: 400;
-    font-size: clamp(2rem, 5vw, 4rem);
-    line-height: 1.25;
+    font-size: var(--text-h1);
+    line-height: var(--lh-snug);
     color: var(--bg-primary); /* Ensures light cream text */
     max-width: 800px;
     opacity: 0;
@@ -1410,11 +1435,11 @@ html:has(#fullscreen-menu.open) .logo {
 }
 
 .teaser-cta {
-    margin-top: 3rem;
+    margin-top: var(--space-md);
     font-family: var(--font-primary);
     font-weight: 400;
-    font-size: 15px;
-    letter-spacing: 0.08em;
+    font-size: var(--text-sm);
+    letter-spacing: var(--tracking-subtle);
     color: rgba(255, 255, 255, 0.45);
     display: inline-flex;
     align-items: center;
@@ -1485,23 +1510,23 @@ html:has(#fullscreen-menu.open) .logo {
     }
 }
 @media (max-width: 480px) {
-    .teaser-kicker { margin-bottom: 1.8rem; }
-    .teaser-cta { margin-top: 2rem; }
+    .teaser-kicker { margin-bottom: var(--space-sm); }
+    .teaser-cta { margin-top: var(--space-sm); }
 }
 
 /* -----------------------------------
    SONGCAMP CONTENT PAGE SPECIFICS
    ----------------------------------- */
-.sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: start; }
+.sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-lg); align-items: start; }
 .sc-list-item {
-    padding: 0.8rem 0;
+    padding: var(--space-xs) 0;
     border-bottom: 0.5px solid rgba(255,255,255,0.1);
-    font-size: 16px;
-    line-height: 1.75;
+    font-size: var(--text-body);
+    line-height: var(--lh-base);
     font-weight: 300;
     color: rgba(255,255,255,0.7);
     display: flex;
-    gap: 1rem;
+    gap: var(--space-xs);
     transition: opacity 0.4s ease, color 0.4s ease;
 }
 .sc-list-item:hover {
@@ -1525,7 +1550,7 @@ html:has(#fullscreen-menu.open) .logo {
     color: var(--text-primary);
 }
 .sc-format-grid { display: grid; grid-template-columns: repeat(5, 1fr); }
-.sc-day-card { padding: 2.5rem 1.5rem; }
+.sc-day-card { padding: var(--space-md) var(--space-sm); }
 @media (max-width: 768px) {
     .sc-list-item--light {
         color: var(--text-primary);
@@ -1537,7 +1562,7 @@ html:has(#fullscreen-menu.open) .logo {
         flex-direction: column !important;
     }
 }
-.sc-alumni-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+.sc-alumni-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-md); }
 
 /* Alumni-Pager — horizontaler Slider mit sichtbarem Gap zwischen Seiten */
 .sc-alumni-pager {
@@ -1547,7 +1572,7 @@ html:has(#fullscreen-menu.open) .logo {
 }
 .sc-alumni-pager-track {
     display: flex;
-    gap: 3rem;
+    gap: var(--space-lg);
     transform: translateX(0);
     transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
     will-change: transform;
@@ -1559,17 +1584,17 @@ html:has(#fullscreen-menu.open) .logo {
 .sc-alumni-nav {
     display: flex;
     justify-content: center;
-    gap: 0.85rem;
-    margin-top: 2.5rem;
+    gap: var(--space-xs);
+    margin-top: var(--space-md);
 }
 .sc-alumni-dot {
     background: transparent;
     border: 0.5px solid rgba(0, 0, 0, 0.2);
     color: var(--text-secondary);
     font-family: var(--font-primary);
-    font-size: 12px;
+    font-size: var(--text-sm);
     font-weight: 500;
-    letter-spacing: 0.05em;
+    letter-spacing: var(--tracking-subtle);
     width: 44px;
     height: 44px;
     border-radius: 50%;
@@ -1597,7 +1622,7 @@ html:has(#fullscreen-menu.open) .logo {
     }
     .sc-alumni-pager-track {
         flex-direction: column;
-        gap: 2rem;
+        gap: var(--space-md);
         transform: none !important;
     }
     .sc-alumni-page {
@@ -1628,17 +1653,17 @@ html:has(#fullscreen-menu.open) .logo {
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 0.6rem;
+        gap: var(--space-2xs);
         width: fit-content;
-        margin: 2.5rem auto 0;
-        padding: 0.75rem 0;
+        margin: var(--space-md) auto 0;
+        padding: var(--space-2xs) 0;
         background: transparent;
         border: none;
         border-bottom: 1px solid var(--accent-color);
         font-family: var(--font-primary);
-        font-size: 15px;
+        font-size: var(--text-sm);
         font-weight: 500;
-        letter-spacing: 0.02em;
+        letter-spacing: var(--tracking-subtle);
         color: var(--text-primary);
         cursor: pointer;
         transition: border-color 0.5s cubic-bezier(0.16, 1, 0.3, 1);
@@ -1651,22 +1676,22 @@ html:has(#fullscreen-menu.open) .logo {
         transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     }
 }
-.sc-fact-grid { display: flex; gap: 4rem; flex-wrap: wrap; }
-.sc-cta-box { display: flex; gap: 1rem; width: 100%; max-width: 500px; margin: 0 auto; }
+.sc-fact-grid { display: flex; gap: var(--space-lg); flex-wrap: wrap; }
+.sc-cta-box { display: flex; gap: var(--space-xs); width: 100%; max-width: 500px; margin: 0 auto; }
 
 /* Songcamp Hero CTA-Row: Desktop = Primary-Button + Text-Link nebeneinander. */
 .sc-hero-cta-row {
     display: flex;
-    gap: 2rem;
+    gap: var(--space-md);
     align-items: center;
-    margin-top: 2rem;
+    margin-top: var(--space-md);
 }
 @media (max-width: 768px) {
     .sc-hero-cta-row {
         flex-direction: column;
         align-items: flex-start;
-        gap: 1.25rem;
-        margin-bottom: 2.5rem; /* Puffer zum Meta-Block darunter */
+        gap: var(--space-sm);
+        margin-bottom: var(--space-md); /* Puffer zum Meta-Block darunter */
     }
     /* Primary verwandelt sich in einen Editorial-Link — gleicher Start-Punkt
        wie „Wie es läuft", gleicher Rhythmus. Priorität durch Reihenfolge +
@@ -1674,27 +1699,27 @@ html:has(#fullscreen-menu.open) .logo {
     .sc-hero-cta-row .kb-btn-primary {
         background: transparent;
         color: var(--accent-color);
-        padding: 0 0 0.5rem 0;
+        padding: 0 0 var(--space-2xs) 0;
         border-radius: 0;
         border-bottom: 1px solid var(--accent-color);
-        font-size: 15px;
+        font-size: var(--text-sm);
         font-weight: 500;
-        gap: 0.6rem;
+        gap: var(--space-2xs);
     }
 }
 
 /* KB Standard Editorial Link */
 .kb-link {
     font-family: var(--font-primary);
-    font-size: 15px;
+    font-size: var(--text-sm);
     font-weight: 400;
     color: var(--text-primary);
     text-decoration: none;
     display: inline-flex;
     align-items: center;
-    gap: 0.6rem;
+    gap: var(--space-2xs);
     padding-bottom: 0.25rem;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.15); 
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
     transition: color 0.4s ease, border-color 0.4s ease;
     cursor: pointer;
 }
@@ -1703,7 +1728,7 @@ html:has(#fullscreen-menu.open) .logo {
     border-color: var(--accent-color);
 }
 .kb-link .arrow-icon {
-    font-size: 1.1rem;
+    font-size: var(--text-lead);
     transform: translateY(1px);
     transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -1729,9 +1754,9 @@ html:has(#fullscreen-menu.open) .logo {
 /* Section Kickers (Dynamic Light/Dark) */
 .sc-kicker {
     font-family: var(--font-primary);
-    font-size: 10px;
+    font-size: var(--text-micro);
     font-weight: 600;
-    letter-spacing: 0.18em;
+    letter-spacing: var(--tracking-wide);
     text-transform: uppercase;
     color: var(--accent-color);
     background: rgba(0,0,0,0.03);
@@ -1739,7 +1764,7 @@ html:has(#fullscreen-menu.open) .logo {
     border-radius: 2px;
     padding: 6px 12px;
     display: inline-block;
-    margin-bottom: 2rem;
+    margin-bottom: var(--space-md);
     /* Als direktes Grid-Item (z. B. wenn Parent display:contents hat) bleibt
        die Box auf Content-Breite — sonst wird inline-block zu block-level
        stretched. */
@@ -1766,7 +1791,7 @@ html:has(#fullscreen-menu.open) .logo {
     background: var(--bg-primary);
     border: 0.5px solid rgba(0, 0, 0, 0.05);
     border-radius: 4px;
-    padding: 2.5rem;
+    padding: var(--space-md);
     text-align: left;
     max-width: 400px;
     width: 100%;
@@ -1781,20 +1806,20 @@ html:has(#fullscreen-menu.open) .logo {
 /* Warteliste-Form — Typo + Felder + Submit + Feedback */
 .sc-camp-card-title {
     font-family: var(--font-secondary);
-    font-size: 2rem;
+    font-size: var(--text-h2);
     font-weight: 400;
-    margin-bottom: 0.5rem;
+    margin-bottom: var(--space-2xs);
 }
 .sc-camp-card-meta {
-    font-size: 15px;
+    font-size: var(--text-sm);
     color: var(--text-secondary);
-    margin-bottom: 2rem;
+    margin-bottom: var(--space-md);
 }
 .sc-waitlist-fields {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
-    margin-bottom: 1rem;
+    gap: var(--space-xs);
+    margin-bottom: var(--space-xs);
 }
 .sc-waitlist-form input {
     width: 100%;
@@ -1802,7 +1827,7 @@ html:has(#fullscreen-menu.open) .logo {
     border: 0.5px solid rgba(0, 0, 0, 0.12);
     color: var(--text-primary);
     padding: 14px 18px;
-    font-size: 14px;
+    font-size: var(--text-sm);
     font-family: var(--font-primary);
     font-weight: 300;
     border-radius: 2px;
@@ -1820,9 +1845,9 @@ html:has(#fullscreen-menu.open) .logo {
     background: var(--accent-color);
     color: var(--bg-primary);
     padding: 14px 32px;
-    font-size: 14px;
+    font-size: var(--text-sm);
     font-weight: 500;
-    letter-spacing: 0.02em;
+    letter-spacing: var(--tracking-subtle);
     border: none;
     cursor: pointer;
     border-radius: 2px;
@@ -1837,10 +1862,10 @@ html:has(#fullscreen-menu.open) .logo {
 .sc-waitlist-feedback {
     font-family: var(--font-secondary);
     font-style: italic;
-    font-size: 13px;
-    line-height: 1.4;
+    font-size: var(--text-sm);
+    line-height: var(--lh-snug);
     color: var(--text-secondary);
-    margin: 1rem 0 0;
+    margin: var(--space-xs) 0 0;
     min-height: 1.4em;
     opacity: 0;
     transition: opacity 0.4s ease;
@@ -1869,7 +1894,7 @@ html:has(#fullscreen-menu.open) .logo {
     border: none; 
     border-radius: 2px; 
     font-family: var(--font-primary); 
-    font-size: 15px; 
+    font-size: var(--text-sm); 
     font-weight: 500; 
     cursor: pointer;
     text-decoration: none;
@@ -1879,7 +1904,7 @@ html:has(#fullscreen-menu.open) .logo {
     opacity: 0.9;
 }
 .kb-btn-primary .arrow-icon {
-    font-size: 1.1rem;
+    font-size: var(--text-lead);
     transform: translateY(1px);
     transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -1915,7 +1940,7 @@ html:has(#fullscreen-menu.open) .logo {
 
 .camp-cta {
     font-family: var(--font-primary);
-    font-size: 0.95rem;
+    font-size: var(--text-body);
     color: rgba(255, 255, 255, 0.85);
     text-decoration: none;
     display: inline-flex;
@@ -1934,7 +1959,7 @@ html:has(#fullscreen-menu.open) .logo {
     border-color: #fff;
 }
 .camp-cta .arrow-icon {
-    font-size: 1rem;
+    font-size: var(--text-body);
     transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .camp-cta:hover .arrow-icon {
@@ -1958,15 +1983,15 @@ html:has(#fullscreen-menu.open) .logo {
     }
     
     /* Focused Toggles positioned perfectly centrally below Songcamp */
-    .branch-winter { top: 35%; left: 25%; font-size: 0.9rem; letter-spacing: 0.1em; color: rgba(255,255,255,0.8); }
-    .branch-summer { top: 35%; left: 75%; font-size: 0.9rem; letter-spacing: 0.1em; color: rgba(255,255,255,0.8); }
+    .branch-winter { top: 35%; left: 25%; font-size: var(--text-sm); letter-spacing: var(--tracking-wide); color: rgba(255,255,255,0.8); }
+    .branch-summer { top: 35%; left: 75%; font-size: var(--text-sm); letter-spacing: var(--tracking-wide); color: rgba(255,255,255,0.8); }
     
     /* Shared centralized play zone: Since JS mutually excludes opacity, W and S words can elegantly overlap their physical space! */
     .w1, .s1 { top: 52%; left: 50%; }
     .w2, .s2 { top: 65%; left: 28%; }
     .w3, .s3 { top: 76%; left: 70%; }
     .w4 { top: 88%; left: 45%; }
-    .sc-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .sc-grid { grid-template-columns: 1fr; gap: var(--space-lg); }
     /* Songcamp Hero Meta-Spalte: rechts-aligned only makes sense auf Desktop */
     #sc-hero-block .sc-grid > div[style*="text-align: right"] {
         text-align: left !important;
@@ -1974,21 +1999,21 @@ html:has(#fullscreen-menu.open) .logo {
     }
     .sc-format-grid { grid-template-columns: 1fr 1fr; }
     .sc-alumni-grid { grid-template-columns: 1fr; }
-    .sc-fact-grid { gap: 2rem; }
+    .sc-fact-grid { gap: var(--space-md); }
     .sc-cta-box { flex-direction: column; }
     /* Analog zu .snap-block: großzügige min-height, Content mittig,
        viel Atem. Desktop-100vh-Ästhetik auf Mobile ohne den Zwang. */
     .sc-block {
         min-height: 80svh;
         justify-content: center;
-        padding: 6rem var(--edge);
+        padding: var(--space-xl) var(--edge);
     }
     .sc-block--full {
         min-height: 100svh;
     }
     .page-section > .sc-block:first-child {
         padding-top: var(--content-top);
-        padding-bottom: 8rem;
+        padding-bottom: var(--space-xl);
         min-height: 90svh;
     }
 
@@ -2001,7 +2026,7 @@ html:has(#fullscreen-menu.open) .logo {
     #sc-hero-block .sc-grid {
         display: flex;
         flex-direction: column;
-        gap: 3rem;
+        gap: var(--space-lg);
     }
     #sc-hero-block .sc-grid > div:first-child {
         min-height: calc(100svh - 20rem);
@@ -2009,8 +2034,8 @@ html:has(#fullscreen-menu.open) .logo {
     /* Meta-Box braucht oben + unten deutlich mehr Luft zur col1 und zum
        nächsten sc-block. Der gap des sc-grid reicht dafür nicht. */
     #sc-hero-block .sc-grid > div:nth-child(2) {
-        margin-top: 4rem;
-        margin-bottom: 4rem;
+        margin-top: var(--space-lg);
+        margin-bottom: var(--space-lg);
     }
 
 }
@@ -2020,7 +2045,7 @@ html:has(#fullscreen-menu.open) .logo {
 @media (max-width: 992px) {
     .entry-grid {
         flex-direction: column;
-        gap: 4rem;
+        gap: var(--space-lg);
     }
 }
 .camp-image-col {
@@ -2068,11 +2093,11 @@ html:has(#fullscreen-menu.open) .logo {
 
 /* Songcamps Styling */
 .songcamp-headline {
-    font-size: clamp(3rem, 6vw, 4.5rem);
-    font-weight: 900;
-    line-height: 1.1;
-    margin-bottom: 8rem;
-    letter-spacing: -0.02em;
+    font-size: var(--text-h1);
+    font-weight: 400;
+    line-height: var(--lh-tight);
+    margin-bottom: var(--space-xl);
+    letter-spacing: var(--tracking-tighter);
     max-width: 1100px;
 }
 .songcamp-houses, .songcamp-register {
@@ -2081,11 +2106,11 @@ html:has(#fullscreen-menu.open) .logo {
 .feature-list {
     display: flex;
     flex-direction: column;
-    gap: 3rem;
+    gap: var(--space-md);
 }
 .feature-item {
     display: flex;
-    gap: 2rem;
+    gap: var(--space-md);
     align-items: flex-start;
 }
 .feature-icon {
@@ -2100,47 +2125,47 @@ html:has(#fullscreen-menu.open) .logo {
     stroke-width: 1.5px;
 }
 .feature-text h3 {
-    font-size: 1.25rem;
-    font-weight: 900;
-    margin-bottom: 0.75rem;
+    font-size: var(--text-h3);
+    font-weight: 400;
+    margin-bottom: var(--space-xs);
 }
 .feature-text p {
-    font-size: 1rem;
-    line-height: 1.6;
+    font-size: var(--text-body);
+    line-height: var(--lh-base);
     opacity: 0.8;
 }
 .info-items {
     display: flex;
     flex-direction: column;
-    gap: 4rem;
+    gap: var(--space-lg);
 }
 .info-item h3 {
-    font-size: 1.5rem;
-    font-weight: 900;
-    margin-bottom: 1rem;
+    font-size: var(--text-h3);
+    font-weight: 400;
+    margin-bottom: var(--space-xs);
 }
 .info-item p {
-    font-size: 1.125rem;
-    line-height: 1.6;
+    font-size: var(--text-lead);
+    line-height: var(--lh-base);
     opacity: 0.8;
 }
 
 @media (max-width: 992px) {
     .songcamp-headline {
-        margin-bottom: 5rem;
+        margin-bottom: var(--space-xl);
     }
     .songcamp-houses, .songcamp-register {
-        margin-top: 8rem;
+        margin-top: var(--space-xl);
     }
     .songcamp-banner {
-        margin-top: 5rem !important;
+        margin-top: var(--space-xl) !important;
     }
 }
 
 /* Footer Styles */
 .site-footer {
     background-color: var(--bg-primary);
-    padding: clamp(5rem, 8vh, 8rem) var(--edge) 1.5rem;
+    padding: clamp(5rem, 8vh, 8rem) var(--edge) var(--space-sm);
     position: relative;
     z-index: 10;
     height: 100svh;
@@ -2168,23 +2193,20 @@ html:has(#fullscreen-menu.open) .logo {
 }
 .footer-cta h2 {
     font-family: var(--font-secondary);
-    font-size: clamp(2.5rem, 4.5vw, 3.8rem);
+    font-size: var(--text-h1);
     font-weight: 400;
-    line-height: 1.2;
-    letter-spacing: -0.01em;
-    margin-bottom: 1.5rem;
+    line-height: var(--lh-tight);
+    letter-spacing: var(--tracking-tight);
+    margin-bottom: var(--space-sm);
     color: var(--text-primary);
 }
 .footer-cta h2 em {
-    font-family: var(--font-secondary);
-    font-style: italic;
-    font-weight: 300;
     color: var(--accent-color);
 }
 .footer-cta p {
     font-family: var(--font-primary);
-    font-size: 16px;
-    line-height: 1.75;
+    font-size: var(--text-body);
+    line-height: var(--lh-base);
     font-weight: 300;
     color: var(--text-primary);
     max-width: 560px;
@@ -2193,16 +2215,16 @@ html:has(#fullscreen-menu.open) .logo {
 }
 .footer-cta-link {
     display: inline-block;
-    margin-top: 2.5rem;
+    margin-top: var(--space-md);
     font-family: var(--font-primary);
-    font-size: 1rem;
+    font-size: var(--text-body);
     font-weight: 500;
     color: var(--text-primary);
     text-decoration: none;
-    padding-bottom: 0.5rem;
+    padding-bottom: var(--space-2xs);
     border-bottom: 1px solid var(--accent-color);
     transition: border-color 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-    letter-spacing: 0.02em;
+    letter-spacing: var(--tracking-subtle);
 }
 .footer-cta-link:hover {
     border-bottom-color: var(--text-primary);
@@ -2218,27 +2240,27 @@ html:has(#fullscreen-menu.open) .logo {
 .footer-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 4rem;
-    margin-bottom: 2rem;
+    gap: var(--space-lg);
+    margin-bottom: var(--space-md);
 }
 .footer-col h3 {
-    font-size: 0.85rem;
-    font-weight: 900;
+    font-size: var(--text-sm);
+    font-weight: 400;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 1.5rem;
+    letter-spacing: var(--tracking-subtle);
+    margin-bottom: var(--space-sm);
 }
 .footer-col p {
-    font-size: 14px;
-    line-height: 1.7;
+    font-size: var(--text-sm);
+    line-height: var(--lh-base);
     font-weight: 300;
-    margin-bottom: 1rem;
+    margin-bottom: var(--space-xs);
 }
 .footer-link {
     color: var(--text-primary);
     text-decoration: none;
     transition: color 0.3s;
-    font-weight: 700;
+    font-weight: 400;
 }
 .footer-link:hover {
     color: var(--accent-color);
@@ -2248,16 +2270,16 @@ html:has(#fullscreen-menu.open) .logo {
     display: grid;
     grid-template-columns: 1fr 1fr;
     row-gap: 0;
-    column-gap: 2rem;
+    column-gap: var(--space-md);
     padding: 0;
     margin: 0;
 }
 .footer-nav li {
-    font-size: 14px; /* matcht .footer-col p — line-height 1.7 bezieht sich sonst auf die ererbten 16px */
-    line-height: 1.7;
+    font-size: var(--text-sm); /* matcht .footer-col p — line-height 1.7 bezieht sich sonst auf die ererbten 16px */
+    line-height: var(--lh-base);
 }
 .footer-nav a {
-    font-size: 14px;
+    font-size: var(--text-sm);
     font-weight: 300;
     color: var(--text-primary);
     text-decoration: none;
@@ -2271,24 +2293,24 @@ html:has(#fullscreen-menu.open) .logo {
     justify-content: space-between;
     align-items: center;
     border-top: 1px solid var(--bg-secondary);
-    padding-top: 1.5rem;
+    padding-top: var(--space-sm);
     padding-bottom: 0; /* Removed internal bottom buffer */
     opacity: 0.5;
 }
 .footer-bottom p {
-    font-size: 14px;
-    line-height: 1.7;
+    font-size: var(--text-sm);
+    line-height: var(--lh-base);
     font-weight: 300;
     margin: 0;
 }
 .footer-legal-links {
     display: flex;
-    gap: 2rem;
+    gap: var(--space-md);
 }
 .footer-legal-links a {
-    font-size: 14px;
+    font-size: var(--text-sm);
     font-weight: 300;
-    line-height: 1.7;
+    line-height: var(--lh-base);
     color: inherit;
     text-decoration: none;
     transition: color 0.3s;
@@ -2305,10 +2327,10 @@ html:has(#fullscreen-menu.open) .logo {
 /* Tablet (≤992px): Footer wächst mit Inhalt, CTA-Headline kleiner,
    Adressen-Grid auf 2 Spalten. */
 @media (max-width: 992px) {
-    .site-footer { height: auto; min-height: 100svh; padding: 6rem var(--edge) 2rem; }
-    .footer-cta { margin-bottom: 6rem; }
-    .footer-cta h2 { font-size: 2.2rem; }
-    .footer-grid { grid-template-columns: 1fr 1fr; gap: 3rem; margin-bottom: 3rem; }
+    .site-footer { height: auto; min-height: 100svh; padding: var(--space-xl) var(--edge) var(--space-md); }
+    .footer-cta { margin-bottom: var(--space-xl); }
+    .footer-cta h2 { font-size: var(--text-h2); }
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: var(--space-lg); margin-bottom: var(--space-lg); }
 }
 
 /* Phone (≤768px): CTA oben, Studio-Adressen als kleine zweispaltige
@@ -2321,8 +2343,8 @@ html:has(#fullscreen-menu.open) .logo {
     .footer-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 2rem;
-        margin: 0 0 2.5rem 0;
+        gap: var(--space-md);
+        margin: 0 0 var(--space-md) 0;
     }
     .footer-grid .footer-col:last-child {
         display: none; /* Navigation-Col auf Mobile aus */
@@ -2334,16 +2356,16 @@ html:has(#fullscreen-menu.open) .logo {
         display: none;
     }
     .footer-col h3 {
-        font-size: 10px;
+        font-size: var(--text-micro);
         font-weight: 600;
-        letter-spacing: 0.18em;
+        letter-spacing: var(--tracking-wide);
         color: var(--accent-color);
         text-transform: uppercase;
-        margin-bottom: 0.75rem;
+        margin-bottom: var(--space-2xs);
     }
     .footer-col p {
-        font-size: 12px;
-        line-height: 1.65;
+        font-size: var(--text-sm);
+        line-height: var(--lh-base);
         font-weight: 300;
         color: var(--text-secondary);
         margin-bottom: 0;
@@ -2352,7 +2374,7 @@ html:has(#fullscreen-menu.open) .logo {
         display: block;
         width: 42px;
         height: auto;
-        margin: 2rem 0 0;
+        margin: var(--space-md) 0 0;
         opacity: 1;
     }
 }
@@ -2366,21 +2388,21 @@ html:has(#fullscreen-menu.open) .logo {
 }
 .editorial-header {
     max-width: 800px;
-    margin-bottom: 8rem;
+    margin-bottom: var(--space-xl);
 }
 .editorial-title {
     font-family: var(--font-secondary);
-    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-size: var(--text-h2);
     font-weight: 400;
-    line-height: 1.2;
+    line-height: var(--lh-tight);
     color: var(--text-primary);
-    margin-bottom: 1.5rem;
-    letter-spacing: -0.01em;
+    margin-bottom: var(--space-sm);
+    letter-spacing: var(--tracking-tight);
 }
 .editorial-lead {
     font-family: var(--font-primary);
-    font-size: 16px;
-    line-height: 1.75;
+    font-size: var(--text-body);
+    line-height: var(--lh-base);
     font-weight: 300;
     color: var(--text-primary);
     max-width: 680px;
@@ -2389,46 +2411,46 @@ html:has(#fullscreen-menu.open) .logo {
 .editorial-list {
     display: flex;
     flex-direction: column;
-    gap: 4rem;
+    gap: var(--space-lg);
     max-width: 900px;
 }
 .editorial-item {
     display: grid;
     grid-template-columns: 80px 1fr;
-    gap: 2rem;
+    gap: var(--space-md);
     align-items: baseline;
     border-top: 1px solid rgba(0,0,0,0.1);
-    padding-top: 2rem;
+    padding-top: var(--space-md);
 }
 .bg-secondary .editorial-item {
     border-top: 1px solid rgba(0,0,0,0.06);
 }
 .editorial-num {
     font-family: var(--font-primary);
-    font-size: 11px;
+    font-size: var(--text-micro);
     font-weight: 500;
-    letter-spacing: 0.18em;
+    letter-spacing: var(--tracking-wide);
     color: var(--accent-color);
     text-transform: uppercase;
 }
 .editorial-sub {
     font-family: var(--font-primary);
-    font-size: 10px;
+    font-size: var(--text-micro);
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.18em;
+    letter-spacing: var(--tracking-wide);
     color: var(--accent-color);
     background: rgba(0, 0, 0, 0.03);
     border: 0.5px solid rgba(0, 0, 0, 0.05);
     border-radius: 2px;
     padding: 6px 12px;
     display: inline-block;
-    margin-bottom: 1.5rem;
+    margin-bottom: var(--space-sm);
 }
 .editorial-desc {
     font-family: var(--font-primary);
-    font-size: 16px;
-    line-height: 1.75;
+    font-size: var(--text-body);
+    line-height: var(--lh-base);
     font-weight: 300;
     color: var(--text-primary);
     max-width: 680px;
@@ -2437,9 +2459,9 @@ html:has(#fullscreen-menu.open) .logo {
 .editorial-split {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 6rem;
+    gap: var(--space-lg);
     align-items: center;
-    margin-top: 8rem;
+    margin-top: var(--space-xl);
 }
 .editorial-split.reverse .editorial-split-text {
     order: 2;
@@ -2457,18 +2479,18 @@ html:has(#fullscreen-menu.open) .logo {
 }
 .editorial-link {
     font-family: var(--font-primary);
-    font-size: 1rem;
+    font-size: var(--text-body);
     font-weight: 500;
-    letter-spacing: 0.02em;
+    letter-spacing: var(--tracking-subtle);
     color: var(--text-primary);
     text-decoration: none;
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
-    padding-bottom: 0.5rem;
+    padding-bottom: var(--space-2xs);
     border-bottom: 1px solid var(--accent-color);
     transition: color 0.4s ease, border-color 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-    margin-top: 2rem;
+    margin-top: var(--space-md);
 }
 .editorial-link:hover {
     color: var(--accent-color);
@@ -2505,14 +2527,14 @@ html:has(#fullscreen-menu.open) .logo {
     }
     .editorial-split {
         grid-template-columns: 1fr;
-        gap: 4rem;
+        gap: var(--space-lg);
     }
     .editorial-split.reverse .editorial-split-text,
     .editorial-split.reverse .editorial-split-img {
         order: unset; /* Drop the reversal on mobile */
     }
     .editorial-split {
-        margin-top: 2rem;
+        margin-top: var(--space-md);
     }
     .editorial-split-text[style*="sticky"] {
         position: static !important; /* Sticky macht auf Mobile keinen Sinn im 1-col-Flow */
@@ -2544,10 +2566,10 @@ html:has(#fullscreen-menu.open) .logo {
     }
     .editorial-item {
         grid-template-columns: 1fr;
-        gap: 1rem;
+        gap: var(--space-xs);
     }
     .editorial-title {
-        font-size: 2.8rem;
+        font-size: var(--text-h2);
     }
     .cinematic-img {
         height: 40vh;
@@ -2611,11 +2633,11 @@ html:has(#fullscreen-menu.open) .logo {
     .snap-block {
         min-height: 80svh;
         justify-content: center;
-        padding: 6rem var(--edge);
+        padding: var(--space-xl) var(--edge);
     }
     .page-section > .snap-block:first-child {
         padding-top: var(--content-top);
-        padding-bottom: 8rem;
+        padding-bottom: var(--space-xl);
         min-height: 90svh;
     }
     .snap-block--full {
@@ -2627,7 +2649,7 @@ html:has(#fullscreen-menu.open) .logo {
         margin-right: auto;
     }
     .snap-block-inner.editorial-split {
-        gap: 1rem;
+        gap: var(--space-xs);
         align-items: center !important;
     }
     .snap-block-inner.editorial-split .editorial-title {
@@ -2654,10 +2676,10 @@ html:has(#fullscreen-menu.open) .logo {
         max-height: 70vh;
         object-fit: cover;
         object-position: center;
-        margin-top: 3rem;
+        margin-top: var(--space-md);
     }
     .editorial-quote .editorial-title {
-        font-size: 2rem;
+        font-size: var(--text-h2);
     }
 }
 @media (max-width: 480px) {
@@ -2669,7 +2691,7 @@ html:has(#fullscreen-menu.open) .logo {
         max-height: 80vh;
     }
     .editorial-quote .editorial-title {
-        font-size: 1.7rem;
+        font-size: var(--text-h3);
     }
 }
 
@@ -2746,16 +2768,16 @@ html:has(#fullscreen-menu.open) .logo {
 .hint {
     position: absolute;
     right: 0;
-    top: -2rem;
-    font-size: 11px;
-    letter-spacing: 0.08em;
+    top: calc(var(--space-md) * -1);
+    font-size: var(--text-micro);
+    letter-spacing: var(--tracking-subtle);
     color: var(--text-secondary);
     font-style: italic;
     transition: opacity 1.2s ease;
     pointer-events: none;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: var(--space-2xs);
 }
 .hint::before {
     content: '';
