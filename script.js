@@ -70,7 +70,7 @@ window.addEventListener('load', () => {
     // -----------------------------------------
     // 3. SPA Routing & Slide Transitions
     // -----------------------------------------
-    const slideSelectors = '.hero-title, .hero-subtitle, .image-wrapper, .section-title, .service-item, .page-title, .text-content, .image-content, .video-wrapper, .contact-info, .contact-form, .legal-text, .produktion-intro, .process-step, .detail-section, .songcamp-headline, .feature-list, .info-items, .songcamp-banner, .snap-block-inner';
+    const slideSelectors = '.hero-title, .hero-subtitle, .image-wrapper, .section-title, .video-wrapper, .snap-block-inner';
     
     // Hash-anchor clicks (z. B. Produktion Quick-Nav → #arrangement):
     // smooth-scroll und replaceState statt null-state-push, das sonst den
@@ -609,10 +609,6 @@ window.addEventListener('load', () => {
         });
     });
 
-    // (Kontakt-Formular wurde entfernt — die Kontaktseite läuft jetzt
-    // Mail-First. Siehe index.html #kontakt. API-Endpoint api/kontakt.js
-    // bleibt im Repo für den Fall, dass das Formular zurückkommt.)
-
     // Releases — Lite-YouTube-Embed: Facade-Thumbnail wird bei Klick durch
     // echten iframe ersetzt. Scharfe Previews, schneller Page-Load, keine
     // YouTube-Cookies bis zur Interaktion.
@@ -671,8 +667,6 @@ window.addEventListener('load', () => {
     // ----------------------------------------------------
     const promiseSection = document.getElementById('promise-section');
     const blurredText = document.getElementById('blurredText');
-    const revealCanvas = document.getElementById('revealCanvas');
-    const revealShapes = document.getElementById('revealShapes');
     const closingLine = document.getElementById('closingLine');
     const lightCursor = document.getElementById('lightCursor');
     const sharpTextNode = document.getElementById('sharpText');
