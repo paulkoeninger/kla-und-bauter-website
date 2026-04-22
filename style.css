@@ -266,6 +266,10 @@ html:has(#fullscreen-menu.open) .logo {
     align-items: center;
     justify-content: space-between;
     padding-top: 80px;
+    /* Safety net: auf flachen Desktop-Viewports (Landscape-Laptop mit vielen
+       Toolbars) würde das 600px-Portrait sonst nach oben hinter die Navbar
+       rutschen. overflow:hidden schneidet unten ab statt oben zu überlaufen. */
+    overflow: hidden;
 }
 .hero-content {
     flex: 1;
@@ -304,6 +308,10 @@ html:has(#fullscreen-menu.open) .logo {
 .image-wrapper {
     width: 450px;
     height: 600px;
+    /* Skaliert runter wenn Viewport zu flach für volle 600px + Navbar-Offset.
+       object-fit:cover im Child sorgt dafür, dass das Bild dabei proportional
+       crops statt sich zu verzerren. */
+    max-height: calc(100svh - 120px);
     overflow: hidden;
     position: relative;
     background-color: var(--text-primary);
@@ -1271,9 +1279,9 @@ html:has(#fullscreen-menu.open) .logo {
     }
     .hero {
         /* Mobile-Hero fest auf 100svh — Bild + Text vertikal zentriert.
-           justify-content: center statt space-between, damit Bild nicht direkt
-           unter der Navbar klebt. gap kontrolliert den Abstand zwischen Bild und Text. */
-        padding: var(--space-xl) var(--edge) var(--space-lg);
+           padding-top 6rem: bewusst mehr Luft zur Navbar als das allgemeine
+           --space-xl (5rem), damit Bild nicht zu weit oben klebt. */
+        padding: 6rem var(--edge) var(--space-lg);
         flex-direction: column;
         justify-content: center;
         align-items: center;
@@ -1992,10 +2000,16 @@ html:has(#fullscreen-menu.open) .logo {
     .w3, .s3 { top: 76%; left: 70%; }
     .w4 { top: 88%; left: 45%; }
     .sc-grid { grid-template-columns: 1fr; gap: var(--space-lg); }
-    /* Songcamp Hero Meta-Spalte: rechts-aligned only makes sense auf Desktop */
+    /* Songcamp Hero Meta-Spalte: auf Mobile zentriert statt Desktop-rechts.
+       width 100% + align-self stretch, damit die Box den vollen Content-Raum
+       einnimmt und ihre Kinder (7 Tage, max 6 Personen, …) via text-align
+       mittig ausgerichtet werden. align-items: center zentriert die inneren
+       flex-Items. */
     #sc-hero-block .sc-grid > div[style*="text-align: right"] {
-        text-align: left !important;
-        align-items: flex-start !important;
+        text-align: center !important;
+        align-items: center !important;
+        align-self: stretch !important;
+        width: 100% !important;
     }
     .sc-format-grid { grid-template-columns: 1fr 1fr; }
     .sc-alumni-grid { grid-template-columns: 1fr; }
@@ -2017,22 +2031,20 @@ html:has(#fullscreen-menu.open) .logo {
         min-height: 90svh;
     }
 
-    /* Songcamp-Hero special: strikte 100svh — der Meta-Block wird aus der
-       ersten Bildschirmseite gepusht, damit „Wie es läuft" visuell die
-       letzte CTA ist und nichts darunter schon anreißt. */
+    /* Songcamp-Hero auf Mobile: Content rückt höher, damit der zweite CTA
+       („Wie es läuft") komfortabel im Viewport sitzt. Kein künstlicher
+       Stretch der Headline-Col mehr — col1 fließt natürlich, Meta-Box
+       folgt direkt darunter mit editorial Luft. */
     .page-section > #sc-hero-block.sc-block:first-child {
         min-height: 100svh;
+        padding-top: 7rem;
     }
     #sc-hero-block .sc-grid {
         display: flex;
         flex-direction: column;
         gap: var(--space-lg);
     }
-    #sc-hero-block .sc-grid > div:first-child {
-        min-height: calc(100svh - 20rem);
-    }
-    /* Meta-Box braucht oben + unten deutlich mehr Luft zur col1 und zum
-       nächsten sc-block. Der gap des sc-grid reicht dafür nicht. */
+    /* Meta-Box braucht oben + unten Luft zur col1 und zum nächsten sc-block. */
     #sc-hero-block .sc-grid > div:nth-child(2) {
         margin-top: var(--space-lg);
         margin-bottom: var(--space-lg);
