@@ -72,7 +72,7 @@ window.addEventListener('load', () => {
     // -----------------------------------------
     const slideSelectors = '.hero-title, .hero-subtitle, .image-wrapper, .section-title, .service-item, .page-title, .text-content, .image-content, .video-wrapper, .contact-info, .contact-form, .legal-text, .produktion-intro, .process-step, .detail-section, .songcamp-headline, .feature-list, .info-items, .songcamp-banner, .snap-block-inner';
     
-    // Hash-anchor clicks (z. B. Produktion Quick-Nav → #prod-step-01):
+    // Hash-anchor clicks (z. B. Produktion Quick-Nav → #arrangement):
     // smooth-scroll und replaceState statt null-state-push, das sonst den
     // popstate-Handler in den home-Fallback zieht.
     document.body.addEventListener('click', (e) => {
@@ -163,7 +163,7 @@ window.addEventListener('load', () => {
     });
 
     const initialPath = window.location.pathname.replace(/^\/|\/$/g, '');
-    const validRoutes = ['home', 'produktion', 'sessions', 'songcamps', 'team', 'releases', 'kontakt', 'impressum', 'datenschutz'];
+    const validRoutes = ['home', 'produktion', 'session', 'songcamp', 'team', 'releases', 'kontakt', 'impressum', 'datenschutz'];
     
     if (initialPath && validRoutes.includes(initialPath)) {
         setTimeout(() => navigateTo(initialPath, true, true), 50);
@@ -183,7 +183,7 @@ window.addEventListener('load', () => {
             title: 'Kla & Bauter — Songcamp, Sessions & Musikproduktion',
             description: 'Songcamps, Songwriting-Sessions und Musikproduktion. Fünf Tage für die Musik, die längst in dir steckt — mit Paul und Adrian aus Köln.'
         },
-        songcamps: {
+        songcamp: {
             title: 'Songcamp — Fünf Tage, ein Haus, deine Musik | Kla & Bauter',
             description: 'Songwriting-Retreat in Deutschland: Sieben Tage, vier garantierte Sessions, ein Haus. Für Artists, die eigene Songs schreiben — nicht lernen.'
         },
@@ -191,8 +191,8 @@ window.addEventListener('load', () => {
             title: 'Musikproduktion — Dein Song, wie du ihn meinst | Kla & Bauter',
             description: 'Vollproduktion für Artists: Arrangement, Klangwelt, Recording, Mix & Mastering. Wir produzieren nicht für dich, sondern mit dir.'
         },
-        sessions: {
-            title: 'Songwriting-Sessions — Eine Idee, ein Song | Kla & Bauter',
+        session: {
+            title: 'Session — Eine Idee, ein Song | Kla & Bauter',
             description: 'Komm mit einer Idee. In ein paar Stunden steht dein Song. Kein Kurs, kein Workshop — nur der Song.'
         },
         team: {
@@ -427,10 +427,10 @@ window.addEventListener('load', () => {
         });
     }
 
-    // Songcamp-Warteliste — Submit → /api/waitlist (Vercel Function) → Resend Mail.
-    document.querySelectorAll('.sc-waitlist-form').forEach(form => {
-        const submit = form.querySelector('.sc-waitlist-submit');
-        const feedback = form.querySelector('.sc-waitlist-feedback');
+    // Songcamp-Anfragen — Submit → /api/camp-anfragen (Vercel Function) → Resend Mail.
+    document.querySelectorAll('.sc-anfrage-form').forEach(form => {
+        const submit = form.querySelector('.sc-anfrage-submit');
+        const feedback = form.querySelector('.sc-anfrage-feedback');
         const nameInput = form.querySelector('input[name="name"]');
         const emailInput = form.querySelector('input[name="email"]');
         const originalLabel = submit.textContent;
@@ -460,7 +460,7 @@ window.addEventListener('load', () => {
             submit.textContent = 'Wird gesendet…';
 
             try {
-                const res = await fetch('/api/waitlist', {
+                const res = await fetch('/api/camp-anfragen', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ name, email, camp: form.dataset.camp }),

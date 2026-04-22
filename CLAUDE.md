@@ -13,7 +13,7 @@ Live: https://www.klaundbauter-musikproduktion.com
 - **Fonts**: Inter + Cormorant, **selbst gehostet** in `fonts/` (kein Google-CDN).
 - **Hosting**: Vercel (www als Primary Domain, non-www redirected).
 - **Build-Step**: `node build.js` generiert pre-rendered HTML pro Route vor jedem Deploy.
-- **Serverless Function**: `api/waitlist.js` (Vercel) → Resend API für Warteliste-Mails.
+- **Serverless Function**: `api/camp-anfragen.js` (Vercel) → Resend API für Camp-Anfragen-Mails.
 
 ## 2. 3-File-Regel + Build-Output
 
@@ -21,8 +21,8 @@ Live: https://www.klaundbauter-musikproduktion.com
 |---|---|
 | `index.html` | Template mit allen Routen als `.page-section`. Home-Metas fest im `<head>`. |
 | `style.css` | Komplettes Styling, Tokens in `:root`. |
-| `script.js` | SPA-Routing, Promise-Reveal, Warteliste-Submit, Teaser-Parallax, IntersectionObserver. |
-| `build.js` | Liest `routeMeta` aus script.js + Template → schreibt `produktion.html`, `sessions.html`, etc. mit route-spezifischen Metas. Single Source of Truth: `routeMeta` in script.js. |
+| `script.js` | SPA-Routing, Promise-Reveal, Camp-Anfragen-Submit, Teaser-Parallax, IntersectionObserver. |
+| `build.js` | Liest `routeMeta` aus script.js + Template → schreibt `produktion.html`, `session.html`, etc. mit route-spezifischen Metas. Single Source of Truth: `routeMeta` in script.js. |
 | `vercel.json` | `buildCommand`, `outputDirectory: "."`, `rewrites` (`/produktion` → `/produktion.html` …). |
 
 **Regel**: Keine Komponenten-Splits, kein npm-Framework, kein Bundler. Alles editierbar in den drei Files.
@@ -34,7 +34,7 @@ Live: https://www.klaundbauter-musikproduktion.com
 - URL via `history.pushState` aktualisiert, `popstate` hört auf Back/Forward.
 - **Navigation führt IMMER ans Top** — auch bei Same-Route-Klick.
 - `updateSEOMeta(route)` aktualisiert `<title>`, `<meta description>`, OG, Twitter, Canonical bei jedem Routenwechsel.
-- `validRoutes`: `home, produktion, sessions, songcamps, team, releases, kontakt, impressum, datenschutz`.
+- `validRoutes`: `home, produktion, session, songcamp, team, releases, kontakt, impressum, datenschutz`.
 - `try/catch` um History-API-Calls (für `file://`-Modus).
 
 ## 4. Notable Custom Mechanisms (vorsichtig editieren)
@@ -55,10 +55,10 @@ Live: https://www.klaundbauter-musikproduktion.com
 - Vorschau ist ein `<button class="video-wrapper" data-yt-id="…">` mit Thumbnail (`maxresdefault.jpg` + Fallback).
 - Click ersetzt Button durch echtes `<iframe>` mit `autoplay=1`. Keine YouTube-Cookies vor Klick.
 
-### Warteliste-Formular (Songcamp)
-- Client: Name + E-Mail + Submit → POST `/api/waitlist` (JSON).
-- Server (`api/waitlist.js`): Validierung → Resend API → Mail an `WAITLIST_TO`, Reply-To = User-Mail.
-- **Env-Vars in Vercel nötig**: `RESEND_API_KEY`, `WAITLIST_FROM`, `WAITLIST_TO`.
+### Camp-Anfragen-Formular (Songcamp)
+- Client: Name + E-Mail + Submit → POST `/api/camp-anfragen` (JSON).
+- Server (`api/camp-anfragen.js`): Validierung → Resend API → Mail an `CAMP_ANFRAGEN_TO`, Reply-To = User-Mail.
+- **Env-Vars in Vercel nötig**: `RESEND_API_KEY`, `CAMP_ANFRAGEN_FROM`, `CAMP_ANFRAGEN_TO`.
 
 ### Hover-Reset auf Touch
 - Ein `@media (hover: none)` Block am Ende von style.css neutralisiert ~39 Hover-Regeln auf Base-State.
@@ -119,8 +119,8 @@ Live: https://www.klaundbauter-musikproduktion.com
 
 ## 9. Bekannte offene Tasks
 
-- **Resend Domain-Verifikation** (DKIM/SPF-Records bei Domain-Registrar) — nötig damit Warteliste-Mails als `hallo@…` raus gehen statt via `onboarding@resend.dev`.
-- **Vercel Env-Vars setzen**: `RESEND_API_KEY`, `WAITLIST_FROM`, `WAITLIST_TO`.
+- **Resend Domain-Verifikation** (DKIM/SPF-Records bei Domain-Registrar) — nötig damit Camp-Anfragen-Mails als `hallo@…` raus gehen statt via `onboarding@resend.dev`.
+- **Vercel Env-Vars setzen**: `RESEND_API_KEY`, `CAMP_ANFRAGEN_FROM`, `CAMP_ANFRAGEN_TO`.
 - **Alumni-Quotes** (Songcamp): aktuell Platzhalter, durch echte Zitate ersetzen sobald vorhanden.
 
 ## 10. Vertiefende Dokumentation

@@ -32,8 +32,8 @@ node_modules/
 
 # Pre-rendered Route-HTMLs (build.js generiert sie bei jedem Deploy neu)
 produktion.html
-sessions.html
-songcamps.html
+session.html
+songcamp.html
 team.html
 releases.html
 kontakt.html
