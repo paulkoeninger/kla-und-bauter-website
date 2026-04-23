@@ -1,9 +1,9 @@
 # Kla & Bauter Website — Projekt-Status
 
 ## Current Status
-- **Last Updated:** 2026-04-23 (Session 3 — Performance & Cleanup)
-- **Current Phase:** Phase 3 abgeschlossen → **nächste Phase: Lighthouse-Messung + Photo-Credits + Resend-Domain-Verifikation**
-- **Branch:** `main` (working tree clean bis `63dbe73`)
+- **Last Updated:** 2026-04-23 (Session 3 — Performance & Cleanup + Phase 4 Bild-Opti)
+- **Current Phase:** Phase 4 abgeschlossen → **nächste Phase: Deploy + Lighthouse-Messung + Photo-Credits**
+- **Branch:** `main` (working tree clean bis `a2e1c48`)
 - **Deployment:** Vercel — https://www.klaundbauter-musikproduktion.com
 
 ## Architektur (Kurz)
@@ -68,6 +68,42 @@ Editoriale Vanilla-SPA. Drei-File-Regel: `index.html` (1.126 Z), `style.css` (2.
 
 **Ergebnis:** 9 Pre-rendered Routes zusammen 701 KB → 499 KB (**-28.8 %**). Per Route ~78 KB → ~55 KB.
 
+### Phase 4 — Bild-Optimierung & Font-Preload (Commit `a2e1c48`)
+
+**Responsive srcsets für 11 große Content-Bilder** — je Bild 800w + 1200w WebP-Varianten via `cwebp -q 80 -m 6` generiert:
+
+- `produktion.webp`, `produktion_1.webp`, `produktion_2.webp`, `produktion_3.webp`
+- `recording.webp`, `mix.webp`, `paul.webp`
+- `songcamp/sc_mood4.webp`, `songcamp/camp_home.webp`, `songcamp/sessionpaul.webp`
+- `studio.webp` (umbenannt von „Kla & Bauter Studio-100.webp" — Leerzeichen + & in srcset-URLs ist spec-illegal, Browser würde an Whitespace fälschlich trennen)
+
+**srcset-Script** (`/tmp/add-srcsets.js`) schreibt 18 `<img>`-Tags in index.html um:
+- `cinematic-img` → `sizes="100vw"`
+- `entry-img` → `sizes="(max-width: 768px) 100vw, 33vw"`
+- `editorial-img prod-hero-img` / `team-portrait` → `sizes="(max-width: 768px) 100vw, 50vw"`
+- `editorial-img prod-img` (split layout) → `sizes="(max-width: 768px) 100vw, 45vw"`
+
+**Mobile-Ersparnis pro Bild:**
+
+| Bild | 2048w Full | 800w Mobile | Ersparnis |
+|---|---|---|---|
+| sc_mood4 | 315 KB | 22 KB | **93 %** |
+| produktion_3 | 138 KB | 18 KB | 87 % |
+| recording | 177 KB | 26 KB | 85 % |
+| produktion_2 | 285 KB | 50 KB | 83 % |
+| camp_home / sessionpaul | 224/205 KB | 41/36 KB | 82 % |
+| produktion / produktion_1 | 265/208 KB | 49/40 KB | 81 % |
+| paul | 108 KB | 26 KB | 76 % |
+| studio | 309 KB | 81 KB | 74 % |
+| mix (Portrait) | 212 KB | 75 KB | 65 % |
+
+**Font-Preload im `<head>`**:
+```html
+<link rel="preload" as="font" type="font/woff2" href="/fonts/inter-300-n-latin.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/fonts/cormorant-300-n-latin.woff2" crossorigin>
+```
+Lädt die beiden latin-Subsets (U+0000-00FF) parallel zum CSS. Italic-Cormorant (nur für `<em>`-Akzente) bleibt Lazy-Load — nicht LCP-kritisch.
+
 ---
 
 ## Gesamt-Bilanz der Session
@@ -79,8 +115,17 @@ Editoriale Vanilla-SPA. Drei-File-Regel: `index.html` (1.126 Z), `style.css` (2.
 | `script.js` | 36.236 B / 821 Z | 35.099 B / 815 Z | **-3%** |
 | `fonts/fonts.css` | 6.8 KB / 156 Z | 2.8 KB / 59 Z | **-59%** |
 | `build.js` | 91 Z | 143 Z | +52 (Minifier) |
-| `images/` | 4.7 MB | 3.1 MB | **-34%** (1.6 MB) |
-| Pre-rendered HTMLs | 9 × ~85 KB = 768 KB | 9 × ~55 KB = 499 KB | **-28.8%** |
+| `images/` (source) | 4.7 MB | 3.1 MB | **-34%** (1.6 MB legacy raus) |
+| `images/` (inkl. Varianten) | 3.1 MB | 4.3 MB | +1.2 MB (aber pro User viel weniger, siehe unten) |
+| Pre-rendered HTMLs | 9 × ~85 KB = 768 KB | 9 × ~58 KB = 523 KB | **-32 %** (mit srcset-HTML-Zuwachs) |
+
+**Was der User tatsächlich lädt (Desktop, 1200w-Slot):**
+- hero_home: 59 KB (vorher 173 KB Full) → **-66 %**
+- große Content-Bilder im Schnitt: 70 KB (statt 200 KB Full) → **-65 %**
+
+**Was der Mobile-User lädt (800w-Slot):**
+- hero_home: 32 KB
+- große Content-Bilder im Schnitt: ~40 KB (statt 200 KB Full) → **-80 %**
 
 **Bundle, das User tatsächlich pro Route herunterlädt** (Desktop Chrome, uncached):
 - 1× pre-rendered HTML: ~55 KB (vorher ~85 KB)

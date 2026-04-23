@@ -25,6 +25,15 @@
 - [x] `<script>`/`<style>`/`<pre>`/`<textarea>` byte-exact protected
 - [x] Pre-rendered Routes 701 KB → 499 KB (-28.8 %)
 
+### Phase 4 — Bild-Optimierung & Font-Preload (Commit `a2e1c48`)
+- [x] 11 große Content-Bilder mit 800w + 1200w WebP-Varianten (via `cwebp -q 80`)
+- [x] 18 `<img>`-Tags mit srcset + sizes umgerüstet (18 neue, 21 total inkl. hero_home)
+- [x] `sizes` per Kontext: 100vw (cinematic), 33vw (entry), 50vw (split), 45vw (prod-img)
+- [x] Studio-Image umbenannt: `Kla & Bauter Studio-100.webp` → `studio.webp`
+  (Leerzeichen + & brechen srcset-Parsing — Browser trennt an Whitespace)
+- [x] Font-Preload-Hints für Inter + Cormorant latin-300-Subsets im `<head>`
+- [x] Mobile-Ersparnis im Schnitt ~80 % pro Content-Bild
+
 ## ✅ Completed (Session 2 — commits bis `7994246 f8`)
 _Komplette Feature-Expansion — siehe git log oder PROJECT.md._
 
@@ -43,13 +52,10 @@ _Komplette Feature-Expansion — siehe git log oder PROJECT.md._
 - [ ] Photo-Credits für Marco Olbert / Daniel Dominguez / Elena Kovacs einbauen (User reicht nach)
 - [ ] **Resend Domain-Verifikation**: DKIM/SPF bei Domain-Registrar, dann `CAMP_ANFRAGEN_FROM` auf `hallo@klaundbauter-musikproduktion.com`
 
-### Bild-Optimierung (medium prio)
-- [ ] Responsive srcsets für `sc_mood4.webp` (315 KB), `produktion.webp` (265 KB), `produktion_2.webp` (285 KB), `camp_home.webp` (224 KB), `mix.webp` (212 KB) — Mobile lädt aktuell Desktop-Auflösung
-- [ ] Check ob `images/Kla & Bauter Studio-100.webp` und `images/produktion_2.webp` noch gebraucht werden
-
 ### Optional / Nice-to-have
-- [ ] JS-Minification via esbuild/terser in build.js (~30 % Einsparung erwartet)
-- [ ] `<link rel="preload" as="font" crossorigin>` für kritische WOFF2 (Inter latin + Cormorant latin)
+- [ ] **JS/CSS-Minification** via esbuild oder terser in build.js — konfliktet mit „kein-npm"-Philosophie, Ersparnis klein (~5 KB gzipped total). Entscheidung: nur wenn Lighthouse-Performance-Score unter 95 auf Mobile fällt.
+- [ ] `content-visibility: auto` auf below-fold Sections als Render-Skip-Optimierung
+- [ ] Critical-CSS-Inlining (above-the-fold) im `<head>` statt externer style.css
 - [ ] 301-Redirects für `/songcamps`, `/sessions` in `vercel.json` (falls Backlinks)
 - [ ] Cross-Browser-Test `100dvh` auf iOS Safari verifizieren
 - [ ] Weitere Inline-Styles extrahieren wenn Muster 3+× auftauchen
