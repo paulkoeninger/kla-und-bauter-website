@@ -2322,13 +2322,22 @@ html:has(#fullscreen-menu.open) .logo {
     color: var(--text-primary);
     max-width: 680px;
 }
-/* Editorial Split (Quiet Image/Text layout) */
+/* Editorial Split (Quiet Image/Text layout).
+   margin-top: 0 als Default — alle aktuellen Verwendungen sitzen in
+   eigenen .snap-block-Containern (flex-center, 100svh), die das Spacing
+   bereits regeln. Und: Inline-Styles sind HIER nicht sicher, weil GSAP's
+   clearProps nach Page-Transitions .snap-block-inner's style-Attribut
+   komplett leert (slideSelectors umfasst diese Klasse). */
 .editorial-split {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: var(--space-lg);
     align-items: center;
-    margin-top: var(--space-xl);
+    margin-top: 0;
+}
+/* Hero-Variante: Text oben links statt vertikal zentriert. */
+.editorial-split.editorial-split--hero {
+    align-items: start;
 }
 .editorial-split.reverse .editorial-split-text {
     order: 2;
@@ -2467,9 +2476,6 @@ html:has(#fullscreen-menu.open) .logo {
     .editorial-split.reverse .editorial-split-text,
     .editorial-split.reverse .editorial-split-img {
         order: unset; /* Drop the reversal on mobile */
-    }
-    .editorial-split {
-        margin-top: var(--space-md);
     }
     .editorial-split-text[style*="sticky"] {
         position: static !important; /* Sticky macht auf Mobile keinen Sinn im 1-col-Flow */
