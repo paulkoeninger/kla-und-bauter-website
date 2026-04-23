@@ -66,7 +66,7 @@ export default async function handler(req, res) {
             { key: 'Name', value: cleanName },
             { key: 'Mail', value: cleanEmail },
         ],
-        closing: `Wir melden uns in den nächsten Tagen persönlich mit allen Infos zum Camp, zur Anreise und zu deinem Platz. Wenn dir davor etwas einfällt, was du uns mitgeben möchtest — schreib einfach auf diese Mail zurück.`,
+        closing: `Wir melden uns in den nächsten Tagen persönlich mit allen Infos zum Camp und zur Anreise. Wenn dir davor etwas einfällt, was du uns mitgeben möchtest — schreib einfach auf diese Mail zurück.`,
     });
 
     const userSubject = `Deine Anfrage zum ${cleanCamp} — Kla & Bauter`;

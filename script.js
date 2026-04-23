@@ -185,7 +185,7 @@ window.addEventListener('load', () => {
         },
         songcamp: {
             title: 'Songcamp — Fünf Tage, ein Haus, deine Musik | Kla & Bauter',
-            description: 'Songwriting-Retreat in Deutschland: Sieben Tage, vier garantierte Sessions, ein Haus. Für Artists, die eigene Songs schreiben — nicht lernen.'
+            description: 'Songwriting-Camp in Deutschland: Sieben Tage, vier garantierte Sessions, ein Haus. Für Artists, die eigene Songs schreiben — nicht lernen.'
         },
         produktion: {
             title: 'Musikproduktion — Dein Song, wie du ihn meinst | Kla & Bauter',
