@@ -277,7 +277,7 @@ html:has(#fullscreen-menu.open) .logo {
 .hero-title {
     font-family: var(--font-primary);
     font-size: var(--text-hero);
-    font-weight: 600; /* Ausnahme: Hero braucht mehr Präsenz als andere Sans-Headlines. 600 ist geladen (kein Faux-Bold). */
+    font-weight: 600; /* Ausnahme: Hero braucht mehr Präsenz. Echtes 600er Inter-File geladen (inter-600-n-latin.woff2), kein Faux-Bold. */
     line-height: var(--lh-tight);
     letter-spacing: var(--tracking-tighter);
     margin-bottom: var(--space-md);
