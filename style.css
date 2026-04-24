@@ -1577,19 +1577,9 @@ html:has(#fullscreen-menu.open) .logo {
         gap: var(--space-sm);
         margin-bottom: var(--space-md); /* Puffer zum Meta-Block darunter */
     }
-    /* Primary verwandelt sich in einen Editorial-Link — gleicher Start-Punkt
-       wie „Wie es läuft", gleicher Rhythmus. Priorität durch Reihenfolge +
-       Oliv-Farbe statt durch Button-Body. */
-    .sc-hero-cta-row .kb-btn-primary {
-        background: transparent;
-        color: var(--accent-color);
-        padding: 0 0 var(--space-2xs) 0;
-        border-radius: 0;
-        border-bottom: 1px solid var(--accent-color);
-        font-size: var(--text-sm);
-        font-weight: 500;
-        gap: var(--space-2xs);
-    }
+    /* Früher: Mobile-Umwandlung in Editorial-Link — mittlerweile ist das
+       Text-Link-Pattern global Standard für .kb-btn-primary. Override
+       entfernt, der Base-Style passt 1:1. */
 }
 
 /* KB Standard Editorial Link */
@@ -1718,19 +1708,30 @@ html:has(#fullscreen-menu.open) .logo {
 .sc-anfrage-form input:invalid:not(:placeholder-shown) {
     border-color: rgba(180, 80, 80, 0.4);
 }
+/* Camp-Anfrage Submit — gleiches ruhige Editorial-Pattern wie .kb-link.
+   Die volle Width + das left-aligned Verhalten entfällt zugunsten einer
+   text-link-Wirkung: der Submit ist Teil des Text-Flows der Card. */
 .sc-anfrage-submit {
-    background: var(--accent-color);
-    color: var(--bg-primary);
-    padding: 14px 32px;
-    font-size: var(--text-sm);
-    font-weight: 500;
-    letter-spacing: var(--tracking-subtle);
-    border: none;
-    cursor: pointer;
-    border-radius: 2px;
     font-family: var(--font-primary);
-    width: 100%;
-    transition: opacity 0.3s ease;
+    font-size: var(--text-sm);
+    font-weight: 400;
+    color: var(--text-primary);
+    background: transparent;
+    letter-spacing: var(--tracking-subtle);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2xs);
+    padding: 0 0 0.25rem 0;
+    border: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 0;
+    cursor: pointer;
+    align-self: flex-start;
+    transition: color 0.4s ease, border-color 0.4s ease;
+}
+.sc-anfrage-submit:hover {
+    color: var(--accent-color);
+    border-bottom-color: var(--accent-color);
 }
 .sc-anfrage-submit:disabled {
     opacity: 0.5;
@@ -1840,25 +1841,30 @@ html:has(#fullscreen-menu.open) .logo {
     border: none;
 }
 
-/* Primary Button (Solid with Slide Arrow) */
+/* Primary CTA — editorial Text-Link-Pattern, identisch zu .kb-link.
+   Ehemalige Farbblock-Version wurde zugunsten eines einheitlichen
+   ruhigen Editorial-Auftritts abgelöst. */
 .kb-btn-primary {
+    font-family: var(--font-primary);
+    font-size: var(--text-sm);
+    font-weight: 400;
+    color: var(--text-primary);
+    background: transparent;
+    text-decoration: none;
     display: inline-flex;
     align-items: center;
-    gap: 0.8rem;
-    padding: 14px 32px; 
-    background: var(--accent-color); 
-    color: var(--bg-primary); 
-    border: none; 
-    border-radius: 2px; 
-    font-family: var(--font-primary); 
-    font-size: var(--text-sm); 
-    font-weight: 500; 
+    gap: var(--space-2xs);
+    padding: 0 0 0.25rem 0;
+    border: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 0;
+    letter-spacing: var(--tracking-subtle);
     cursor: pointer;
-    text-decoration: none;
-    transition: opacity 0.3s ease;
+    transition: color 0.4s ease, border-color 0.4s ease;
 }
 .kb-btn-primary:hover {
-    opacity: 0.9;
+    color: var(--accent-color);
+    border-color: var(--accent-color);
 }
 .kb-btn-primary .arrow-icon {
     font-size: var(--text-lead);
@@ -2071,29 +2077,34 @@ html:has(#fullscreen-menu.open) .logo {
     margin: 0;
     text-align: left;
 }
+/* Footer-CTA — gleiches Editorial-Pattern wie .kb-link.
+   Früher mit Accent-Border + Weight 500, jetzt bewusst zurückgenommen. */
 .footer-cta-link {
-    display: inline-block;
-    margin-top: var(--space-md);
     font-family: var(--font-primary);
-    font-size: var(--text-body);
-    font-weight: 500;
+    font-size: var(--text-sm);
+    font-weight: 400;
     color: var(--text-primary);
     text-decoration: none;
-    padding-bottom: var(--space-2xs);
-    border-bottom: 1px solid var(--accent-color);
-    transition: border-color 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2xs);
+    margin-top: var(--space-md);
+    padding-bottom: 0.25rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
     letter-spacing: var(--tracking-subtle);
+    transition: color 0.4s ease, border-color 0.4s ease;
 }
 .footer-cta-link:hover {
-    border-bottom-color: var(--text-primary);
+    color: var(--accent-color);
+    border-bottom-color: var(--accent-color);
 }
 .footer-cta-link .arrow-icon {
-    display: inline-block;
-    margin-left: 0.35rem;
-    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    font-size: var(--text-lead);
+    transform: translateY(-2px);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .footer-cta-link:hover .arrow-icon {
-    transform: translateX(6px);
+    transform: translate(6px, -2px);
 }
 .footer-grid {
     display: grid;
@@ -2402,12 +2413,12 @@ html:has(#fullscreen-menu.open) .logo {
    Grund nicht feuert (SPA-Section-Swaps, Browser-Race-Conditions), bleibt
    der Content sichtbar. Kein „missing images"-Bug mehr möglich.
 
-   1) Section-Enter Stagger: Kicker → Headline → Lead, ~500 ms gestaffelt
-   2) Magnetic Buttons: siehe .kb-btn-primary update
+   Einziger aktiver Motion-Layer: Section-Enter Stagger
+   (Kicker → Headline → Lead, ~500 ms gestaffelt, siehe @keyframes unten).
 
-   (Cinematic Image Reveal via clip-path wurde entfernt — das visible→hidden→
-    reveal Zucken beim Animation-Start war nicht behebbar ohne inline-script
-    im <head>, und der Effekt wog den Aufwand nicht auf.)
+   (Cinematic Image Reveal via clip-path und Magnetic-Button-Pull wurden
+    beide entfernt — ersteres wegen Visible-Flash-Bug, zweiteres zugunsten
+    eines einheitlichen ruhigen Editorial-Text-Link-Patterns für alle CTAs.)
    ========================================================================= */
 
 /* 1. Section-Enter Stagger — animation-first.
@@ -2441,12 +2452,9 @@ html:has(#fullscreen-menu.open) .logo {
     animation-delay: 220ms;
 }
 
-/* 3. Magnetic Button — KEINE translate-Transition!
-   JS lerpt die Position per rAF sanft Richtung Ziel. */
-.kb-btn-primary {
-    transition: opacity 0.3s ease;
-    will-change: translate;
-}
+/* Magnetic-Button-Effekt wurde entfernt, nachdem alle CTAs auf das ruhige
+   Editorial-Text-Link-Pattern umgestellt wurden — Magnetic-Pull bei
+   Text-Links wirkt unruhig und widerspricht dem Brand-Anspruch. */
 
 /* Reduced-Motion: Animationen aus — Content ist sowieso schon sichtbar. */
 @media (prefers-reduced-motion: reduce) {
@@ -2460,9 +2468,6 @@ html:has(#fullscreen-menu.open) .logo {
     .snap-block.is-revealed .editorial-lead,
     .sc-block.is-revealed .editorial-lead {
         animation: none !important;
-    }
-    .kb-btn-primary {
-        translate: 0 0 !important;
     }
 }
 
@@ -2813,18 +2818,21 @@ html:has(#fullscreen-menu.open) .logo {
         border-color: rgba(0, 0, 0, 0.2);
     }
 
-    /* KB-Links / Primary-Button / Cards */
-    .kb-link:hover {
+    /* KB-Links / Primary-Button / Cards — Hover-States auf Touch neutralisieren */
+    .kb-link:hover,
+    .kb-btn-primary:hover,
+    .footer-cta-link:hover,
+    .sc-anfrage-submit:hover {
         color: var(--text-primary);
         border-color: rgba(0, 0, 0, 0.15);
     }
-    .kb-link:hover .arrow-icon { transform: translateY(-2px); }
+    .kb-link:hover .arrow-icon,
+    .kb-btn-primary:hover .arrow-icon,
+    .footer-cta-link:hover .arrow-icon { transform: translateY(-2px); }
     .sc-camp-card:hover {
         transform: none;
         box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
     }
-    .kb-btn-primary:hover { opacity: 1; }
-    .kb-btn-primary:hover .arrow-icon { transform: translateY(-2px); }
 
     /* MindMap-Wörter (Klabautermann-Section, auf Mobile eh abgeschaltet) */
     
