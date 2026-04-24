@@ -2187,6 +2187,10 @@ html:has(#fullscreen-menu.open) .logo {
 .footer-logo-mobile {
     display: none;
 }
+/* Desktop: Mobile-Bar komplett versteckt */
+.footer-mobile-bar {
+    display: none;
+}
 
 /* Tablet (≤992px): Footer wächst mit Inhalt, CTA-Headline kleiner,
    Adressen-Grid auf 2 Spalten. */
@@ -2235,8 +2239,32 @@ html:has(#fullscreen-menu.open) .logo {
         display: block;
         width: 42px;
         height: auto;
-        margin: var(--space-md) 0 0;
         opacity: 1;
+    }
+    /* Mobile-Bar: Logo links, Instagram-Icon rechts, auf gleicher Baseline */
+    .footer-mobile-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: var(--space-md);
+    }
+    .footer-mobile-logo-link {
+        display: inline-flex;
+        line-height: 0; /* entfernt Baseline-Padding unter dem img */
+    }
+    .footer-mobile-instagram {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-primary);
+        opacity: 0.7;
+        transition: opacity 0.4s ease, color 0.4s ease;
+        padding: 6px; /* Touch-Target: SVG 24px + 12px Padding = 36px */
+        margin: -6px; /* Padding kompensieren, damit rechtsbündig */
+    }
+    .footer-mobile-instagram:hover {
+        opacity: 1;
+        color: var(--accent-color);
     }
 }
 /* ======================================================================
