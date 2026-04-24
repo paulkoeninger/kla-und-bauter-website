@@ -350,20 +350,16 @@ window.addEventListener('load', () => {
     animatedSections.forEach(sec => scrollObserver.observe(sec));
 
     // -----------------------------------------------------------------
-    // Subtile Motion-Layer (2026-04):
-    //   A) Section-Enter Stagger — Kicker → Headline → Lead
-    //   B) Magnetic Primary Buttons (nur hover:hover + !reduced-motion)
-    // Einmal-Erlebnis (unobserve nach Trigger) und respektiert
-    // prefers-reduced-motion.
+    // Section-Enter Stagger (2026-04)
+    // Jeder snap-block / sc-block bekommt beim Entry den `.is-revealed`
+    // Modifier — CSS staffelt die Kinder (kicker/title/lead) per Animation.
+    // Einmal-Erlebnis (unobserve nach Trigger), respektiert reduced-motion.
+    // (Magnetic-Button-Effekt wurde entfernt: alle CTAs sind nun ruhige
+    //  Editorial-Text-Links, Magnetic-Pull widerspricht dem Pattern.)
     // -----------------------------------------------------------------
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     if (!prefersReducedMotion) {
-        // (Cinematic Image Reveal wurde entfernt — siehe CSS-Kommentar.)
-
-        // A) Section-Enter Stagger
-        // Jeder snap-block / sc-block bekommt beim Entry den `.is-revealed`
-        // Modifier — CSS staffelt die Kinder (kicker/title/lead) per transition-delay.
         const stagesObserver = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -376,103 +372,6 @@ window.addEventListener('load', () => {
         document.querySelectorAll('.snap-block, .sc-block').forEach(block => {
             stagesObserver.observe(block);
         });
-
-        // B) Magnetic Primary Buttons — nur auf echten Hover-Geräten (Desktop).
-        // Ansatz: kontinuierliche rAF-Loop. Jeder Frame lerpt die aktuelle
-        // Button-Position sanft Richtung Ziel (cursor-nah → Pull, sonst → 0).
-        // Niedriger LERP-Faktor = weicher, träger, natürlicher Nachlauf.
-        // Keine CSS-Transition — sie würde mit ständig neuen Zielen kollidieren
-        // und den „hinterherziehen"-Effekt erzeugen.
-        const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-        if (canHover) {
-            const PROXIMITY = 110;   // Radius, ab dem der Pull einsetzt (px)
-            const MAX_PULL = 4;      // Maximale Verschiebung bei direktem Overlap (px)
-            const LERP = 0.10;       // 0..1 — niedriger = trägere, sanftere Bewegung
-            const EPSILON = 0.02;    // Unter diesem Wert als 0 behandeln (spart CPU)
-
-            const state = new Map(); // Element → { x, y, tx, ty }
-            let magneticBtns = [];
-            let mouseX = -9999;
-            let mouseY = -9999;
-            let rafRunning = false;
-
-            const refreshMagnetic = () => {
-                magneticBtns = Array.from(document.querySelectorAll('.kb-btn-primary'));
-                magneticBtns.forEach(btn => {
-                    if (!state.has(btn)) state.set(btn, { x: 0, y: 0, tx: 0, ty: 0 });
-                });
-            };
-            refreshMagnetic();
-            window.__kbRefreshMagnetic = refreshMagnetic;
-
-            const computeTargets = () => {
-                const vh = window.innerHeight;
-                magneticBtns.forEach(btn => {
-                    const s = state.get(btn);
-                    if (!s) return;
-                    // Hidden (display:none inactive sections) → Ziel 0
-                    if (btn.offsetParent === null) {
-                        s.tx = 0;
-                        s.ty = 0;
-                        return;
-                    }
-                    const rect = btn.getBoundingClientRect();
-                    if (rect.bottom < -100 || rect.top > vh + 100) {
-                        s.tx = 0;
-                        s.ty = 0;
-                        return;
-                    }
-                    const cx = rect.left + rect.width / 2;
-                    const cy = rect.top + rect.height / 2;
-                    const dx = mouseX - cx;
-                    const dy = mouseY - cy;
-                    const dist = Math.hypot(dx, dy);
-                    if (dist > PROXIMITY) {
-                        s.tx = 0;
-                        s.ty = 0;
-                        return;
-                    }
-                    // Weiches Ramp-up: smoothstep statt linear
-                    const n = 1 - dist / PROXIMITY;
-                    const eased = n * n * (3 - 2 * n); // smoothstep
-                    const pull = eased * MAX_PULL;
-                    s.tx = dist > 0 ? (dx / dist) * pull : 0;
-                    s.ty = dist > 0 ? (dy / dist) * pull : 0;
-                });
-            };
-
-            const tick = () => {
-                computeTargets();
-                let anyActive = false;
-                state.forEach((s, btn) => {
-                    // Lerp current → target
-                    s.x += (s.tx - s.x) * LERP;
-                    s.y += (s.ty - s.y) * LERP;
-                    // Snap to zero when close enough (spart unnötige sub-pixel writes)
-                    if (Math.abs(s.x) < EPSILON && Math.abs(s.tx) < EPSILON) s.x = 0;
-                    if (Math.abs(s.y) < EPSILON && Math.abs(s.ty) < EPSILON) s.y = 0;
-                    btn.style.translate = `${s.x.toFixed(2)}px ${s.y.toFixed(2)}px`;
-                    if (s.x !== 0 || s.y !== 0 || s.tx !== 0 || s.ty !== 0) anyActive = true;
-                });
-                if (anyActive) {
-                    requestAnimationFrame(tick);
-                } else {
-                    rafRunning = false;
-                }
-            };
-
-            const startTicking = () => {
-                if (rafRunning) return;
-                rafRunning = true;
-                requestAnimationFrame(tick);
-            };
-
-            document.addEventListener('mousemove', (e) => {
-                mouseX = e.clientX;
-                mouseY = e.clientY;
-                startTicking();
-            }, { passive: true });
-        }
     }
 
     // Alumni Pager (Songcamp „Was Artists sagen") — horizontaler Slider mit Pixel-basierter Translation
