@@ -1737,6 +1737,21 @@ html:has(#fullscreen-menu.open) .logo {
     opacity: 0.5;
     cursor: default;
 }
+/* Honeypot-Feld — unsichtbar für Menschen, Bots tappen rein.
+   Bewusst NICHT display:none / visibility:hidden — manche Bots ignorieren
+   diese Properties. Stattdessen: off-screen positionieren, 1×1px, leere
+   Sichtbarkeit. Aria-hidden + tabindex=-1 für A11y/Keyboard-Bypass. */
+.honeypot-field {
+    position: absolute;
+    left: -10000px;
+    top: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+}
+
 .sc-anfrage-feedback {
     font-family: var(--font-primary);
     font-size: var(--text-sm);

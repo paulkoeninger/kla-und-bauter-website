@@ -1,7 +1,15 @@
 // Vercel Serverless Function — Songcamp-Anfragen.
-// Nimmt { name, email, camp } per POST. Sendet ZWEI Mails via Resend:
+// Nimmt { name, email, camp, website (Honeypot), renderedAt } per POST.
+// Sendet ZWEI Mails via Resend:
 //   1) Team-Notification an CAMP_ANFRAGEN_TO (plaintext, intern)
 //   2) Bestätigung an den User (styled HTML + Plaintext)
+//
+// Spam-Schutz (Stufe 1, ohne externe Services):
+//   a) Origin/Referer-Check — POST muss von der Produktiv-Domain kommen
+//   b) Honeypot — wenn `website` ausgefüllt ist, ist's ein Bot
+//   c) Timing-Check — Submissions < 2s nach Page-Render = Bot
+//   Bei Spam-Verdacht antworten wir mit 200 OK (still drop) — der Bot soll
+//   nicht lernen, woran's gescheitert ist.
 //
 // Erforderliche Environment Variables (Vercel → Settings → Env):
 //   RESEND_API_KEY        — API-Key von resend.com
@@ -12,14 +20,55 @@
 
 import { buildConfirmationEmail } from './_email.js';
 
+const ALLOWED_ORIGINS = [
+    'https://www.klaundbauter-musikproduktion.com',
+    'https://klaundbauter-musikproduktion.com',
+];
+const MIN_RENDER_TO_SUBMIT_MS = 2000;          // < 2 s seit Page-Render = Bot
+const MAX_RENDER_AGE_MS = 1000 * 60 * 60 * 24; // > 24 h = stale, drop
+
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
         res.setHeader('Allow', 'POST');
         return res.status(405).json({ error: 'Nur POST erlaubt.' });
     }
 
-    const { name, email, camp } = req.body || {};
+    // ---- Spam-Check a) Origin / Referer -------------------------------
+    // Auf Vercel-Preview-Deployments (vercel.app) lockerer, in Production strikt.
+    const isProduction = process.env.VERCEL_ENV === 'production';
+    if (isProduction) {
+        const origin = req.headers.origin || '';
+        const referer = req.headers.referer || '';
+        const fromAllowedOrigin = ALLOWED_ORIGINS.includes(origin);
+        const fromAllowedReferer = ALLOWED_ORIGINS.some((o) => referer.startsWith(o));
+        if (!fromAllowedOrigin && !fromAllowedReferer) {
+            console.warn('[camp-anfragen] blocked: bad origin/referer', { origin, referer });
+            return res.status(200).json({ ok: true }); // still drop
+        }
+    }
 
+    const { name, email, camp, website, renderedAt } = req.body || {};
+
+    // ---- Spam-Check b) Honeypot --------------------------------------
+    // Das Feld "website" ist im Form versteckt (off-screen via CSS).
+    // Wenn da was drinsteht: Bot.
+    if (typeof website === 'string' && website.trim() !== '') {
+        console.warn('[camp-anfragen] blocked: honeypot triggered', { hp: website.slice(0, 80) });
+        return res.status(200).json({ ok: true }); // still drop
+    }
+
+    // ---- Spam-Check c) Timing ----------------------------------------
+    // Form wird beim Page-Render mit Timestamp markiert. Wenn der Submit
+    // unrealistisch schnell ODER steinalt ist → wahrscheinlich Bot.
+    if (typeof renderedAt === 'number' && Number.isFinite(renderedAt)) {
+        const age = Date.now() - renderedAt;
+        if (age < MIN_RENDER_TO_SUBMIT_MS || age > MAX_RENDER_AGE_MS) {
+            console.warn('[camp-anfragen] blocked: timing suspicious', { age });
+            return res.status(200).json({ ok: true }); // still drop
+        }
+    }
+
+    // ---- Reguläre Validierung -----------------------------------------
     if (typeof name !== 'string' || typeof email !== 'string' || typeof camp !== 'string') {
         return res.status(400).json({ error: 'Fehlende Felder.' });
     }
