@@ -779,6 +779,12 @@
                                 <input type="text" name="name" placeholder="Dein Name" required autocomplete="name" aria-label="Dein Name">
                                 <input type="email" name="email" placeholder="Deine E-Mail-Adresse" required autocomplete="email" aria-label="Deine E-Mail-Adresse">
                             </div>
+                            <!-- Honeypot — unsichtbar für Menschen, Bots füllen es aus -->
+                            <div class="honeypot-field" aria-hidden="true">
+                                <label>Website (bitte freilassen)
+                                    <input type="text" name="website" tabindex="-1" autocomplete="off">
+                                </label>
+                            </div>
                             <button type="submit" class="sc-anfrage-submit">Unverbindlich anfragen <span class="arrow-icon">⟶</span></button>
                             <p class="sc-anfrage-feedback" aria-live="polite"></p>
                         </form>
@@ -789,6 +795,12 @@
                             <div class="sc-anfrage-fields">
                                 <input type="text" name="name" placeholder="Dein Name" required autocomplete="name" aria-label="Dein Name">
                                 <input type="email" name="email" placeholder="Deine E-Mail-Adresse" required autocomplete="email" aria-label="Deine E-Mail-Adresse">
+                            </div>
+                            <!-- Honeypot — unsichtbar für Menschen, Bots füllen es aus -->
+                            <div class="honeypot-field" aria-hidden="true">
+                                <label>Website (bitte freilassen)
+                                    <input type="text" name="website" tabindex="-1" autocomplete="off">
+                                </label>
                             </div>
                             <button type="submit" class="sc-anfrage-submit">Unverbindlich anfragen <span class="arrow-icon">⟶</span></button>
                             <p class="sc-anfrage-feedback" aria-live="polite"></p>

@@ -457,12 +457,19 @@ window.addEventListener('load', () => {
     }
 
     // Songcamp-Anfragen — Submit → /api/camp-anfragen (Vercel Function) → Resend Mail.
+    // Spam-Schutz Stufe 1: Honeypot (verstecktes "website"-Feld), Timing-Check
+    // (Submission < 2s nach Form-Render = Bot), Origin-Header (Server-side).
     document.querySelectorAll('.sc-anfrage-form').forEach(form => {
         const submit = form.querySelector('.sc-anfrage-submit');
         const feedback = form.querySelector('.sc-anfrage-feedback');
         const nameInput = form.querySelector('input[name="name"]');
         const emailInput = form.querySelector('input[name="email"]');
+        const honeypot = form.querySelector('input[name="website"]');
         const originalLabel = submit.textContent;
+
+        // Render-Zeitpunkt merken — Server prüft, ob die Submission realistisch
+        // schnell oder maschinell-instant erfolgt.
+        const renderedAt = Date.now();
 
         const showFeedback = (msg, isError = false) => {
             feedback.textContent = msg;
@@ -492,7 +499,13 @@ window.addEventListener('load', () => {
                 const res = await fetch('/api/camp-anfragen', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name, email, camp: form.dataset.camp }),
+                    body: JSON.stringify({
+                        name,
+                        email,
+                        camp: form.dataset.camp,
+                        website: honeypot ? honeypot.value : '',
+                        renderedAt,
+                    }),
                 });
                 const json = await res.json().catch(() => ({}));
                 if (!res.ok) throw new Error(json.error || 'Etwas ging schief.');
