@@ -28,5 +28,5 @@ Push auf `main` → Vercel deployed automatisch (inkl. `node build.js` vor Ship)
 
 - **[CLAUDE.md](CLAUDE.md)** — Projekt-Architektur, Konventionen, Custom Mechanisms, offene Tasks.
 - **[docs/BRAND.md](docs/BRAND.md)** — Tonalität, Zielgruppe, Angebote (für Text-Änderungen).
-- **[docs/DESIGN.md](docs/DESIGN.md)** — Token-Referenz, Komponenten-Atlas (für CSS-Änderungen).
+- **[docs/DESIGN_SYSTEM.md](docs/DESIGN_SYSTEM.md)** — Token-Referenz, Komponenten-Atlas (für CSS-Änderungen).
 - **[vision_vibe_language/kla-bauter-visionsdokument-v2.docx](vision_vibe_language/)** — Marken-Bibel (Single Source of Truth).

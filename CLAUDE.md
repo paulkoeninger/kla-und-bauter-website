@@ -126,6 +126,6 @@ Live: https://www.klaundbauter-musikproduktion.com
 ## 10. Vertiefende Dokumentation
 
 - **Source of Truth** für die Marke: `vision_vibe_language/kla-bauter-visionsdokument-v2.docx`.
-- **Schnellzugriff**: `docs/BRAND.md` (Tonalität, Zielgruppe, Angebote) und `docs/DESIGN.md` (Token-Referenz, Komponenten-Atlas).
+- **Schnellzugriff**: `docs/BRAND.md` (Tonalität, Zielgruppe, Angebote) und `docs/DESIGN_SYSTEM.md` (Token-Referenz, Komponenten-Atlas).
 
 **Developer-Instruction**: Elegant constraints > flashy chaos. Reuse bestehende `snap-block` / `sc-block` Strukturen. Tokens statt Magic Numbers. Animationen ruhig, nie aggressiv. Bei Textänderungen: `docs/BRAND.md` konsultieren für Tonalität.
