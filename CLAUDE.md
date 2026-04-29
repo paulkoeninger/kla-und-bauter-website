@@ -125,7 +125,17 @@ Live: https://www.klaundbauter-musikproduktion.com
 
 ## 10. Vertiefende Dokumentation
 
-- **Source of Truth** für die Marke: `vision_vibe_language/kla-bauter-visionsdokument-v2.docx`.
-- **Schnellzugriff**: `docs/BRAND.md` (Tonalität, Zielgruppe, Angebote) und `docs/DESIGN_SYSTEM.md` (Token-Referenz, Komponenten-Atlas).
+**Tech-Schicht (committed):**
+- `docs/DESIGN_SYSTEM.md` — CSS-Token-Referenz, Komponenten-Atlas
+- `PROJECT.md` / `TODO.md` — Tech-Status und Tech-Backlog (per `/UPDATE`-Skill am Session-Ende aktualisieren)
 
-**Developer-Instruction**: Elegant constraints > flashy chaos. Reuse bestehende `snap-block` / `sc-block` Strukturen. Tokens statt Magic Numbers. Animationen ruhig, nie aggressiv. Bei Textänderungen: `docs/BRAND.md` konsultieren für Tonalität.
+**Strategie-Schicht (in `brain/`, lokal nur, gitignored):**
+- `brain/KONTEXT.md` — Eingang für jeden neuen Chat: Pauls Arbeitsstil, Locked Copy-Liste, Tonalität (Kurzform). **Vor jeder Copy-/Konzeptarbeit lesen.**
+- `brain/MARKE.md` — Tonalität, Verbotsliste, Locked Copy mit Begründung
+- `brain/ANGEBOTE.md` — Sessions, Produktion, Songcamp, Werkstatt, Pipeline-Logik
+- `brain/PROJEKT.md` / `brain/TODO.md` — strategischer Stand und strategische Tasks
+- `brain/archiv/` — Vision-Detail, Business-Model, Co-Regulation-These, Glossar, verworfene Ansätze
+
+**Source of Truth** für die Marke (read-only): `vision_vibe_language/kla-bauter-visionsdokument-v2.docx`.
+
+**Developer-Instruction**: Elegant constraints > flashy chaos. Reuse bestehende `snap-block` / `sc-block` Strukturen. Tokens statt Magic Numbers. Animationen ruhig, nie aggressiv. Bei Textänderungen: `brain/MARKE.md` konsultieren für Tonalität und Locked Copy.
