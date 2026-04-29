@@ -40,3 +40,8 @@ releases.html
 kontakt.html
 impressum.html
 datenschutz.html
+
+# Strategische Doku-Schicht — lokal, nicht committed
+# Enthält Marken-Briefing, Locked Copy, Verbotsliste, Pricing-Logik, Vision-Detail.
+# Eingang: brain/KONTEXT.md
+brain/
