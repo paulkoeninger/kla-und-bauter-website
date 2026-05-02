@@ -1,17 +1,46 @@
 # Kla & Bauter Website — Projekt-Status
 
 ## Current Status
-- **Last Updated:** 2026-04-23 (Session 3 abgeschlossen)
-- **Current Phase:** Produktion-ready — ausstehend nur noch `git push` zu Vercel und Lighthouse-Verifikation
-- **Branch:** `main` (working tree clean, bis `0a64f67`, alle Änderungen committed)
+- **Last Updated:** 2026-05-02 (Session 4 abgeschlossen)
+- **Current Phase:** Live in Produktion. Inhaltliche Iterationen + Brand-Konsolidierung.
+- **Branch:** `main` (working tree clean, HEAD `ce88556`, alle Änderungen committed)
 - **Deployment:** Vercel — https://www.klaundbauter-musikproduktion.com
 
 ## Architektur (Kurz)
-Editoriale Vanilla-SPA. Drei-File-Regel: `index.html` (1.132 Z), `style.css` (2.857 Z), `script.js` (815 Z). Pre-rendered Routes via `build.js` (143 Z, inkl. HTML-Minification). Serverless APIs: `api/camp-anfragen.js` + shared `api/_email.js`. Resend als Mail-Versanddienstleister. GSAP 3.12 für Page-Transitions (ScrollTrigger entfernt).
+Editoriale Vanilla-SPA. Drei-File-Regel: `index.html`, `style.css`, `script.js`. Pre-rendered Routes via `build.js` (inkl. HTML-Minification). Serverless APIs: `api/camp-anfragen.js` + shared `api/_email.js`. Resend als Mail-Versanddienstleister. GSAP 3.12 für Page-Transitions (ScrollTrigger entfernt). Strategie-Docs ausgelagert nach `brain/` (gitignored), Tech-Docs in `docs/DESIGN_SYSTEM.md`.
 
 ---
 
-## Completed This Session (Session 3)
+## Completed This Session (Session 4, 2026-04-24 → 2026-05-02)
+
+**13 Commits zwischen `bba844e` und `ce88556`.** Zwei thematische Stränge:
+
+### Strang A — Brand- / Content-Arbeit
+- **Sommercamp 2026 Location** „NRW" → „bei Hamburg" (`e67db87`)
+- **CTA-Pattern vereinheitlicht** auf Text-Link statt Farbblock — „Ruhe statt Farbblock" (`f50264e`)
+- **Footer Mobile**: Instagram-Link neben Logo (`dd49097`)
+- **4 neue Releases** auf Releases-Seite (`88b4fbc`)
+- **Testimonial #7** Thomas Markus auf Page 2 (`b82ef07`); Foto-Credit später korrigiert auf Ester Joy (`4e7cbb7`)
+- **Testimonial #8** Michael Fankhauser + Testimonial-Section auf 4+4 Page-Layout restrukturiert (`b2cad8a`)
+- **Spam-Schutz Stufe 1** für Songcamp-Formular: Honeypot + Submit-Timing + Origin-Check serverseitig (`d16fee6`)
+
+### Strang B — Home-Grid: 4. Eingang fürs Lab (`ce88556`, heute)
+- **Neue 4. Karte „Lab"** auf der „Wonach ist dir?"-Sektion — bisher fehlte der Eingang zum niederschwelligsten Format.
+- **Reihenfolge** auf `Lab → Session → Produktion → Songcamp` (low-commitment links, exploration rechts via blurry camp-path-Card).
+- **Titel-Refresh** auf parallele Verb-Substantivierungen: **Dranbleiben. · Anfangen. · Finishen. · Suchen.** (vorher: „Einen Song anfangen.", „Auf die Suche gehen." etc.)
+- **Symmetrie**: Alle Manuelle `<br>` in `.entry-desc` raus → natürlicher Umbruch → vier Karten exakt 457px hoch, jede Desc 2 Zeilen.
+- **Lab-Bild**: `images/produktion_3.webp` (mit srcset 800/1200/2048).
+- **CSS**: `.entry-card-3 { transition-delay: 0.19s }` neu, `.camp-path` von 0.20s → 0.26s gebumpt. `sizes` aller Cards von `33vw` auf `25vw` (vier Spalten statt drei).
+- **Lab-Desc**: „Wir arbeiten 90 Minuten an deiner Musik."
+
+### Strang C — Doku-Reorg
+- **`docs/DESIGN_SYSTEM.md`** ersetzt das alte `docs/DESIGN.md` — vollständige Token-Referenz + Komponenten-Atlas (`9acfa72`).
+- **`docs/BRAND.md` gelöscht**, Brand-Inhalte nach `brain/MARKE.md` verschoben (`d66efb7`). `brain/` ist gitignored — Strategie-Schicht lokal-only.
+- **`api/camp-anfragen.js`** wegen Spam-Schutz-Stufe-1 erweitert (+53 Zeilen).
+
+---
+
+## Completed Earlier (Session 3, 2026-04-23)
 
 **10 Commits zwischen `f3e5fc6` und `0a64f67`.** Session-Inhalt in 5 Blöcke:
 
@@ -67,27 +96,35 @@ Positive §18-Signale wurden bewusst verstärkt bzw. erhalten: „Wir sind keine
 ## What's Working (production-ready)
 
 - ✅ Alle 9 Routen SPA + pre-rendered mit route-spezifischen Metas + Minification
+- ✅ Home-Grid mit **4 Eingängen** (Lab · Session · Produktion · Songcamp) — symmetrisch, parallel betitelt
 - ✅ Lab-Page vollständig (Hero · Wie es funktioniert · Preis · Pausen-Bilder)
 - ✅ Kontakt Mail-First (Form entfernt, Formular-API archiviert via git)
-- ✅ Songcamp-Anfragen mit Dual-Mail via Resend (Team + User-Bestätigung)
-- ✅ 6 echte Testimonials (3 mit Photo-Credits: NICS, Georgie, Divamant)
+- ✅ Songcamp-Anfragen mit Dual-Mail via Resend (Team + User-Bestätigung) **+ Spam-Schutz Stufe 1** (Honeypot, Timing, Origin)
+- ✅ **8 echte Testimonials** auf 4+4 Page-Layout
 - ✅ Motion-Layer: Section-Enter-Stagger + Magnetic Buttons (rAF-Lerp, 4px max, smoothstep)
 - ✅ Promise-Text-Reveal auf Songcamp (Desktop Zipper + Mobile IntersectionObserver)
 - ✅ Lite-YouTube-Embed (Releases) ohne Cookies vor Klick
 - ✅ Responsive Image-Pipeline (800w/1200w/2048w WebP-Varianten für alle großen Content-Bilder)
 - ✅ Inter 600 mit echtem Font-File (kein faux-bold)
-- ✅ Hero-Alignment auf Session/Lab — race-condition-immun via Klassen
-- ✅ Text-Content Freie-Berufe-sauber
+- ✅ Einheitliches CTA-Pattern (Text-Link statt Farbblock)
+- ✅ Mobile-Footer mit Instagram-Link
 
 ## Known Issues / Offene Punkte
 
-- ⏳ **Deploy + Lighthouse-Messung** stehen noch aus — Ausgangspunkt war Desktop 100/90/100/100, Mobile 93/90/100/100. Nach Cleanup erwarte ich Mobile-Performance auf ≥95.
-- ⏳ **Sitemap bei Google Search Console erneut einreichen** nach Deploy (`sitemap.xml`-Eintrag in der GSC-Sitemaps-Sektion).
 - ⏳ **Photo-Credits** nachreichen für Marco Olbert / Daniel Dominguez / Elena Kovacs (User reicht nach).
 - ⏳ **Resend Domain-Verifikation** (DKIM/SPF-Records bei Domain-Registrar), dann `CAMP_ANFRAGEN_FROM` auf `hallo@klaundbauter-musikproduktion.com`.
+- ⏳ **Alumni-Quotes Songcamp**: aktuell Platzhalter, durch echte Zitate ersetzen sobald vorhanden.
 - 📝 **Rechtsseitig offen** (außerhalb Code): Widerrufsbelehrung im Songcamp-Bestätigungs-Workflow (Fernabsatzvertrag §312c BGB). Keine AGB nötig. Sollte mit Anwalt/Steuerberater geklärt werden.
 
 ## Key Decisions Made This Session
+
+- **Lab als 4. Eingang ganz links** (low-commitment first), Songcamp bleibt rechts als blurry Exploration-Outlier — ascending-commitment-Arc von 90 Min → 7 Tage.
+- **Parallel-Titles via Verb-Substantivierung** (Dranbleiben./Anfangen./Finishen./Suchen.) — vorher Mix aus „Einen Song anfangen." (Phrase) und „Auf die Suche gehen." (Phrase). Jetzt alle vier ein-Wort-Imperativ-Cadence.
+- **Manuelle `<br>` raus aus Card-Descs** — Symmetrie via natürlichen Browser-Umbruch statt fixer Linebreaks. Alle vier Karten 457px exakt.
+- **`docs/BRAND.md` → `brain/MARKE.md`** verschoben — Strategie-Schicht ist lokal-only (gitignored), Tech-Schicht (`docs/`) bleibt im Repo. Klare Trennung.
+- **Spam-Schutz Stufe 1 vor Captcha**: Honeypot + Timing + Origin-Check serverseitig sind unsichtbar für User und reichen vermutlich. Captcha (Stufe 2) erst wenn nötig.
+
+## Key Decisions Made (Session 3)
 
 - **Fonts: Real 600 für Hero, Synthese für den Rest.** Hero-Title braucht echte Präsenz — 60 KB für 2 echte Weight-Files sind den LCP-Impact wert. Body-Text verträgt faux-bold aus 300er.
 - **HTML-Minifier selbst geschrieben, kein npm-Dep.** 50-Zeiler in build.js, deckt 80 % ab. esbuild/terser würde die 3-File-Rule brechen und nur ~5 KB gzipped extra sparen.
@@ -106,11 +143,10 @@ Positive §18-Signale wurden bewusst verstärkt bzw. erhalten: „Wir sind keine
 
 ## Next Steps (Priority Order)
 
-1. **`git push`** → Vercel deployed automatisch
-2. **Visuelle Smoke-Tests** auf Live-Site: alle 9 Routen durchklicken, Hero-Alignment auf Session/Lab nach Navigation prüfen, Inter 600 im Hero testen
-3. **Test-Anfrage** über Songcamp-Formular → Bestätigungs-Mail checken
-4. **Lighthouse** auf `/`, `/songcamp`, `/produktion` (Desktop + Mobile) — Vergleich zu Baseline
-5. **Sitemap in GSC re-submitten** (`sitemap.xml` im Search-Console-Feld)
-6. **Widerrufsbelehrung + Produktions-Vereinbarung** mit Anwalt / Steuerberater klären (außerhalb Code)
-7. **Photo-Credits** einbauen, sobald User sie nachreicht
-8. **Resend Domain-Verifikation** (DKIM/SPF)
+1. **`git push`** → Vercel deployed Lab-Eingang + neuestes Content-Update automatisch
+2. **Smoke-Test** der neuen 4-Card-Symmetrie auf Live (Desktop + Mobile)
+3. **Sitemap-Lastmod** für Home-Route auf 2026-05-02 ziehen + GSC re-submitten
+4. **Resend Domain-Verifikation** (DKIM/SPF) — dann `CAMP_ANFRAGEN_FROM=hallo@…`
+5. **Photo-Credits** Marco Olbert / Daniel Dominguez / Elena Kovacs einbauen, sobald User sie nachreicht
+6. **Widerrufsbelehrung** im Songcamp-Bestätigungs-Workflow (mit Anwalt klären — außerhalb Code)
+7. **Alumni-Quotes Songcamp** durch echte Zitate ersetzen sobald vorhanden
