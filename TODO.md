@@ -1,5 +1,34 @@
 # TODO / Task List
 
+## ✅ Completed (Session 4, 2026-04-24 → 2026-05-02 — commits `bba844e` → `ce88556`)
+
+### Home-Grid: 4. Eingang fürs Lab (Commit `ce88556`, heute)
+- [x] 4. Karte „Lab" auf Home-„Wonach ist dir?"-Sektion eingebaut
+- [x] Reihenfolge auf `Lab → Session → Produktion → Songcamp` (Lab niederschwelligst ganz links)
+- [x] Titel parallelisiert: **Dranbleiben. · Anfangen. · Finishen. · Suchen.**
+- [x] Lab-Desc: „Wir arbeiten 90 Minuten an deiner Musik."
+- [x] Manuelle `<br>` aus allen vier `.entry-desc` raus → natürlicher Umbruch → 4× 457px Symmetrie
+- [x] `.entry-card-3 { transition-delay: 0.19s }` neu, `.camp-path` von 0.20s → 0.26s
+- [x] `sizes` aller Cards von `33vw` → `25vw` (4 Spalten)
+- [x] Lab-Bild: `images/produktion_3.webp` (mit srcset)
+
+### Brand- / Content-Iteration (Commits `f50264e` → `b2cad8a`)
+- [x] CTAs vereinheitlicht auf Text-Link-Pattern (`f50264e`)
+- [x] Sommercamp-Location 2026: NRW → bei Hamburg (`e67db87`)
+- [x] Mobile-Footer: Instagram-Link neben Logo (`dd49097`)
+- [x] 4 neue Releases auf Releases-Seite (`88b4fbc`)
+- [x] Spam-Schutz Stufe 1 für Songcamp-Form: Honeypot + Timing + Origin-Check (`d16fee6`)
+- [x] Testimonial #7 Thomas Markus auf Page 2 (`b82ef07`); Foto-Credit später Markus → Ester Joy korrigiert (`4e7cbb7`)
+- [x] Testimonial #8 Michael Fankhauser + Page-Restructure auf 4+4 (`b2cad8a`)
+
+### Doku-Reorg (Commits `9acfa72`, `d66efb7`)
+- [x] `docs/DESIGN.md` → `docs/DESIGN_SYSTEM.md` (Token-Referenz + Komponenten-Atlas)
+- [x] `docs/BRAND.md` gelöscht, Inhalte nach `brain/MARKE.md` (gitignored)
+- [x] `.gitignore` für `brain/` ergänzt
+- [x] CLAUDE.md auf neue Doku-Struktur aktualisiert
+
+---
+
 ## ✅ Completed (Session 3, 2026-04-23 — commits `f3e5fc6` → `0a64f67`)
 
 ### Phase 3.1 — Quick Wins (Commit `f3e5fc6`)
@@ -75,22 +104,18 @@ _Details siehe git log oder PROJECT.md in Session-2-State._
 ---
 
 ## 🔄 In Progress
-*— nichts gerade aktiv. Session 3 sauber abgeschlossen.*
+*— nichts gerade aktiv. Session 4 sauber abgeschlossen.*
 
 ---
 
 ## ⏳ Backlog (Priority Order)
 
-### Nach dem Deploy (höchste Prio)
-- [ ] **`git push`** → Vercel deployed automatisch
-- [ ] **Visuelle Smoke-Tests** auf Live-Site: alle 9 Routen durchklicken
-  - Hero-Alignment auf Session/Lab nach Navigation (nicht nur nach Reload)
-  - Inter 600 auf Hero-Title prüfen
-  - Testimonial-Cards + Songcamp „Wie es läuft"-Grid + Preis-Sections (neue Klassen)
-  - Responsive Images: Chrome DevTools Mobile-Mode → Network → checken dass 800w-Variante geladen wird
-- [ ] **Test-Anfrage** über Songcamp-Formular → Bestätigungs-Mail checken
-- [ ] **Lighthouse** auf `/`, `/songcamp`, `/produktion` (Desktop + Mobile) — Baseline war Desktop 100/90/100/100, Mobile 93/90/100/100
-- [ ] **Sitemap in Google Search Console re-submitten** (sitemap.xml re-indexieren lassen)
+### Nach dem Push (höchste Prio)
+- [ ] **`git push`** → Vercel deployed Lab-Eingang automatisch
+- [ ] **Smoke-Test** der neuen 4-Card-Symmetrie auf Live: Desktop (4 Spalten 457px gleich), Mobile (Spalte gestackt)
+- [ ] **Lab-Klick-Test**: alle 4 Karten ziehen sauber zur jeweiligen Route, Lab-CTA erreicht Lab-Page
+- [ ] **Sitemap-`<lastmod>`** für Home-Route auf 2026-05-02 hochziehen + GSC re-submitten
+- [ ] **Spam-Schutz testen**: einmal über Songcamp-Form schicken (sollte durchgehen), einmal mit ausgefülltem Honeypot-Feld via DevTools (sollte 400 bekommen)
 
 ### Rechtssicherheit (außerhalb Code — mit Anwalt/Steuerberater)
 - [ ] **Widerrufsbelehrung im Songcamp-Bestätigungs-Workflow** (Fernabsatzvertrag §312c BGB — sonst Widerruf bis 12 Monate + 14 Tage möglich)
@@ -100,13 +125,15 @@ _Details siehe git log oder PROJECT.md in Session-2-State._
 ### Brand-Maintenance (wartet auf User)
 - [ ] Photo-Credits für Marco Olbert / Daniel Dominguez / Elena Kovacs einbauen (User reicht nach)
 - [ ] **Resend Domain-Verifikation**: DKIM/SPF bei Domain-Registrar, dann `CAMP_ANFRAGEN_FROM` auf `hallo@klaundbauter-musikproduktion.com`
+- [ ] **Alumni-Quotes Songcamp**: Platzhalter durch echte Zitate ersetzen sobald vorhanden
 
 ### Optional / Nice-to-have
-- [ ] **JS/CSS-Minification** via esbuild/terser — konfliktet mit „3-File-Rule", Ersparnis klein (~5 KB gzipped total). Nur wenn Lighthouse-Mobile < 95.
+- [ ] **Spam-Schutz Stufe 2** (Captcha) — nur falls Stufe 1 nicht reicht
+- [ ] **JS/CSS-Minification** via esbuild/terser — konfliktet mit „3-File-Rule", Ersparnis klein (~5 KB gzipped). Nur wenn Lighthouse-Mobile sinkt.
 - [ ] `content-visibility: auto` auf below-fold Sections als Render-Skip-Optimierung
 - [ ] Critical-CSS-Inlining (above-the-fold) im `<head>` statt externer style.css
 - [ ] 301-Redirects für `/songcamps`, `/sessions` in `vercel.json` (falls Backlinks)
-- [ ] Cross-Browser-Test `100dvh` auf iOS Safari verifizieren
+- [ ] Cross-Browser-Test `100dvh` / `100svh` auf iOS Safari verifizieren
 
 ### Niedrig-Prio Code-Kosmetik
 - [ ] Restliche ~81 Inline-Styles in index.html durchgehen (viele sind Kontext-spezifische Einzel-Props — Kosten/Nutzen überschaubar)
