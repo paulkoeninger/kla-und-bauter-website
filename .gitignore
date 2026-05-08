@@ -45,3 +45,8 @@ datenschutz.html
 # Enthält Marken-Briefing, Locked Copy, Verbotsliste, Pricing-Logik, Vision-Detail.
 # Eingang: brain/KONTEXT.md
 brain/
+
+# Buchhaltung & Steuern — lokal, nicht committed
+# Operativer Projektordner für GbR-Buchhaltung, Steuer-Vorgänge, Behördenkommunikation.
+# Eingang: buchhaltung/README.md, Stammdaten: buchhaltung/STAMMDATEN.md
+buchhaltung/

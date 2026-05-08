@@ -136,6 +136,20 @@ Live: https://www.klaundbauter-musikproduktion.com
 - `brain/PROJEKT.md` / `brain/TODO.md` — strategischer Stand und strategische Tasks
 - `brain/archiv/` — Vision-Detail, Business-Model, Co-Regulation-These, Glossar, verworfene Ansätze
 
+**Operativ-Schicht (in `buchhaltung/`, lokal nur, gitignored):**
+- `buchhaltung/README.md` — Eingang für Buchhaltungs-/Steuer-Sessions: Ordnerlogik, aktive Vorgänge.
+- `buchhaltung/STAMMDATEN.md` — **Single Source of Truth** für GbR-Eckdaten: Steuernummer, Anschriften, Gesellschafter (Steuer-IDs, Wohnsitze, Wohnsitz-FAs), GEMA-/KSK-Mitgliedschaften, USt-Status. **Vor jeder Buchhaltungs-/Steuer-Session lesen.**
+- `buchhaltung/inputs/` — allgemeiner Input-Briefkasten (Paul legt FA-Briefe, Belege, Exporte ab).
+- `buchhaltung/outputs/` — von Claude generierte Artefakte (Briefe, Tabellen, Anlagen, Berechnungen).
+- `buchhaltung/vorgaenge/` — strukturierte Vorgänge nach Thema/Jahr (z. B. `2024-feststellung-einkuenfte/`), jeweils mit eigener `README.md`, `inputs/`, `outputs/`.
+
 **Source of Truth** für die Marke (read-only): `vision_vibe_language/kla-bauter-visionsdokument-v2.docx`.
+
+**Drei-Schichten-Trennung — strikt einhalten:**
+- **Code/Website** (Hauptverzeichnis, committed) — `index.html`, `style.css`, `script.js`, `build.js`, etc.
+- **Marke/Strategie** (`brain/`, gitignored) — Tonalität, Locked Copy, Vision, Angebote.
+- **Operativ/GbR** (`buchhaltung/`, gitignored) — Steuern, Behörden, Belege, Geschäftsvorgänge.
+
+Niemals operative GbR-Dokumente in `brain/` ablegen oder umgekehrt. `brain/` ist nur für die Markenarbeit; `buchhaltung/` nur für Geschäftsbetrieb der GbR.
 
 **Developer-Instruction**: Elegant constraints > flashy chaos. Reuse bestehende `snap-block` / `sc-block` Strukturen. Tokens statt Magic Numbers. Animationen ruhig, nie aggressiv. Bei Textänderungen: `brain/MARKE.md` konsultieren für Tonalität und Locked Copy.
