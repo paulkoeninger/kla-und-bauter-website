@@ -91,7 +91,7 @@
 - [x] Alle referenzierten Routen lokal vorhanden
 
 ### Session 3 Docs
-- [x] `PERFORMANCE_AUDIT.md` erstellt (1. Umfassendes Findings-Dokument)
+- [x] `docs/PERFORMANCE_AUDIT.md` erstellt (1. Umfassendes Findings-Dokument)
 - [x] PROJECT.md auf Session-3-Endstand
 - [x] TODO.md auf Session-3-Endstand
 
