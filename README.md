@@ -7,13 +7,13 @@ Editoriale SPA für die Musikproduktion [Kla & Bauter](https://www.klaundbauter-
 - Vanilla HTML + CSS + JS (kein Framework)
 - GSAP für Transitions und Parallax (CDN)
 - Selbst gehostete Fonts (Inter + Cormorant)
-- Vercel Hosting + Serverless Function für Warteliste-Mails (via Resend)
+- Vercel Hosting + Serverless Function für Camp-Anfragen-Mails (via Resend)
 - Pre-rendered HTML pro Route via `build.js`
 
 ## Entwickeln
 
 ```bash
-# Lokaler Server (Vercel CLI empfohlen, auch für Warteliste-Test)
+# Lokaler Server (Vercel CLI empfohlen, auch für Camp-Anfragen-Test)
 vercel dev
 
 # oder einfach
@@ -27,6 +27,8 @@ Push auf `main` → Vercel deployed automatisch (inkl. `node build.js` vor Ship)
 ## Dokumentation
 
 - **[CLAUDE.md](CLAUDE.md)** — Projekt-Architektur, Konventionen, Custom Mechanisms, offene Tasks.
-- **[docs/BRAND.md](docs/BRAND.md)** — Tonalität, Zielgruppe, Angebote (für Text-Änderungen).
 - **[docs/DESIGN_SYSTEM.md](docs/DESIGN_SYSTEM.md)** — Token-Referenz, Komponenten-Atlas (für CSS-Änderungen).
+- **[docs/PERFORMANCE_AUDIT.md](docs/PERFORMANCE_AUDIT.md)** — Performance-Findings (April 2026).
 - **[vision_vibe_language/kla-bauter-visionsdokument-v2.docx](vision_vibe_language/)** — Marken-Bibel (Single Source of Truth).
+
+Marken-/Strategie-Doku (`brain/`) und Buchhaltung (`buchhaltung/`) liegen nur lokal und sind gitignored — Details in CLAUDE.md.

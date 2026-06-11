@@ -34,7 +34,7 @@ Live: https://www.klaundbauter-musikproduktion.com
 - URL via `history.pushState` aktualisiert, `popstate` hört auf Back/Forward.
 - **Navigation führt IMMER ans Top** — auch bei Same-Route-Klick.
 - `updateSEOMeta(route)` aktualisiert `<title>`, `<meta description>`, OG, Twitter, Canonical bei jedem Routenwechsel.
-- `validRoutes`: `home, produktion, session, songcamp, team, releases, kontakt, impressum, datenschutz`.
+- `validRoutes`: `home, produktion, session, lab, songcamp, team, releases, kontakt, impressum, datenschutz`.
 - `try/catch` um History-API-Calls (für `file://`-Modus).
 
 ## 4. Notable Custom Mechanisms (vorsichtig editieren)
@@ -127,6 +127,7 @@ Live: https://www.klaundbauter-musikproduktion.com
 
 **Tech-Schicht (committed):**
 - `docs/DESIGN_SYSTEM.md` — CSS-Token-Referenz, Komponenten-Atlas
+- `docs/PERFORMANCE_AUDIT.md` — Performance-Findings (April 2026)
 - `PROJECT.md` / `TODO.md` — Tech-Status und Tech-Backlog (per `/UPDATE`-Skill am Session-Ende aktualisieren)
 
 **Strategie-Schicht (in `brain/`, lokal nur, gitignored):**
