@@ -5,7 +5,7 @@
   "description": "Website von Kla und Bauter Thessenvitz Köninger GbR.",
   "type": "module",
   "engines": {
-    "node": "20.x"
+    "node": "22.x"
   },
   "scripts": {
     "build": "node build.js"
