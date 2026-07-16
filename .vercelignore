@@ -1,0 +1,17 @@
+# Schutz für CLI-Deploys (`vercel` im Terminal): Diese Dateien/Ordner werden
+# gar nicht erst zu Vercel hochgeladen. Git-Deploys enthalten brain/ und
+# buchhaltung/ ohnehin nie (.gitignore) — das hier ist der doppelte Boden.
+# Öffentlich ausgeliefert wird sowieso nur dist/ (vercel.json → outputDirectory).
+brain/
+buchhaltung/
+vision_vibe_language/
+docs/
+.claude/
+CLAUDE.md
+PROJECT.md
+TODO.md
+README.md
+.env
+.env.*
+dist/
+.DS_Store

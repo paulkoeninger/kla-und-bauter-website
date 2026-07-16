@@ -521,15 +521,16 @@ window.addEventListener('load', () => {
         });
     });
 
-    // Releases — Lite-YouTube-Embed: Facade-Thumbnail wird bei Klick durch
-    // echten iframe ersetzt. Scharfe Previews, schneller Page-Load, keine
-    // YouTube-Cookies bis zur Interaktion.
+    // Releases — Lite-YouTube-Embed: Facade-Thumbnail (lokal gehostet in
+    // images/releases/, kein Google-Kontakt beim Seitenaufruf) wird bei Klick
+    // durch echten iframe ersetzt. Player über youtube-nocookie.com — erster
+    // Kontakt zu Google entsteht erst durch den Klick.
     document.querySelectorAll('.video-wrapper[data-yt-id]').forEach(wrapper => {
         wrapper.addEventListener('click', () => {
             const id = wrapper.dataset.ytId;
-            if (!id) return;
+            if (!id || !/^[a-zA-Z0-9_-]{6,20}$/.test(id)) return;
             const iframe = document.createElement('iframe');
-            iframe.src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
+            iframe.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(id)}?autoplay=1&rel=0`;
             iframe.title = 'YouTube Release';
             iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
             iframe.referrerPolicy = 'strict-origin-when-cross-origin';

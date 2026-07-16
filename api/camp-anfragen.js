@@ -6,8 +6,12 @@
 //
 // Spam-Schutz (Stufe 1, ohne externe Services):
 //   a) Origin/Referer-Check — POST muss von der Produktiv-Domain kommen
-//   b) Honeypot — wenn `website` ausgefüllt ist, ist's ein Bot
-//   c) Timing-Check — Submissions < 2s nach Page-Render = Bot
+//   b) Honeypot — `website` muss vorhanden UND leer sein (fehlt es: Bot,
+//      der das Formular nie gerendert hat)
+//   c) Timing-Check — `renderedAt` ist Pflicht; Submission < 2s nach
+//      Page-Render oder älter als 24h = Bot
+//   d) Content-Type muss application/json sein (wie unser Frontend sendet)
+//   e) Rate-Limit pro IP (in-memory, pro Serverless-Instanz)
 //   Bei Spam-Verdacht antworten wir mit 200 OK (still drop) — der Bot soll
 //   nicht lernen, woran's gescheitert ist.
 //
@@ -27,10 +31,42 @@ const ALLOWED_ORIGINS = [
 const MIN_RENDER_TO_SUBMIT_MS = 2000;          // < 2 s seit Page-Render = Bot
 const MAX_RENDER_AGE_MS = 1000 * 60 * 60 * 24; // > 24 h = stale, drop
 
+// Rate-Limit pro IP. In-memory heißt: Jede Serverless-Instanz zählt für sich,
+// nach Cold-Start ist der Zähler leer. Das bremst naive Floods zuverlässig,
+// ist aber kein hartes Limit — dafür bräuchte es Vercel WAF (Dashboard).
+const RATE_WINDOW_MS = 10 * 60 * 1000; // 10-Minuten-Fenster
+const RATE_MAX = 5;                    // max. Submissions pro IP im Fenster
+const rateMap = new Map();
+
+function isRateLimited(ip) {
+    const now = Date.now();
+    if (rateMap.size > 1000) {
+        for (const [key, entry] of rateMap) {
+            if (now - entry.windowStart > RATE_WINDOW_MS) rateMap.delete(key);
+        }
+    }
+    const entry = rateMap.get(ip);
+    if (!entry || now - entry.windowStart > RATE_WINDOW_MS) {
+        rateMap.set(ip, { windowStart: now, count: 1 });
+        return false;
+    }
+    entry.count += 1;
+    return entry.count > RATE_MAX;
+}
+
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
         res.setHeader('Allow', 'POST');
         return res.status(405).json({ error: 'Nur POST erlaubt.' });
+    }
+
+    // ---- Spam-Check d) Content-Type ------------------------------------
+    // Unser Frontend sendet immer application/json — alles andere ist kein
+    // echter Formular-Submit.
+    const contentType = req.headers['content-type'] || '';
+    if (!contentType.includes('application/json')) {
+        console.warn('[camp-anfragen] blocked: wrong content-type', { contentType });
+        return res.status(200).json({ ok: true }); // still drop
     }
 
     // ---- Spam-Check a) Origin / Referer -------------------------------
@@ -47,25 +83,40 @@ export default async function handler(req, res) {
         }
     }
 
+    // ---- Spam-Check e) Rate-Limit pro IP --------------------------------
+    const clientIp = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim() || 'unknown';
+    if (isRateLimited(clientIp)) {
+        console.warn('[camp-anfragen] blocked: rate limit', { ip: clientIp });
+        return res.status(200).json({ ok: true }); // still drop
+    }
+
     const { name, email, camp, website, renderedAt } = req.body || {};
 
     // ---- Spam-Check b) Honeypot --------------------------------------
     // Das Feld "website" ist im Form versteckt (off-screen via CSS).
-    // Wenn da was drinsteht: Bot.
-    if (typeof website === 'string' && website.trim() !== '') {
+    // Unser Frontend sendet es IMMER mit (leer). Fehlt es → Bot, der das
+    // Formular nie gerendert hat. Steht was drin → Bot, der es ausgefüllt hat.
+    if (typeof website !== 'string') {
+        console.warn('[camp-anfragen] blocked: honeypot field missing');
+        return res.status(200).json({ ok: true }); // still drop
+    }
+    if (website.trim() !== '') {
         console.warn('[camp-anfragen] blocked: honeypot triggered', { hp: website.slice(0, 80) });
         return res.status(200).json({ ok: true }); // still drop
     }
 
     // ---- Spam-Check c) Timing ----------------------------------------
-    // Form wird beim Page-Render mit Timestamp markiert. Wenn der Submit
-    // unrealistisch schnell ODER steinalt ist → wahrscheinlich Bot.
-    if (typeof renderedAt === 'number' && Number.isFinite(renderedAt)) {
-        const age = Date.now() - renderedAt;
-        if (age < MIN_RENDER_TO_SUBMIT_MS || age > MAX_RENDER_AGE_MS) {
-            console.warn('[camp-anfragen] blocked: timing suspicious', { age });
-            return res.status(200).json({ ok: true }); // still drop
-        }
+    // Form wird beim Page-Render mit Timestamp markiert. Unser Frontend
+    // sendet renderedAt IMMER mit — fehlt es → Bot. Wenn der Submit
+    // unrealistisch schnell ODER steinalt ist → ebenfalls Bot.
+    if (typeof renderedAt !== 'number' || !Number.isFinite(renderedAt)) {
+        console.warn('[camp-anfragen] blocked: renderedAt missing');
+        return res.status(200).json({ ok: true }); // still drop
+    }
+    const age = Date.now() - renderedAt;
+    if (age < MIN_RENDER_TO_SUBMIT_MS || age > MAX_RENDER_AGE_MS) {
+        console.warn('[camp-anfragen] blocked: timing suspicious', { age });
+        return res.status(200).json({ ok: true }); // still drop
     }
 
     // ---- Reguläre Validierung -----------------------------------------

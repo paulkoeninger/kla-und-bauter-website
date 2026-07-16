@@ -30,7 +30,10 @@ node_modules/
 .env.local
 .env.*.local
 
-# Pre-rendered Route-HTMLs (build.js generiert sie bei jedem Deploy neu)
+# Deploy-Output — build.js baut dist/ bei jedem Build komplett neu auf
+dist/
+
+# Pre-rendered Route-HTMLs (Altlast: lagen früher im Root, heute in dist/)
 produktion.html
 session.html
 lab.html
