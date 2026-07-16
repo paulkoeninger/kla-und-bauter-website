@@ -9,10 +9,11 @@ Live: https://www.klaundbauter-musikproduktion.com
 
 ## 1. Stack & Deployment
 
-- **Frontend**: Vanilla HTML + CSS + JS. GSAP 3.12 (CDN) für Transitions + Parallax.
+- **Frontend**: Vanilla HTML + CSS + JS. GSAP 3.12.5 für Transitions + Parallax, **selbst gehostet** in `js/` (kein CDN).
 - **Fonts**: Inter + Cormorant, **selbst gehostet** in `fonts/` (kein Google-CDN).
 - **Hosting**: Vercel (www als Primary Domain, non-www redirected).
-- **Build-Step**: `node build.js` generiert pre-rendered HTML pro Route vor jedem Deploy.
+- **Build-Step**: `node build.js` baut `dist/` (pre-rendered HTML pro Route + Allowlist-Assets) vor jedem Deploy.
+- **Lokaler Deploy-Test**: `node preview-dist.mjs` (Port 4173) serviert `dist/` mit den echten Security-Headern + Rewrites aus vercel.json.
 - **Serverless Function**: `api/camp-anfragen.js` (Vercel) → Resend API für Camp-Anfragen-Mails.
 
 ## 2. 3-File-Regel + Build-Output
@@ -22,8 +23,8 @@ Live: https://www.klaundbauter-musikproduktion.com
 | `index.html` | Template mit allen Routen als `.page-section`. Home-Metas fest im `<head>`. |
 | `style.css` | Komplettes Styling, Tokens in `:root`. |
 | `script.js` | SPA-Routing, Promise-Reveal, Camp-Anfragen-Submit, Teaser-Parallax, IntersectionObserver. |
-| `build.js` | Liest `routeMeta` aus script.js + Template → schreibt `produktion.html`, `session.html`, etc. mit route-spezifischen Metas. Single Source of Truth: `routeMeta` in script.js. |
-| `vercel.json` | `buildCommand`, `outputDirectory: "."`, `rewrites` (`/produktion` → `/produktion.html` …). |
+| `build.js` | Liest `routeMeta` aus script.js + Template → baut `dist/` als **Allowlist-Deploy-Output**: kopiert nur benötigte Assets, schreibt `produktion.html` etc. mit route-spezifischen Metas hinein. Referenz-Check bricht den Build ab, wenn ein verlinktes Asset fehlt. Single Source of Truth: `routeMeta` in script.js. |
+| `vercel.json` | `buildCommand`, `outputDirectory: "dist"`, `rewrites` (`/produktion` → `/produktion.html` …), Security-Header (CSP, X-Content-Type-Options, Referrer-Policy, Permissions-Policy, COOP). |
 
 **Regel**: Keine Komponenten-Splits, kein npm-Framework, kein Bundler. Alles editierbar in den drei Files.
 
@@ -52,12 +53,13 @@ Live: https://www.klaundbauter-musikproduktion.com
 - `translate:` Property auf `.teaser-bg` via JS, kombiniert sich mit dem 45s-`slowZoom`-Keyframe (`transform: scale`).
 
 ### Lite YouTube-Embed (Releases)
-- Vorschau ist ein `<button class="video-wrapper" data-yt-id="…">` mit Thumbnail (`maxresdefault.jpg` + Fallback).
-- Click ersetzt Button durch echtes `<iframe>` mit `autoplay=1`. Keine YouTube-Cookies vor Klick.
+- Vorschau ist ein `<button class="video-wrapper" data-yt-id="…">` mit **lokal gehostetem** Thumbnail (`images/releases/<video-id>.jpg`) — kein Google-Kontakt beim Seitenaufruf, deckt sich mit der Datenschutzerklärung.
+- Click ersetzt Button durch echtes `<iframe>` auf **youtube-nocookie.com** mit `autoplay=1`. Erster Google-Kontakt entsteht erst durch den Klick.
+- Neues Release: Thumbnail einmalig nach `images/releases/` legen (Dateiname = Video-ID) — fehlt es, bricht der Build-Referenz-Check ab.
 
 ### Camp-Anfragen-Formular (Songcamp)
-- Client: Name + E-Mail + Submit → POST `/api/camp-anfragen` (JSON).
-- Server (`api/camp-anfragen.js`): Validierung → Resend API → Mail an `CAMP_ANFRAGEN_TO`, Reply-To = User-Mail.
+- Client: Name + E-Mail + Submit → POST `/api/camp-anfragen` (JSON, immer inkl. Honeypot `website` + `renderedAt`).
+- Server (`api/camp-anfragen.js`): Spam-Gates (Origin, Content-Type, Honeypot **Pflicht**, Timing **Pflicht**, Rate-Limit 5/10 min pro IP) — Spam wird still mit 200 gedroppt. Danach Validierung → Resend API → Mail an `CAMP_ANFRAGEN_TO`, Reply-To = User-Mail; Bestätigungsmail via `api/_email.js` (User-Input wird HTML-escaped).
 - **Env-Vars in Vercel nötig**: `RESEND_API_KEY`, `CAMP_ANFRAGEN_FROM`, `CAMP_ANFRAGEN_TO`.
 
 ### Hover-Reset auf Touch
@@ -117,13 +119,21 @@ Live: https://www.klaundbauter-musikproduktion.com
 - **Mail offiziell**: `hallo@klaundbauter-musikproduktion.com`.
 - Impressum DDG-konform (§ 5 DDG), Datenschutz DSGVO-konform (Verantwortlicher = GbR, Hosting Vercel DPF, YouTube Lite-Embed, Fonts selbst gehostet = keine Google-Übermittlung).
 
-## 9. Bekannte offene Tasks
+## 9. Sicherheit (Stand Juli 2026)
+
+- **Deploy = Allowlist**: Öffentlich erreichbar ist nur, was build.js nach `dist/` kopiert. Interne Dateien (CLAUDE.md, docs/, PROJECT.md, TODO.md, build.js, vercel.json, api-Quellcode) sind nicht mehr über die Domain abrufbar. `.vercelignore` schützt zusätzlich CLI-Deploys (brain/, buchhaltung/, .env …).
+- **Security-Header** in vercel.json: CSP mit `script-src 'self'` — **kein CDN, keine Inline-Scripts, keine Inline-Event-Handler (onclick= etc.) verwenden**, die blockt die CSP. Dazu X-Content-Type-Options, X-Frame-Options, Referrer-Policy, Permissions-Policy, COOP. HSTS setzt Vercel automatisch.
+- **Null Dritt-Ressourcen beim Seitenaufruf**: GSAP, Fonts und YouTube-Thumbnails sind self-hosted. Ein neues externes Embed/Script braucht IMMER: CSP-Erweiterung in vercel.json + Abschnitt in der Datenschutzerklärung.
+- `.well-known/security.txt`: Kontakt für Sicherheits-Meldungen (`Expires` jährlich erneuern, zuletzt bis 2027-07-16).
+- Formular-Härtung: siehe Camp-Anfragen-Formular (Abschnitt 4).
+
+## 10. Bekannte offene Tasks
 
 - **Resend Domain-Verifikation** (DKIM/SPF-Records bei Domain-Registrar) — nötig damit Camp-Anfragen-Mails als `hallo@…` raus gehen statt via `onboarding@resend.dev`.
 - **Vercel Env-Vars setzen**: `RESEND_API_KEY`, `CAMP_ANFRAGEN_FROM`, `CAMP_ANFRAGEN_TO`.
 - **Alumni-Quotes** (Songcamp): aktuell Platzhalter, durch echte Zitate ersetzen sobald vorhanden.
 
-## 10. Vertiefende Dokumentation
+## 11. Vertiefende Dokumentation
 
 **Tech-Schicht (committed):**
 - `docs/DESIGN_SYSTEM.md` — CSS-Token-Referenz, Komponenten-Atlas
