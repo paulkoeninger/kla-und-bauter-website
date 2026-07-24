@@ -34,6 +34,7 @@ const COPY_FILES = [
     'robots.txt', 'sitemap.xml', 'llms.txt',
     'favicon-32.png', 'favicon-32-dark.png',
     'apple-touch-icon.png', 'apple-touch-icon-dark.png',
+    '_redirects', '_headers',
 ];
 const COPY_DIRS = ['fonts', 'images', 'Logo', 'js', '.well-known'];
 
