@@ -23,9 +23,10 @@ parse_legal.py
 *.sln
 *.sw?
 
-# Node / Vercel
+# Node / Vercel / Cloudflare
 node_modules/
 .vercel
+.wrangler/
 .env
 .env.local
 .env.*.local
