@@ -4,7 +4,7 @@
 - **Last Updated:** 2026-05-02 (Session 4 abgeschlossen)
 - **Current Phase:** Live in Produktion. Inhaltliche Iterationen + Brand-Konsolidierung.
 - **Branch:** `main` (working tree clean, HEAD `ce88556`, alle Änderungen committed)
-- **Deployment:** Vercel — https://www.klaundbauter-musikproduktion.com
+- **Deployment:** Cloudflare (Workers with Static Assets, `wrangler deploy`) — https://www.klaundbauter-musikproduktion.com
 
 ## Architektur (Kurz)
 Editoriale Vanilla-SPA. Drei-File-Regel: `index.html`, `style.css`, `script.js`. Pre-rendered Routes via `build.js` (inkl. HTML-Minification). Serverless APIs: `api/camp-anfragen.js` + shared `api/_email.js`. Resend als Mail-Versanddienstleister. GSAP 3.12 für Page-Transitions (ScrollTrigger entfernt). Strategie-Docs ausgelagert nach `brain/` (gitignored), Tech-Docs in `docs/DESIGN_SYSTEM.md`.
@@ -137,13 +137,13 @@ Positive §18-Signale wurden bewusst verstärkt bzw. erhalten: „Wir sind keine
 ## Dependencies & Integration Notes
 
 - **GSAP** (CDN 3.12.5): `gsap.set`, `gsap.timeline`, `gsap.to` — für SPA-Page-Transitions, Menu-Slide, Loader-Fadeout. ScrollTrigger entfernt.
-- **Resend**: Nur noch Songcamp-Anfragen (Kontakt-Form ist weg). Env-Vars in Vercel: `RESEND_API_KEY`, `CAMP_ANFRAGEN_FROM`, `CAMP_ANFRAGEN_TO`.
-- **build.js**: Läuft bei `vercel build` + lokal `node build.js`. Minifier default-an (`MINIFY = true`).
+- **Resend**: Nur noch Songcamp-Anfragen (Kontakt-Form ist weg). Env-Vars im Cloudflare Dashboard (Workers & Pages → Settings → Variables and Secrets): `RESEND_API_KEY`, `CAMP_ANFRAGEN_FROM`, `CAMP_ANFRAGEN_TO`.
+- **build.js**: Läuft vor `wrangler deploy` + lokal `node build.js`. Minifier default-an (`MINIFY = true`).
 - **Google Fonts** NICHT als CDN genutzt — 600er-Weight-Files **einmalig** von v20 heruntergeladen, sind jetzt selbst gehostet in `fonts/`. Keine laufende Verbindung.
 
 ## Next Steps (Priority Order)
 
-1. **`git push`** → Vercel deployed Lab-Eingang + neuestes Content-Update automatisch
+1. **`git push`** + `wrangler deploy` → aktuellen Stand auf Cloudflare veröffentlichen (Hosting-Wechsel Vercel → Cloudflare fand nach diesem Session-Stand statt; im Cloudflare-Dashboard prüfen, ob Git-Auto-Deploy eingerichtet ist oder der Deploy manuell per `wrangler deploy` erfolgt).
 2. **Smoke-Test** der neuen 4-Card-Symmetrie auf Live (Desktop + Mobile)
 3. **Sitemap-Lastmod** für Home-Route auf 2026-05-02 ziehen + GSC re-submitten
 4. **Resend Domain-Verifikation** (DKIM/SPF) — dann `CAMP_ANFRAGEN_FROM=hallo@…`

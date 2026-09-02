@@ -11,10 +11,10 @@ Live: https://www.klaundbauter-musikproduktion.com
 
 - **Frontend**: Vanilla HTML + CSS + JS. GSAP 3.12.5 für Transitions + Parallax, **selbst gehostet** in `js/` (kein CDN).
 - **Fonts**: Inter + Cormorant, **selbst gehostet** in `fonts/` (kein Google-CDN).
-- **Hosting**: Vercel (www als Primary Domain, non-www redirected).
+- **Hosting**: Cloudflare (Workers with Static Assets — Worker-Script `worker.js` + `dist/` als Assets-Binding, konfiguriert in `wrangler.jsonc`), www als Primary Domain, non-www redirected.
 - **Build-Step**: `node build.js` baut `dist/` (pre-rendered HTML pro Route + Allowlist-Assets) vor jedem Deploy.
-- **Lokaler Deploy-Test**: `node preview-dist.mjs` (Port 4173) serviert `dist/` mit den echten Security-Headern + Rewrites aus vercel.json.
-- **Serverless Function**: `api/camp-anfragen.js` (Vercel) → Resend API für Camp-Anfragen-Mails.
+- **Lokaler Deploy-Test**: `node preview-dist.mjs` (Port 4173) serviert `dist/`. Produktiv kommen Security-Header + Rewrites aus `_headers`/`_redirects` (von Cloudflare automatisch aus `dist/` gelesen) — **Achtung**: `preview-dist.mjs` liest aktuell noch `vercel.json` statt `_headers`/`_redirects` und testet damit nicht mehr die echte Produktions-Config; das Script müsste umgestellt werden.
+- **Worker-Handler**: `functions/api/camp-anfragen.js` (aus `worker.js` für `POST /api/camp-anfragen` aufgerufen, läuft als Cloudflare Worker) → Resend API für Camp-Anfragen-Mails. Die alte Vercel-Serverless-Function `api/camp-anfragen.js` ist totes Altlast-Artefakt und wird nicht mehr aufgerufen.
 
 ## 2. 3-File-Regel + Build-Output
 
@@ -24,7 +24,8 @@ Live: https://www.klaundbauter-musikproduktion.com
 | `style.css` | Komplettes Styling, Tokens in `:root`. |
 | `script.js` | SPA-Routing, Promise-Reveal, Camp-Anfragen-Submit, Teaser-Parallax, IntersectionObserver. |
 | `build.js` | Liest `routeMeta` aus script.js + Template → baut `dist/` als **Allowlist-Deploy-Output**: kopiert nur benötigte Assets, schreibt `produktion.html` etc. mit route-spezifischen Metas hinein. Referenz-Check bricht den Build ab, wenn ein verlinktes Asset fehlt. Single Source of Truth: `routeMeta` in script.js. |
-| `vercel.json` | `buildCommand`, `outputDirectory: "dist"`, `rewrites` (`/produktion` → `/produktion.html` …), Security-Header (CSP, X-Content-Type-Options, Referrer-Policy, Permissions-Policy, COOP). |
+| `wrangler.jsonc` | Cloudflare-Worker-Config: `main: "worker.js"`, `assets.directory: "dist"`, `assets.run_worker_first: ["/api/*"]` — nur `/api/*` läuft durch den Worker, alles andere wird direkt aus `dist/` als Static Asset ausgeliefert. |
+| `_headers` / `_redirects` | Von build.js nach `dist/` kopiert, dort automatisch von Cloudflare gelesen: `_redirects` = Rewrites (`/produktion` → `/produktion.html` …), `_headers` = Security-Header (CSP, X-Content-Type-Options, Referrer-Policy, Permissions-Policy, COOP). |
 
 **Regel**: Keine Komponenten-Splits, kein npm-Framework, kein Bundler. Alles editierbar in den drei Files.
 
@@ -60,7 +61,7 @@ Live: https://www.klaundbauter-musikproduktion.com
 ### Camp-Anfragen-Formular (Songcamp)
 - Client: Name + E-Mail + Submit → POST `/api/camp-anfragen` (JSON, immer inkl. Honeypot `website` + `renderedAt`).
 - Server (`api/camp-anfragen.js`): Spam-Gates (Origin, Content-Type, Honeypot **Pflicht**, Timing **Pflicht**, Rate-Limit 5/10 min pro IP) — Spam wird still mit 200 gedroppt. Danach Validierung → Resend API → Mail an `CAMP_ANFRAGEN_TO`, Reply-To = User-Mail; Bestätigungsmail via `api/_email.js` (User-Input wird HTML-escaped).
-- **Env-Vars in Vercel nötig**: `RESEND_API_KEY`, `CAMP_ANFRAGEN_FROM`, `CAMP_ANFRAGEN_TO`.
+- **Env-Vars im Cloudflare Dashboard nötig** (Workers & Pages → Projekt → Settings → Variables and Secrets, oder `wrangler secret put`): `RESEND_API_KEY`, `CAMP_ANFRAGEN_FROM`, `CAMP_ANFRAGEN_TO`.
 
 ### Hover-Reset auf Touch
 - Ein `@media (hover: none)` Block am Ende von style.css neutralisiert ~39 Hover-Regeln auf Base-State.
@@ -117,20 +118,20 @@ Live: https://www.klaundbauter-musikproduktion.com
 
 - **Betreiber**: Kla und Bauter Thessenvitz Köninger GbR, Heumarkt 42–44, 50667 Köln.
 - **Mail offiziell**: `hallo@klaundbauter-musikproduktion.com`.
-- Impressum DDG-konform (§ 5 DDG), Datenschutz DSGVO-konform (Verantwortlicher = GbR, Hosting Vercel DPF, YouTube Lite-Embed, Fonts selbst gehostet = keine Google-Übermittlung).
+- Impressum DDG-konform (§ 5 DDG), Datenschutz DSGVO-konform (Verantwortlicher = GbR, Hosting Cloudflare, DPF-zertifiziert, YouTube Lite-Embed, Fonts selbst gehostet = keine Google-Übermittlung).
 
 ## 9. Sicherheit (Stand Juli 2026)
 
-- **Deploy = Allowlist**: Öffentlich erreichbar ist nur, was build.js nach `dist/` kopiert. Interne Dateien (CLAUDE.md, docs/, PROJECT.md, TODO.md, build.js, vercel.json, api-Quellcode) sind nicht mehr über die Domain abrufbar. `.vercelignore` schützt zusätzlich CLI-Deploys (brain/, buchhaltung/, .env …).
-- **Security-Header** in vercel.json: CSP mit `script-src 'self'` — **kein CDN, keine Inline-Scripts, keine Inline-Event-Handler (onclick= etc.) verwenden**, die blockt die CSP. Dazu X-Content-Type-Options, X-Frame-Options, Referrer-Policy, Permissions-Policy, COOP. HSTS setzt Vercel automatisch.
-- **Null Dritt-Ressourcen beim Seitenaufruf**: GSAP, Fonts und YouTube-Thumbnails sind self-hosted. Ein neues externes Embed/Script braucht IMMER: CSP-Erweiterung in vercel.json + Abschnitt in der Datenschutzerklärung.
+- **Deploy = Allowlist**: Öffentlich erreichbar ist nur, was build.js nach `dist/` kopiert. Interne Dateien (CLAUDE.md, docs/, PROJECT.md, TODO.md, build.js, wrangler.jsonc, api-Quellcode) sind nicht mehr über die Domain abrufbar — `wrangler deploy` published ausschließlich den Inhalt von `dist/` (Assets-Directory aus wrangler.jsonc). Die alte `.vercelignore` ist seit dem Umzug wirkungslos (kein Vercel-CLI-Deploy mehr) und kann entfernt werden.
+- **Security-Header** in `_headers` (von build.js nach `dist/` kopiert, dort automatisch von Cloudflare angewendet): CSP mit `script-src 'self'` — **kein CDN, keine Inline-Scripts, keine Inline-Event-Handler (onclick= etc.) verwenden**, die blockt die CSP. Dazu X-Content-Type-Options, X-Frame-Options, Referrer-Policy, Permissions-Policy, COOP. **HSTS wird bei Cloudflare NICHT automatisch gesetzt** (anders als bei Vercel) — muss explizit aktiviert werden (Dashboard → SSL/TLS → Edge Certificates → HSTS, oder eigener `Strict-Transport-Security`-Header in `_headers`). Aktuell fehlt ein HSTS-Header in `_headers` — prüfen, ob das Dashboard-Toggle aktiv ist.
+- **Null Dritt-Ressourcen beim Seitenaufruf**: GSAP, Fonts und YouTube-Thumbnails sind self-hosted. Ein neues externes Embed/Script braucht IMMER: CSP-Erweiterung in `_headers` + Abschnitt in der Datenschutzerklärung.
 - `.well-known/security.txt`: Kontakt für Sicherheits-Meldungen (`Expires` jährlich erneuern, zuletzt bis 2027-07-16).
 - Formular-Härtung: siehe Camp-Anfragen-Formular (Abschnitt 4).
 
 ## 10. Bekannte offene Tasks
 
 - **Resend Domain-Verifikation** (DKIM/SPF-Records bei Domain-Registrar) — nötig damit Camp-Anfragen-Mails als `hallo@…` raus gehen statt via `onboarding@resend.dev`.
-- **Vercel Env-Vars setzen**: `RESEND_API_KEY`, `CAMP_ANFRAGEN_FROM`, `CAMP_ANFRAGEN_TO`.
+- **Cloudflare Env-Vars/Secrets setzen** (Dashboard → Workers & Pages → Settings → Variables and Secrets, oder `wrangler secret put`): `RESEND_API_KEY`, `CAMP_ANFRAGEN_FROM`, `CAMP_ANFRAGEN_TO`.
 - **Alumni-Quotes** (Songcamp): aktuell Platzhalter, durch echte Zitate ersetzen sobald vorhanden.
 
 ## 11. Vertiefende Dokumentation

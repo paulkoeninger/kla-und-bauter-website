@@ -111,7 +111,7 @@ _Details siehe git log oder PROJECT.md in Session-2-State._
 ## ⏳ Backlog (Priority Order)
 
 ### Nach dem Push (höchste Prio)
-- [ ] **`git push`** → Vercel deployed Lab-Eingang automatisch
+- [ ] **`git push`** + `wrangler deploy` → aktuellen Stand auf Cloudflare veröffentlichen (prüfen, ob Git-Auto-Deploy im Cloudflare-Dashboard aktiv ist)
 - [ ] **Smoke-Test** der neuen 4-Card-Symmetrie auf Live: Desktop (4 Spalten 457px gleich), Mobile (Spalte gestackt)
 - [ ] **Lab-Klick-Test**: alle 4 Karten ziehen sauber zur jeweiligen Route, Lab-CTA erreicht Lab-Page
 - [ ] **Sitemap-`<lastmod>`** für Home-Route auf 2026-05-02 hochziehen + GSC re-submitten
@@ -132,7 +132,7 @@ _Details siehe git log oder PROJECT.md in Session-2-State._
 - [ ] **JS/CSS-Minification** via esbuild/terser — konfliktet mit „3-File-Rule", Ersparnis klein (~5 KB gzipped). Nur wenn Lighthouse-Mobile sinkt.
 - [ ] `content-visibility: auto` auf below-fold Sections als Render-Skip-Optimierung
 - [ ] Critical-CSS-Inlining (above-the-fold) im `<head>` statt externer style.css
-- [ ] 301-Redirects für `/songcamps`, `/sessions` in `vercel.json` (falls Backlinks)
+- [ ] 301-Redirects für `/songcamps`, `/sessions` in `_redirects` (Cloudflare, falls Backlinks)
 - [ ] Cross-Browser-Test `100dvh` / `100svh` auf iOS Safari verifizieren
 
 ### Niedrig-Prio Code-Kosmetik
