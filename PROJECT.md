@@ -166,6 +166,7 @@ Positive §18-Signale wurden bewusst verstärkt bzw. erhalten: „Wir sind keine
 
 ## Dependencies & Integration Notes
 
+- **Auftragsmanagement (`auftraege/`, seit Session 5):** kein Code-Dependency, aber operative Kopplung an zwei externe lokale Projekte — die Buchhaltungs-App (`~/Documents/CODE/Buchhaltung`, eigenes Repo, `npm run dev` auf Port 3000/5173) für Angebote/Verträge/Rechnungen, und Mail.app (Account „Klaundbauter-Musikproduktion" für offizielle Anfragen, Pauls privater iCloud-Account für ältere/direkte Korrespondenz wie den Dave-Blohm-Fall). Siehe `auftraege/README.md`.
 - **GSAP** (CDN 3.12.5): `gsap.set`, `gsap.timeline`, `gsap.to` — für SPA-Page-Transitions, Menu-Slide, Loader-Fadeout. ScrollTrigger entfernt.
 - **Resend**: Nur noch Songcamp-Anfragen (Kontakt-Form ist weg). Env-Vars im Cloudflare Dashboard (Workers & Pages → Settings → Variables and Secrets): `RESEND_API_KEY`, `CAMP_ANFRAGEN_FROM`, `CAMP_ANFRAGEN_TO`.
 - **build.js**: Läuft vor `wrangler deploy` + lokal `node build.js`. Minifier default-an (`MINIFY = true`).

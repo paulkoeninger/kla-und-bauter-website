@@ -1,5 +1,23 @@
 # TODO / Task List
 
+## ✅ Completed (Session 5, 2026-09-04 — kein Website-Code, neue `auftraege/`-Infrastruktur)
+
+### Auftragsmanagement-System aufgebaut
+- [x] `auftraege/` angelegt (README, PIPELINE.md, `anfragen/`, `archiv/`), gitignored wie `brain/`/`buchhaltung/`
+- [x] `.gitignore` + `CLAUDE.md` (Abschnitt 11) auf Vier-Schichten-Trennung erweitert
+- [x] Skill `kb-anfragen` (Anfragen beantworten + Pipeline pflegen) — global unter `~/.claude/skills/`
+- [x] Skill `kb-angebot` (Angebot/Songcamp-Vertrag in der Buchhaltungs-App anlegen)
+- [x] Skill `kb-auftragslage` (Pipeline-Kurzanalyse)
+- [x] Alle drei Skills end-to-end mit Testdaten verifiziert, Testdaten danach entfernt
+- [x] Verifiziert: Mail-Account „Klaundbauter-Musikproduktion" (Entwürfe-Ordner „Entwürfe"), Buchhaltungs-App-Company „Kla & Bauter", MwSt.-Satz 19 % (empirisch bestätigt)
+
+### Erster Livefall: David Blohm („Dave") Songcamp-Storno
+- [x] Rechnung RE–026 (400 € Anzahlung, fällig 11.09.2026) in der Buchhaltungs-App erstellt, von Paul final versendet
+- [x] Follow-up-Mail mit RE–026-Anhang als Antwort im bestehenden Thread verschickt (Pauls iCloud-Account)
+- [x] Fall in `auftraege/anfragen/2026-03-04-dave-blohm-songcamp-storno.md` dokumentiert, Pipeline-Status „Mahnung/Inkasso — Zahlung ausständig"
+
+---
+
 ## ✅ Completed (Session 4, 2026-04-24 → 2026-05-02 — commits `bba844e` → `ce88556`)
 
 ### Home-Grid: 4. Eingang fürs Lab (Commit `ce88556`, heute)
@@ -104,11 +122,17 @@ _Details siehe git log oder PROJECT.md in Session-2-State._
 ---
 
 ## 🔄 In Progress
-*— nichts gerade aktiv. Session 4 sauber abgeschlossen.*
+*— nichts gerade aktiv. Session 5 sauber abgeschlossen (Auftragsmanagement-System + Dave-Blohm-Fall).*
 
 ---
 
 ## ⏳ Backlog (Priority Order)
+
+### Auftragsmanagement / Operativ (aus Session 5)
+- [ ] **USt-IdNr. klären**: Impressum zeigt `DE325676110`, Buchhaltungs-App hat `DE344634083` — welche stimmt? Danach Impressum korrigieren (§ 5 DDG Pflichtangabe).
+- [ ] **Dave Blohm (RE–026, 400 €)**: Zahlungseingang bis 11.09.2026 prüfen. Bei Ausbleiben: Mahnstufen 1–3 in der Buchhaltungs-App, danach ggf. Inkasso Paywise. Status in `auftraege/PIPELINE.md`.
+- [ ] `buchhaltung/STAMMDATEN.md` USt-Status von „zu prüfen" auf „19 % Regelbesteuerung, bestätigt" aktualisieren (reine Doku-Korrektur, keine Dringlichkeit).
+- [ ] Songcamp-Vertrag SC26-02-02 (Dave) nachträglich in der Buchhaltungs-App digitalisieren? — nur falls Edition-02-Verträge generell fehlen und das mal aufgeräumt werden soll, nicht dringend.
 
 ### Nach dem Push (höchste Prio)
 - [ ] **`git push`** + `wrangler deploy` → aktuellen Stand auf Cloudflare veröffentlichen (prüfen, ob Git-Auto-Deploy im Cloudflare-Dashboard aktiv ist)
