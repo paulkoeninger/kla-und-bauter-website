@@ -1,13 +1,41 @@
 # Kla & Bauter Website — Projekt-Status
 
 ## Current Status
-- **Last Updated:** 2026-05-02 (Session 4 abgeschlossen)
-- **Current Phase:** Live in Produktion. Inhaltliche Iterationen + Brand-Konsolidierung.
-- **Branch:** `main` (working tree clean, HEAD `ce88556`, alle Änderungen committed)
+- **Last Updated:** 2026-09-04 (Session 5 abgeschlossen)
+- **Current Phase:** Live in Produktion. Website-Code selbst unverändert seit Session 4 — diese Session war Auftragsmanagement-Infrastruktur, kein Site-Feature-Update.
+- **Branch:** `main` (2 uncommitted Changes: `.gitignore`, `CLAUDE.md` — siehe Session 5, noch nicht committed)
 - **Deployment:** Cloudflare (Workers with Static Assets, `wrangler deploy`) — https://www.klaundbauter-musikproduktion.com
+- ⚠️ **Doku-Lücke:** Zwischen Session 4 (2026-05-02) und dieser Session liegen laut `CLAUDE.md` (Stand Juli 2026, Cloudflare-Migration, Security-Header, `worker.js`-Umbau) mehrere unbedokumentierte Sessions — PROJECT.md/TODO.md wurden zwischenzeitlich nicht per `/UPDATE` gepflegt. Diese Lücke wurde hier **nicht** rückwirkend rekonstruiert (keine verlässliche Quelle dafür), nur Session 5 ist neu dokumentiert. Für den echten Zwischenstand: `git log` / `CLAUDE.md` sind aktueller als die Session-4-Beschreibung unten.
 
 ## Architektur (Kurz)
-Editoriale Vanilla-SPA. Drei-File-Regel: `index.html`, `style.css`, `script.js`. Pre-rendered Routes via `build.js` (inkl. HTML-Minification). Serverless APIs: `api/camp-anfragen.js` + shared `api/_email.js`. Resend als Mail-Versanddienstleister. GSAP 3.12 für Page-Transitions (ScrollTrigger entfernt). Strategie-Docs ausgelagert nach `brain/` (gitignored), Tech-Docs in `docs/DESIGN_SYSTEM.md`.
+Editoriale Vanilla-SPA. Drei-File-Regel: `index.html`, `style.css`, `script.js`. Pre-rendered Routes via `build.js` (inkl. HTML-Minification). Cloudflare Worker (`worker.js`) + `functions/api/camp-anfragen.js` für `/api/*`, alles andere Static Assets aus `dist/`. Resend als Mail-Versanddienstleister. GSAP 3.12 für Page-Transitions. Strategie-Docs in `brain/`, Buchhaltung in `buchhaltung/`, Auftragsmanagement in `auftraege/` (alle drei gitignored, lokal-only), Tech-Docs in `docs/DESIGN_SYSTEM.md`.
+
+---
+
+## Completed This Session (Session 5, 2026-09-04)
+
+**Kein Website-Code geändert.** Diese Session hat eine neue, gitignored Infrastruktur-Schicht für Kla & Bauter aufgebaut: Auftragsmanagement (Anfragen/Angebote/Auftragslage), analog zum bestehenden Muster von `brain/` und `buchhaltung/`.
+
+### Neuer Arbeitsordner `auftraege/` (gitignored, vierte Schicht neben Code/`brain/`/`buchhaltung/`)
+- `auftraege/README.md`, `auftraege/PIPELINE.md` (Source-of-Truth-Tabelle, nach Status gruppiert), `auftraege/anfragen/` (Einzeldateien für Leads mit Historie), `auftraege/archiv/`.
+- `.gitignore` um `auftraege/`-Block ergänzt (gleiches Muster wie `brain/`/`buchhaltung/`).
+- `CLAUDE.md` Abschnitt 11 von Drei- auf **Vier-Schichten-Trennung** erweitert (Code/`brain/`/`buchhaltung/`/`auftraege/`).
+
+### Drei neue globale Skills (`~/.claude/skills/`, Präfix `kb-`, analog zu Volksgartens `vg-*`)
+- **`kb-anfragen`** — Anfragen beantworten (Mail.app-Entwurf) + Pipeline pflegen. Verifiziert: Mail-Account heißt „Klaundbauter-Musikproduktion", Entwürfe-Ordner „Entwürfe".
+- **`kb-angebot`** — Angebot (Session/Produktion) oder Songcamp-Vertrag in der lokalen Buchhaltungs-App (`~/Documents/CODE/Buchhaltung`) anlegen, über deren eigene API. Verifiziert: Company heißt exakt „Kla & Bauter", MwSt.-Satz in der Praxis durchgehend 19 %.
+- **`kb-auftragslage`** — Kurzanalyse der Pipeline auf Zuruf.
+- Alle drei end-to-end mit fiktiven Testdaten durchgespielt (Mail-Entwurf, Buchhaltungs-App-Draft), danach vollständig wieder entfernt.
+
+### Erster echter Anwendungsfall: David Blohm („Dave") Songcamp-Storno
+- Vertrag SC26-02-02 (04.03.2026, nie in der Buchhaltungs-App digitalisiert) eine Woche vor Camp-Beginn storniert. Kulanzangebot (Restsumme erlassen, nur 400 € Anzahlung fällig, zählt als Gutschein) unbeantwortet, Zahlungsziel 31.08. verstrichen.
+- Rechnung **RE–026** (400 €, fällig 11.09.2026) in der Buchhaltungs-App erstellt und von Paul final versendet.
+- Follow-up-Mail als echte Antwort im bestehenden Thread (Pauls privater iCloud-Account, da dort die gesamte Korrespondenz mit Dave lief) mit RE–026 als Anhang verschickt — Entwurf geprüft (Header, Zitat-Verlauf, Anhang) und von Paul selbst final abgeschickt.
+- Fall dokumentiert in `auftraege/anfragen/2026-03-04-dave-blohm-songcamp-storno.md`, Pipeline-Status „Mahnung/Inkasso — Zahlung ausständig" (neue Kategorie, da wiederkehrender Fall). Muster für künftige Songcamp-Stornos mit offener Anzahlung in `auftraege/README.md` festgehalten (→ ggf. Mahnstufen → Inkasso Paywise).
+
+### Zwei Findings bei der Verifikation (kein Code-Bug, aber real)
+- **USt-IdNr.-Diskrepanz:** Impressum auf der Live-Website zeigt `DE325676110`, die Buchhaltungs-App hat `DE344634083` hinterlegt. Eine davon ist falsch — Impressum-Pflichtangabe (§ 5 DDG), sollte geklärt werden.
+- `buchhaltung/STAMMDATEN.md` markiert den USt-Status noch als „zu prüfen" — die Buchhaltungs-App arbeitet aber empirisch (an echten Songcamp-Verträgen bestätigt) durchgehend mit 19 % Regelbesteuerung. Reine Doku-Lücke in `buchhaltung/`, keine Dringlichkeit.
 
 ---
 
@@ -115,6 +143,8 @@ Positive §18-Signale wurden bewusst verstärkt bzw. erhalten: „Wir sind keine
 - ⏳ **Resend Domain-Verifikation** (DKIM/SPF-Records bei Domain-Registrar), dann `CAMP_ANFRAGEN_FROM` auf `hallo@klaundbauter-musikproduktion.com`.
 - ⏳ **Alumni-Quotes Songcamp**: aktuell Platzhalter, durch echte Zitate ersetzen sobald vorhanden.
 - 📝 **Rechtsseitig offen** (außerhalb Code): Widerrufsbelehrung im Songcamp-Bestätigungs-Workflow (Fernabsatzvertrag §312c BGB). Keine AGB nötig. Sollte mit Anwalt/Steuerberater geklärt werden.
+- ⚠️ **USt-IdNr.-Diskrepanz** (Session 5, 2026-09-04): Impressum zeigt `DE325676110`, Buchhaltungs-App hat `DE344634083`. Klären, welche stimmt, dann Impressum korrigieren.
+- ⏳ **Dave-Blohm-Storno** (Session 5): Rechnung RE–026 (400 €) versendet, Zahlungsziel 11.09.2026. Läuft außerhalb des Website-Codes — Status in `auftraege/PIPELINE.md`.
 
 ## Key Decisions Made This Session
 

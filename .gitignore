@@ -54,3 +54,8 @@ brain/
 # Operativer Projektordner für GbR-Buchhaltung, Steuer-Vorgänge, Behördenkommunikation.
 # Eingang: buchhaltung/README.md, Stammdaten: buchhaltung/STAMMDATEN.md
 buchhaltung/
+
+# Auftragsmanagement — lokal, nicht committed
+# Anfragen-Pipeline, Angebotsstatus, Auftragslage.
+# Eingang: auftraege/README.md, Source of Truth: auftraege/PIPELINE.md
+auftraege/
