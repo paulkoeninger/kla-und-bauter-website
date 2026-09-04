@@ -155,13 +155,21 @@ Live: https://www.klaundbauter-musikproduktion.com
 - `buchhaltung/outputs/` — von Claude generierte Artefakte (Briefe, Tabellen, Anlagen, Berechnungen).
 - `buchhaltung/vorgaenge/` — strukturierte Vorgänge nach Thema/Jahr (z. B. `2024-feststellung-einkuenfte/`), jeweils mit eigener `README.md`, `inputs/`, `outputs/`.
 
+**Auftragsmanagement-Schicht (in `auftraege/`, lokal nur, gitignored):**
+- `auftraege/README.md` — Eingang: Anfragen-Kanäle, Skill-Referenzen.
+- `auftraege/PIPELINE.md` — **Single Source of Truth** für den Anfragen-/Auftragsstand, nach Status gruppiert. Wird von den `kb-*`-Skills bei jeder Änderung aktualisiert.
+- `auftraege/anfragen/` — Einzeldateien für Leads mit nennenswerter Historie.
+- `auftraege/archiv/` — abgeschlossene/abgesagte Leads, jahresweise.
+- Zuständige Skills: `kb-anfragen` (Anfragen beantworten + Pipeline pflegen), `kb-angebot` (Angebot/Songcamp-Vertrag in der Buchhaltungs-App anlegen), `kb-auftragslage` (Analyse). Verträge/Rechnungen selbst entstehen in der externen Buchhaltungs-App (`~/Documents/CODE/Buchhaltung`) — `auftraege/` verlinkt nur die Dokumentnummer, dupliziert sie nicht.
+
 **Source of Truth** für die Marke (read-only): `vision_vibe_language/kla-bauter-visionsdokument-v2.docx`.
 
-**Drei-Schichten-Trennung — strikt einhalten:**
+**Vier-Schichten-Trennung — strikt einhalten:**
 - **Code/Website** (Hauptverzeichnis, committed) — `index.html`, `style.css`, `script.js`, `build.js`, etc.
 - **Marke/Strategie** (`brain/`, gitignored) — Tonalität, Locked Copy, Vision, Angebote.
 - **Operativ/GbR** (`buchhaltung/`, gitignored) — Steuern, Behörden, Belege, Geschäftsvorgänge.
+- **Auftragsmanagement** (`auftraege/`, gitignored) — Anfragen, Angebotsstatus, Auftragslage; keine Tonalitätsarbeit (bleibt `brain/`), keine Steuer-/Behördendaten (bleibt `buchhaltung/`).
 
-Niemals operative GbR-Dokumente in `brain/` ablegen oder umgekehrt. `brain/` ist nur für die Markenarbeit; `buchhaltung/` nur für Geschäftsbetrieb der GbR.
+Niemals operative GbR-Dokumente in `brain/` ablegen, Pipeline-Status nicht in `buchhaltung/` und Marken-/Tonalitätsarbeit nicht in `auftraege/` — jede Schicht bleibt bei ihrem Thema.
 
 **Developer-Instruction**: Elegant constraints > flashy chaos. Reuse bestehende `snap-block` / `sc-block` Strukturen. Tokens statt Magic Numbers. Animationen ruhig, nie aggressiv. Bei Textänderungen: `brain/MARKE.md` konsultieren für Tonalität und Locked Copy.
