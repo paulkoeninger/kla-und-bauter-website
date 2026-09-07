@@ -23,6 +23,10 @@ parse_legal.py
 *.sln
 *.sw?
 
+# Claude Code worktrees — versehentliches Commit eines Worktree-Gitlinks
+# führte am 2026-03-24 zu .claude/worktrees/tender-leavitt in der Historie
+.claude/worktrees/
+
 # Node / Vercel / Cloudflare
 node_modules/
 .vercel

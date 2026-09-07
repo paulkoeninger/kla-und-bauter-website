@@ -162,7 +162,7 @@ Live: https://www.klaundbauter-musikproduktion.com
 - `auftraege/archiv/` — abgeschlossene/abgesagte Leads, jahresweise.
 - Zuständige Skills: `kb-anfragen` (Anfragen beantworten + Pipeline pflegen), `kb-angebot` (Angebot/Songcamp-Vertrag in der Buchhaltungs-App anlegen), `kb-auftragslage` (Analyse). Verträge/Rechnungen selbst entstehen in der externen Buchhaltungs-App (`~/Documents/CODE/Buchhaltung`) — `auftraege/` verlinkt nur die Dokumentnummer, dupliziert sie nicht.
 
-**Source of Truth** für die Marke (read-only): `vision_vibe_language/kla-bauter-visionsdokument-v2.docx`.
+**Source of Truth** für die Marke (read-only): `brain/kla-bauter-visionsdokument-v2.docx` (bis 2026-09-07 lag die Datei fälschlich im committeten `vision_vibe_language/` statt in `brain/` — dadurch war sie öffentlich auf GitHub sichtbar, siehe Security-Audit; wurde per `git filter-repo` aus der gesamten Historie entfernt und nach `brain/` verschoben, wo sie laut der Vier-Schichten-Trennung ohnehin hingehört).
 
 **Vier-Schichten-Trennung — strikt einhalten:**
 - **Code/Website** (Hauptverzeichnis, committed) — `index.html`, `style.css`, `script.js`, `build.js`, etc.
