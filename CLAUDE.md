@@ -145,6 +145,7 @@ Live: https://www.klaundbauter-musikproduktion.com
 - `brain/KONTEXT.md` — Eingang für jeden neuen Chat: Pauls Arbeitsstil, Locked Copy-Liste, Tonalität (Kurzform). **Vor jeder Copy-/Konzeptarbeit lesen.**
 - `brain/MARKE.md` — Tonalität, Verbotsliste, Locked Copy mit Begründung
 - `brain/ANGEBOTE.md` — Sessions, Produktion, Songcamp, Werkstatt, Pipeline-Logik
+- `brain/bildungsurlaub/README.md` — Songcamp als anerkannter Bildungsurlaub: Recherche + Fahrplan (Initiative seit 2026-09)
 - `brain/PROJEKT.md` / `brain/TODO.md` — strategischer Stand und strategische Tasks
 - `brain/archiv/` — Vision-Detail, Business-Model, Co-Regulation-These, Glossar, verworfene Ansätze
 
